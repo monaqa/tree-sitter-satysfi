@@ -8,7 +8,39 @@
         "required": true,
         "types": [
           {
-            "type": "expr",
+            "type": "bind_stmt",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "inline_text",
+            "named": true
+          },
+          {
+            "type": "literal_bool",
+            "named": true
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "literal_unit",
             "named": true
           }
         ]
@@ -18,7 +50,39 @@
         "required": true,
         "types": [
           {
-            "type": "expr",
+            "type": "bind_stmt",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "inline_text",
+            "named": true
+          },
+          {
+            "type": "literal_bool",
+            "named": true
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "literal_unit",
             "named": true
           }
         ]
@@ -36,7 +100,7 @@
     }
   },
   {
-    "type": "expr",
+    "type": "header",
     "named": true,
     "fields": {},
     "children": {
@@ -44,18 +108,14 @@
       "required": true,
       "types": [
         {
-          "type": "bind_stmt",
-          "named": true
-        },
-        {
-          "type": "identifier",
+          "type": "header_require",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "header",
+    "type": "header_require",
     "named": true,
     "fields": {
       "pkgname": {
@@ -86,6 +146,40 @@
     }
   },
   {
+    "type": "inline_literal_escaped",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "inline_text",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "inline_literal_escaped",
+          "named": true
+        },
+        {
+          "type": "inline_token",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "literal_bool",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "literal_unit",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "program_saty",
     "named": true,
     "fields": {
@@ -94,7 +188,39 @@
         "required": true,
         "types": [
           {
-            "type": "expr",
+            "type": "bind_stmt",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "inline_text",
+            "named": true
+          },
+          {
+            "type": "literal_bool",
+            "named": true
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "literal_unit",
             "named": true
           }
         ]
@@ -131,6 +257,14 @@
     "named": false
   },
   {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
     "type": "=",
     "named": false
   },
@@ -139,8 +273,32 @@
     "named": false
   },
   {
+    "type": "\\*",
+    "named": false
+  },
+  {
+    "type": "\\\\",
+    "named": false
+  },
+  {
+    "type": "\\{",
+    "named": false
+  },
+  {
+    "type": "\\|",
+    "named": false
+  },
+  {
+    "type": "\\}",
+    "named": false
+  },
+  {
     "type": "comment",
     "named": true
+  },
+  {
+    "type": "false",
+    "named": false
   },
   {
     "type": "identifier",
@@ -151,11 +309,43 @@
     "named": false
   },
   {
+    "type": "inline_token",
+    "named": true
+  },
+  {
     "type": "let",
     "named": false
   },
   {
+    "type": "literal_float",
+    "named": true
+  },
+  {
+    "type": "literal_int",
+    "named": true
+  },
+  {
+    "type": "literal_length",
+    "named": true
+  },
+  {
+    "type": "literal_string",
+    "named": true
+  },
+  {
     "type": "pkgname",
     "named": true
+  },
+  {
+    "type": "true",
+    "named": false
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "}",
+    "named": false
   }
 ]

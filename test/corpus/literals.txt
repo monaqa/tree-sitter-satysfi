@@ -1,0 +1,23 @@
+=======
+integer
+=======
+
+let x = 123 in
+let x = 0x12 in
+let x = 0xAB in
+0
+
+---
+
+(source_file
+  (program_saty
+    (bind_stmt
+      (identifier)
+      (literal_int)
+      (bind_stmt
+        (identifier)
+        (literal_int)
+        (bind_stmt
+          (identifier)
+          (literal_int)
+          (literal_int))))))

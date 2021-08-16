@@ -13,5 +13,10 @@
   },
   "devDependencies": {
     "tree-sitter-cli": "^0.20.0"
-  }
+  },
+  "tree-sitter": [{
+    "scope": "source.satysfi",
+    "file-types": ["saty"],
+    "injection-regex": "satysfi"
+  }]
 }
