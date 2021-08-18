@@ -5,6 +5,9 @@
 enum TokenType {
   LITERAL_STRING,
   INLINE_TOKEN,
+  INLINE_TOKEN_COMPOUND,
+  NUMBERSIGN_AFTER_NOSPACE,
+  DUMMY,
 };
 
 void *tree_sitter_satysfi_external_scanner_create() { return NULL; }
@@ -19,6 +22,17 @@ static void advance(TSLexer *lexer) {
 
 bool tree_sitter_satysfi_external_scanner_scan(void *payload, TSLexer *lexer,
                                             const bool *valid_symbols) {
+    if (valid_symbols[NUMBERSIGN_AFTER_NOSPACE] && lexer->lookahead == '#') {
+        advance(lexer);
+        if ((lexer->lookahead >= 'a' && lexer->lookahead <= 'z')
+                || (lexer->lookahead >= 'A' && lexer->lookahead <= 'Z')) {
+            lexer->result_symbol = NUMBERSIGN_AFTER_NOSPACE;
+            lexer->mark_end(lexer);
+            return true;
+        }
+        return false;
+    }
+
     if (valid_symbols[LITERAL_STRING]
             && (lexer->lookahead == '#' || lexer->lookahead == '`')) {
         lexer->result_symbol = LITERAL_STRING;
@@ -62,18 +76,31 @@ bool tree_sitter_satysfi_external_scanner_scan(void *payload, TSLexer *lexer,
         }
     }
 
-    if (valid_symbols[INLINE_TOKEN]) {
-        lexer->result_symbol = INLINE_TOKEN;
+    if (valid_symbols[INLINE_TOKEN] || valid_symbols[INLINE_TOKEN_COMPOUND]) {
+        // 文法から考えて排反
+        if (valid_symbols[INLINE_TOKEN]) {
+            lexer->result_symbol = INLINE_TOKEN;
+        } else {
+            lexer->result_symbol = INLINE_TOKEN_COMPOUND;
+        }
         for (bool has_content = false;; has_content = true) {
             lexer->mark_end(lexer);
             switch(lexer->lookahead) {
                 case '}':
                 case '\\':
                 case '#':
-                case '|':
-                case '*':
                 case '%':
+                case '$':
                     return has_content;
+                case '*':
+                case '|':
+                    if (valid_symbols[INLINE_TOKEN]) {
+                        return false;
+                    } else {
+                        return has_content;
+                    }
+                case ';':
+                case '{':
                 case '\0':
                     return false;
                 default:

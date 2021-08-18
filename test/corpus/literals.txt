@@ -21,3 +21,109 @@ let x = 0xAB in
           (identifier)
           (literal_int)
           (literal_int))))))
+
+=======
+float
+=======
+
+let x = 1.23 in
+let x = .56 in
+0.
+
+---
+
+(source_file
+  (program_saty
+    (bind_stmt
+      (identifier)
+      (literal_float)
+      (bind_stmt
+        (identifier)
+        (literal_float)
+        (literal_float)))))
+
+=======
+length
+=======
+
+let x = 1.23pt in
+let x = 0pt in
+let x = 3cm in
+let x = .3cm in
+-1.23pt
+
+---
+
+(source_file
+  (program_saty
+    (bind_stmt
+      (identifier)
+      (literal_length)
+      (bind_stmt
+        (identifier)
+        (literal_length)
+        (bind_stmt
+          (identifier)
+          (literal_length)
+          (bind_stmt
+            (identifier)
+            (literal_length)
+            (literal_length)))))))
+
+=======
+string
+=======
+
+let x = `a` in
+let x = ``a`` in
+let x = ``a` `` in
+let x = ``a` ``# in
+let x = #``a` ``# in
+#` `#
+
+---
+
+(source_file
+  (program_saty
+    (bind_stmt
+      (identifier)
+      (literal_string)
+      (bind_stmt
+        (identifier)
+        (literal_string)
+        (bind_stmt
+          (identifier)
+          (literal_string)
+          (bind_stmt
+            (identifier)
+            (literal_string)
+            (bind_stmt
+              (identifier)
+              (literal_string)
+              (literal_string))))))))
+
+==============
+string_error
+==============
+
+let x = ``a`` `` in
+let x = ``a``` `` in
+#` `#
+
+---
+
+(source_file
+  (program_saty
+    (bind_stmt
+      (identifier)
+      (application
+        (literal_string)
+        (application_args
+          (literal_string))
+        (application_args
+          (identifier))
+        (ERROR
+          (UNEXPECTED '`'))
+        (application_args
+          (literal_string)))
+      (literal_string))))

@@ -27,6 +27,15 @@
 "{" @punctuation.bracket
 "}" @punctuation.bracket
 
+"(" @punctuation.bracket
+")" @punctuation.bracket
+
 (bind_stmt
   pattern: (identifier) @function
   )
+
+(application
+  function: (identifier) @function
+  )
+
+(inline_cmd_name) @function.macro
