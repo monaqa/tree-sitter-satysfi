@@ -52,6 +52,10 @@
             "named": true
           },
           {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -113,6 +117,10 @@
           },
           {
             "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
             "named": true
           },
           {
@@ -182,6 +190,10 @@
             "named": true
           },
           {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -243,6 +255,10 @@
           },
           {
             "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
             "named": true
           },
           {
@@ -316,6 +332,10 @@
             "named": true
           },
           {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -377,6 +397,10 @@
           },
           {
             "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
             "named": true
           },
           {
@@ -444,6 +468,10 @@
           "named": true
         },
         {
+          "type": "expr_with_mod",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -505,6 +533,10 @@
         },
         {
           "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "modvar",
           "named": true
         },
         {
@@ -579,6 +611,10 @@
             "named": true
           },
           {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -640,6 +676,10 @@
           },
           {
             "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
             "named": true
           },
           {
@@ -719,6 +759,10 @@
             "named": true
           },
           {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -780,6 +824,10 @@
           },
           {
             "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
             "named": true
           },
           {
@@ -860,6 +908,10 @@
             "named": true
           },
           {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -921,6 +973,10 @@
           },
           {
             "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
             "named": true
           },
           {
@@ -1084,6 +1140,10 @@
           "named": true
         },
         {
+          "type": "expr_with_mod",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -1145,6 +1205,10 @@
         },
         {
           "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "modvar",
           "named": true
         },
         {
@@ -1211,6 +1275,10 @@
           "named": true
         },
         {
+          "type": "expr_with_mod",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -1272,6 +1340,10 @@
         },
         {
           "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "modvar",
           "named": true
         },
         {
@@ -1391,6 +1463,10 @@
           "named": true
         },
         {
+          "type": "expr_with_mod",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -1452,6 +1528,10 @@
         },
         {
           "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "modvar",
           "named": true
         },
         {
@@ -1518,6 +1598,10 @@
           "named": true
         },
         {
+          "type": "expr_with_mod",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -1579,6 +1663,149 @@
         },
         {
           "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "modvar",
+          "named": true
+        },
+        {
+          "type": "record",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "unary_operator_expr",
+          "named": true
+        },
+        {
+          "type": "variant_constructor",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "expr_with_mod",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "application",
+          "named": true
+        },
+        {
+          "type": "assignment",
+          "named": true
+        },
+        {
+          "type": "binary_expr",
+          "named": true
+        },
+        {
+          "type": "binary_operator",
+          "named": true
+        },
+        {
+          "type": "bind_stmt",
+          "named": true
+        },
+        {
+          "type": "block_text",
+          "named": true
+        },
+        {
+          "type": "command_application",
+          "named": true
+        },
+        {
+          "type": "ctrl_if",
+          "named": true
+        },
+        {
+          "type": "ctrl_while",
+          "named": true
+        },
+        {
+          "type": "expr_with_mod",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "inline_text",
+          "named": true
+        },
+        {
+          "type": "inline_text_bullet_list",
+          "named": true
+        },
+        {
+          "type": "inline_text_embedding",
+          "named": true
+        },
+        {
+          "type": "inline_text_list",
+          "named": true
+        },
+        {
+          "type": "lambda",
+          "named": true
+        },
+        {
+          "type": "list",
+          "named": true
+        },
+        {
+          "type": "literal_bool",
+          "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
+          "named": true
+        },
+        {
+          "type": "literal_unit",
+          "named": true
+        },
+        {
+          "type": "match_expr",
+          "named": true
+        },
+        {
+          "type": "math_list",
+          "named": true
+        },
+        {
+          "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "module_name",
+          "named": true
+        },
+        {
+          "type": "modvar",
           "named": true
         },
         {
@@ -1694,6 +1921,14 @@
         },
         {
           "type": "inline_token",
+          "named": true
+        },
+        {
+          "type": "literal_string",
+          "named": true
+        },
+        {
+          "type": "math_text",
           "named": true
         }
       ]
@@ -1831,9 +2066,80 @@
   {
     "type": "lambda",
     "named": true,
-    "fields": {},
+    "fields": {
+      "arg": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "_",
+            "named": false
+          },
+          {
+            "type": "binary_operator",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "inline_text_embedding",
+            "named": true
+          },
+          {
+            "type": "literal_bool",
+            "named": true
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "literal_unit",
+            "named": true
+          },
+          {
+            "type": "pat_as",
+            "named": true
+          },
+          {
+            "type": "pat_list",
+            "named": true
+          },
+          {
+            "type": "pat_tuple",
+            "named": true
+          },
+          {
+            "type": "unary_operator",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
@@ -1870,6 +2176,10 @@
         },
         {
           "type": "ctrl_while",
+          "named": true
+        },
+        {
+          "type": "expr_with_mod",
           "named": true
         },
         {
@@ -1937,15 +2247,7 @@
           "named": true
         },
         {
-          "type": "pat_as",
-          "named": true
-        },
-        {
-          "type": "pat_list",
-          "named": true
-        },
-        {
-          "type": "pat_tuple",
+          "type": "modvar",
           "named": true
         },
         {
@@ -1954,10 +2256,6 @@
         },
         {
           "type": "tuple",
-          "named": true
-        },
-        {
-          "type": "unary_operator",
           "named": true
         },
         {
@@ -2104,6 +2402,10 @@
             "named": true
           },
           {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -2165,6 +2467,10 @@
           },
           {
             "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
             "named": true
           },
           {
@@ -2400,6 +2706,10 @@
             "named": true
           },
           {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -2461,6 +2771,10 @@
           },
           {
             "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
             "named": true
           },
           {
@@ -2686,6 +3000,10 @@
             "named": true
           },
           {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -2747,6 +3065,10 @@
           },
           {
             "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
             "named": true
           },
           {
@@ -2902,6 +3224,10 @@
             "named": true
           },
           {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -2963,6 +3289,10 @@
           },
           {
             "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
             "named": true
           },
           {
@@ -3128,6 +3458,10 @@
             "named": true
           },
           {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -3189,6 +3523,10 @@
           },
           {
             "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
             "named": true
           },
           {
@@ -3520,6 +3858,10 @@
             "named": true
           },
           {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -3581,6 +3923,10 @@
           },
           {
             "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
             "named": true
           },
           {
@@ -3811,6 +4157,10 @@
             "named": true
           },
           {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -3872,6 +4222,10 @@
           },
           {
             "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
             "named": true
           },
           {
@@ -4125,6 +4479,10 @@
           "named": true
         },
         {
+          "type": "expr_with_mod",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -4186,6 +4544,10 @@
         },
         {
           "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "modvar",
           "named": true
         },
         {
@@ -4262,6 +4624,10 @@
           "named": true
         },
         {
+          "type": "expr_with_mod",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -4327,6 +4693,10 @@
         },
         {
           "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "modvar",
           "named": true
         },
         {
@@ -4405,6 +4775,10 @@
             "named": true
           },
           {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
             "type": "identifier",
             "named": true
           },
@@ -4466,6 +4840,10 @@
           },
           {
             "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
             "named": true
           },
           {
@@ -4543,6 +4921,10 @@
           "named": true
         },
         {
+          "type": "expr_with_mod",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -4604,6 +4986,10 @@
         },
         {
           "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "modvar",
           "named": true
         },
         {
@@ -4725,6 +5111,10 @@
           "named": true
         },
         {
+          "type": "expr_with_mod",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -4790,6 +5180,10 @@
         },
         {
           "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "modvar",
           "named": true
         },
         {
@@ -4860,6 +5254,10 @@
           "named": true
         },
         {
+          "type": "expr_with_mod",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -4925,6 +5323,10 @@
         },
         {
           "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "modvar",
           "named": true
         },
         {
@@ -5091,6 +5493,61 @@
     "type": "module_name",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "module_stmt",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "module_name",
+            "named": true
+          }
+        ]
+      },
+      "sig": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "sig_stmt",
+            "named": true
+          }
+        ]
+      },
+      "struct": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "struct_stmt",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "modvar",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "module_name",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "open_stmt",
@@ -5304,6 +5761,10 @@
           "named": true
         },
         {
+          "type": "module_stmt",
+          "named": true
+        },
+        {
           "type": "open_stmt",
           "named": true
         },
@@ -5364,6 +5825,10 @@
           },
           {
             "type": "ctrl_while",
+            "named": true
+          },
+          {
+            "type": "expr_with_mod",
             "named": true
           },
           {
@@ -5428,6 +5893,10 @@
           },
           {
             "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
             "named": true
           },
           {
@@ -5525,6 +5994,10 @@
           "named": true
         },
         {
+          "type": "expr_with_mod",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -5586,6 +6059,10 @@
         },
         {
           "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "modvar",
           "named": true
         },
         {
@@ -5656,6 +6133,10 @@
           "named": true
         },
         {
+          "type": "expr_with_mod",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -5717,6 +6198,10 @@
         },
         {
           "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "modvar",
           "named": true
         },
         {
@@ -6005,6 +6490,10 @@
           "named": true
         },
         {
+          "type": "module_stmt",
+          "named": true
+        },
+        {
           "type": "open_stmt",
           "named": true
         },
@@ -6057,6 +6546,10 @@
         },
         {
           "type": "ctrl_while",
+          "named": true
+        },
+        {
+          "type": "expr_with_mod",
           "named": true
         },
         {
@@ -6121,6 +6614,10 @@
         },
         {
           "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "modvar",
           "named": true
         },
         {
@@ -6768,6 +7265,10 @@
           "named": true
         },
         {
+          "type": "expr_with_mod",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -6829,6 +7330,10 @@
         },
         {
           "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "modvar",
           "named": true
         },
         {
@@ -6903,6 +7408,10 @@
           "named": true
         },
         {
+          "type": "expr_with_mod",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -6964,6 +7473,10 @@
         },
         {
           "type": "math_text",
+          "named": true
+        },
+        {
+          "type": "modvar",
           "named": true
         },
         {
@@ -7127,10 +7640,6 @@
   },
   {
     "type": "[",
-    "named": false
-  },
-  {
-    "type": "\\",
     "named": false
   },
   {

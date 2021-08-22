@@ -38,7 +38,7 @@ module.exports = grammar({
     $._expr,
   ],
 
-  conflicts: $ => [
+  conflicts: ($) => [
     [$.binary_operator, $.unary_operator],
   ],
 
@@ -65,34 +65,50 @@ module.exports = grammar({
       seq(
         optional(field("stage", $.header_stage)),
         optional(field("headers", $.headers)),
-        optional(seq(field('preamble', $.preamble), "in")),
+        optional(seq(field("preamble", $.preamble), "in")),
         field("expr", $._expr),
       ),
 
-    program_satyh: ($) => seq(
+    program_satyh: ($) =>
+      seq(
         optional(field("stage", $.header_stage)),
         optional(field("headers", $.headers)),
-      field("preamble", $.preamble),
-    ),
+        field("preamble", $.preamble),
+      ),
 
     // }}}
 
     // header {{{
     headers: ($) => seq(repeat1($._header)),
 
-    _header: ($) => choice(
-      seq("@require:", repeat(/\s/), $.no_extras, field("require", $.pkgname), "\n"),
-      seq("@import:", repeat(/\s/), $.no_extras, field("import", $.pkgname), "\n"),
-    ),
-
-    header_stage: (_) => seq(
-      "@stage:", choice(
-        field("0", "0"),
-        field("1", "1"),
-        field("persistent", "persistent"),
+    _header: ($) =>
+      choice(
+        seq(
+          "@require:",
+          repeat(/\s/),
+          $.no_extras,
+          field("require", $.pkgname),
+          "\n",
+        ),
+        seq(
+          "@import:",
+          repeat(/\s/),
+          $.no_extras,
+          field("import", $.pkgname),
+          "\n",
+        ),
       ),
-      "\n",
-    ),
+
+    header_stage: (_) =>
+      seq(
+        "@stage:",
+        choice(
+          field("0", "0"),
+          field("1", "1"),
+          field("persistent", "persistent"),
+        ),
+        "\n",
+      ),
 
     pkgname: (_) => /[^\n\r]+/,
 
@@ -102,242 +118,332 @@ module.exports = grammar({
 
     preamble: ($) => repeat1($._statement),
 
-    _statement: ($) => prec.left(0, choice(
-      $.let_stmt,
-      $.let_rec_stmt,
-      $.let_inline_stmt,
-      $.let_block_stmt,
-      $.let_math_stmt,
-      $.let_mutable_stmt,
-      $.type_stmt,
-      // $.module_stmt,
-      $.open_stmt,
-    )),
+    _statement: ($) =>
+      prec.left(
+        0,
+        choice(
+          $.let_stmt,
+          $.let_rec_stmt,
+          $.let_inline_stmt,
+          $.let_block_stmt,
+          $.let_math_stmt,
+          $.let_mutable_stmt,
+          $.type_stmt,
+          $.module_stmt,
+          $.open_stmt,
+        ),
+      ),
 
-    let_stmt: ($) => seq(
-      "let", field("pattern", $._pattern),
-      optional($._let_stmt_argument),
-      "=", field('expr', $._expr),
-    ),
-
-    _let_stmt_argument: ($) => choice(
-      seq(":", field('signiture', $._type_expr), "|", repeat1($._arg)),
-      seq(":", field('signiture', $._type_expr)),
-      seq(optional("|"), repeat1($._arg)),
-    ),
-
-    let_rec_stmt: ($) => seq(
-      "let-rec", sep1("and", $.let_rec_inner)
-    ),
-
-    let_rec_inner: ($) => choice(
+    let_stmt: ($) =>
       seq(
+        "let",
         field("pattern", $._pattern),
-        optional($._let_rec_stmt_argument),
-        "=", field('expr', $._expr),
+        optional($._let_stmt_argument),
+        "=",
+        field("expr", $._expr),
       ),
-      seq(
-        field("pattern", $._pattern),
-        repeat(seq("|", field("arm", $.let_rec_matcharm)))
-      ),
-    ),
 
-    _let_rec_stmt_argument: ($) =>choice(
-      seq(":", field('signiture', $._type_expr), "|", repeat1($._arg)),
-      seq(":", field('signiture', $._type_expr)),
-      repeat1($._arg),
-    ) ,
-
-    let_rec_matcharm: ($) => seq( repeat($._arg), "=", field("expr", $._expr) ),
-
-    let_inline_stmt: ($) => choice(
-      seq(
-        "let-inline", field("ctx", $.identifier),
-        field("name", $.inline_cmd_name), repeat($._arg),
-          "=", field("expr", $._expr)
+    _let_stmt_argument: ($) =>
+      choice(
+        seq(":", field("signiture", $._type_expr), "|", repeat1($._arg)),
+        seq(":", field("signiture", $._type_expr)),
+        seq(optional("|"), repeat1($._arg)),
       ),
-      seq(
-        "let-inline",
-        field("name", $.inline_cmd_name), repeat(field("arg", $._pattern)),
-          "=", field("expr", $._expr)
-      ),
-    ),
 
-    let_block_stmt: ($) => choice(
+    let_rec_stmt: ($) =>
       seq(
-        "let-block", field("ctx", $.identifier),
-        field("name", $.block_cmd_name), repeat($._arg),
-          "=", field("expr", $._expr)
+        "let-rec",
+        sep1("and", $.let_rec_inner),
       ),
-      seq(
-        "let-block",
-        field("name", $.block_cmd_name), repeat(field("arg", $._pattern)),
-          "=", field("expr", $._expr)
-      ),
-    ),
 
-    let_math_stmt: ($) => seq(
+    let_rec_inner: ($) =>
+      choice(
+        seq(
+          field("pattern", $._pattern),
+          optional($._let_rec_stmt_argument),
+          "=",
+          field("expr", $._expr),
+        ),
+        seq(
+          field("pattern", $._pattern),
+          repeat(seq("|", field("arm", $.let_rec_matcharm))),
+        ),
+      ),
+
+    _let_rec_stmt_argument: ($) =>
+      choice(
+        seq(":", field("signiture", $._type_expr), "|", repeat1($._arg)),
+        seq(":", field("signiture", $._type_expr)),
+        repeat1($._arg),
+      ),
+
+    let_rec_matcharm: ($) => seq(repeat($._arg), "=", field("expr", $._expr)),
+
+    let_inline_stmt: ($) =>
+      choice(
+        seq(
+          "let-inline",
+          field("ctx", $.identifier),
+          field("name", $.inline_cmd_name),
+          repeat($._arg),
+          "=",
+          field("expr", $._expr),
+        ),
+        seq(
+          "let-inline",
+          field("name", $.inline_cmd_name),
+          repeat(field("arg", $._pattern)),
+          "=",
+          field("expr", $._expr),
+        ),
+      ),
+
+    let_block_stmt: ($) =>
+      choice(
+        seq(
+          "let-block",
+          field("ctx", $.identifier),
+          field("name", $.block_cmd_name),
+          repeat($._arg),
+          "=",
+          field("expr", $._expr),
+        ),
+        seq(
+          "let-block",
+          field("name", $.block_cmd_name),
+          repeat(field("arg", $._pattern)),
+          "=",
+          field("expr", $._expr),
+        ),
+      ),
+
+    let_math_stmt: ($) =>
+      seq(
         "let-math",
-        field("name", $.math_cmd_name), repeat($._arg),
-          "=", field("expr", $._expr)
-    ),
-
-    let_mutable_stmt: ($) => seq(
-      "let-mutable", field('name', $.identifier), "<-", field('expr', $._expr)
-    ),
-
-    type_stmt: ($) => seq(
-      "type", sep1("and", $.type_inner)
-    ),
-
-    type_inner: $ => choice(
-      seq(
-        repeat(field('param', $.type_param)), field('name', $.type_name), "=",
-        repeat1(seq("|", field('variant', $.type_variant))),
-        repeat(field('constraint', $.constraint))
+        field("name", $.math_cmd_name),
+        repeat($._arg),
+        "=",
+        field("expr", $._expr),
       ),
+
+    let_mutable_stmt: ($) =>
       seq(
-        repeat(field('param', $.type_param)), field('name', $.type_name), "=",
-        sep1("|", field('variant', $.type_variant)),
-        repeat(field('constraint', $.constraint))
+        "let-mutable",
+        field("name", $.identifier),
+        "<-",
+        field("expr", $._expr),
       ),
+
+    type_stmt: ($) =>
       seq(
-        repeat(field('param', $.type_param)), field('name', $.type_name), "=",
-        field('expr', $._type_expr),
-        repeat(field('constraint', $.constraint))
+        "type",
+        sep1("and", $.type_inner),
       ),
-    ),
 
-    type_variant: ($) => seq(
-      field('name', $.variant_name), optional(seq("of", field('expr', $._type_expr)))
-    ),
+    type_inner: ($) =>
+      choice(
+        seq(
+          repeat(field("param", $.type_param)),
+          field("name", $.type_name),
+          "=",
+          repeat1(seq("|", field("variant", $.type_variant))),
+          repeat(field("constraint", $.constraint)),
+        ),
+        seq(
+          repeat(field("param", $.type_param)),
+          field("name", $.type_name),
+          "=",
+          sep1("|", field("variant", $.type_variant)),
+          repeat(field("constraint", $.constraint)),
+        ),
+        seq(
+          repeat(field("param", $.type_param)),
+          field("name", $.type_name),
+          "=",
+          field("expr", $._type_expr),
+          repeat(field("constraint", $.constraint)),
+        ),
+      ),
 
-    open_stmt: ($) => seq( "open", $.module_name ),
+    type_variant: ($) =>
+      seq(
+        field("name", $.variant_name),
+        optional(seq("of", field("expr", $._type_expr))),
+      ),
 
-    _arg: ($) => choice(
-      field("arg", $._pattern),
-      seq("?:", field("optarg", $._pattern)),
-    ),
+    open_stmt: ($) => seq("open", $.module_name),
+
+    _arg: ($) =>
+      choice(
+        field("arg", $._pattern),
+        seq("?:", field("optarg", $._pattern)),
+      ),
 
     // }}}
 
     // module {{{
-    module_stmt: ($) => seq(
-      "module", field('name',$.module_name),
-      ":", field('sig', $.sig_stmt),
-      '=', field('struct', $.struct_stmt),
-    ),
-
-    sig_stmt: ($) => seq(
-      "sig", repeat($._sig_inner), "end"
-    ),
-
-    struct_stmt: ($) => seq(
-      "struct", repeat($._statement), "end"
-    ),
-
-    _sig_inner: $ => choice(
-      $.sig_type_stmt, $.sig_val_stmt, $.sig_direct_stmt,
-    ),
-
-    sig_type_stmt: ($) => seq(
-      "type", repeat(field('param', $.type_param)), field('name', $.identifier), repeat(field('constraint', $.constraint))
-    ),
-
-    sig_val_stmt: ($) => seq(
-      "val", choice(
-        field('name', $.identifier),
-        seq("(", field('name', $.binary_operator), ")"),
-        field('name', $.inline_cmd_name),
-        field('name', $.block_cmd_name),
+    module_stmt: ($) =>
+      seq(
+        "module",
+        field("name", $.module_name),
+        ":",
+        field("sig", $.sig_stmt),
+        "=",
+        field("struct", $.struct_stmt),
       ),
-      ":",
-      field("signature", $._type_expr),
-      repeat(field('constraint', $.constraint)),
-    ),
 
-    sig_direct_stmt: ($) => seq(
-      "direct", choice(
-        field('name', $.inline_cmd_name),
-        field('name', $.block_cmd_name),
+    sig_stmt: ($) =>
+      seq(
+        "sig",
+        repeat($._sig_inner),
+        "end",
       ),
-      ":",
-      field("signature", $._type_expr),
-      repeat(field('constraint', $.constraint)),
-    ),
+
+    struct_stmt: ($) =>
+      seq(
+        "struct",
+        repeat($._statement),
+        "end",
+      ),
+
+    _sig_inner: ($) =>
+      choice(
+        $.sig_type_stmt,
+        $.sig_val_stmt,
+        $.sig_direct_stmt,
+      ),
+
+    sig_type_stmt: ($) =>
+      seq(
+        "type",
+        repeat(field("param", $.type_param)),
+        field("name", $.identifier),
+        repeat(field("constraint", $.constraint)),
+      ),
+
+    sig_val_stmt: ($) =>
+      seq(
+        "val",
+        choice(
+          field("name", $.identifier),
+          seq("(", field("name", $.binary_operator), ")"),
+          field("name", $.inline_cmd_name),
+          field("name", $.block_cmd_name),
+        ),
+        ":",
+        field("signature", $._type_expr),
+        repeat(field("constraint", $.constraint)),
+      ),
+
+    sig_direct_stmt: ($) =>
+      seq(
+        "direct",
+        choice(
+          field("name", $.inline_cmd_name),
+          field("name", $.block_cmd_name),
+        ),
+        ":",
+        field("signature", $._type_expr),
+        repeat(field("constraint", $.constraint)),
+      ),
 
     // }}}
 
     // types {{{
-    _type_expr: $ => choice(
-      $.type_fun,
-      $.type_inline_cmd,
-      $.type_block_cmd,
-      $.type_math_cmd,
-      $.type_application,
-      $.type_record,
-      $.type_param,
-      $.type_name,
-      seq("(", $._type_expr, ")"),
-    ),
-
-    type_fun: ($) => prec.right(PREC.typefunc, seq(
+    _type_expr: ($) =>
       choice(
-        seq(field('optarg', $._type_expr), "?->"),
-        seq(field('arg', $._type_expr), "->"),
+        $.type_fun,
+        $.type_inline_cmd,
+        $.type_block_cmd,
+        $.type_math_cmd,
+        $.type_application,
+        $.type_record,
+        $.type_param,
+        $.type_name,
+        seq("(", $._type_expr, ")"),
       ),
-      field('return', $._type_expr)
-    )),
 
-    type_prod: ($) => prec.left(PREC.typeprod, seq(
-      $._type_expr, "*", $._type_expr
-    )),
+    type_fun: ($) =>
+      prec.right(
+        PREC.typefunc,
+        seq(
+          choice(
+            seq(field("optarg", $._type_expr), "?->"),
+            seq(field("arg", $._type_expr), "->"),
+          ),
+          field("return", $._type_expr),
+        ),
+      ),
 
-    type_inline_cmd: ($) => seq( $.type_list, "inline-cmd" ),
+    type_prod: ($) =>
+      prec.left(
+        PREC.typeprod,
+        seq(
+          $._type_expr,
+          "*",
+          $._type_expr,
+        ),
+      ),
 
-    type_block_cmd: ($) => seq( $.type_list, "block-cmd" ),
+    type_inline_cmd: ($) => seq($.type_list, "inline-cmd"),
 
-    type_math_cmd: ($) => seq( $.type_list, "math-cmd" ),
+    type_block_cmd: ($) => seq($.type_list, "block-cmd"),
 
-    type_list: ($) => seq( "[", sep(";", choice(
-      seq(field('optarg', $._type_expr), "?"),
-      seq(field('arg', $._type_expr)),
-    )), optional(";"), "]" ),
+    type_math_cmd: ($) => seq($.type_list, "math-cmd"),
 
-    type_record: ($) => seq("(|", sep(";", $.type_record_unit), optional(";"), "|)"),
+    type_list: ($) =>
+      seq(
+        "[",
+        sep(
+          ";",
+          choice(
+            seq(field("optarg", $._type_expr), "?"),
+            seq(field("arg", $._type_expr)),
+          ),
+        ),
+        optional(";"),
+        "]",
+      ),
+
+    type_record: ($) =>
+      seq("(|", sep(";", $.type_record_unit), optional(";"), "|)"),
 
     type_record_unit: ($) => seq($.identifier, ":", $._type_expr),
 
-    type_application: $ => prec.left(PREC.typeapplication, seq( $._type_expr, $._type_expr )),
+    type_application: ($) =>
+      prec.left(PREC.typeapplication, seq($._type_expr, $._type_expr)),
 
-    type_param: (_) => token.immediate( "'", /[a-z][-A-Za-z0-9]*/ ),
+    type_param: (_) => token.immediate(seq("'", /[a-z][-A-Za-z0-9]*/)),
 
     // type_name: ($) => choice($.identifier, $.modvar),
     type_name: ($) => $.identifier,
 
-    constraint: ($) => seq( "constraint", $.type_param, "::", $.type_record ),
+    constraint: ($) => seq("constraint", $.type_param, "::", $.type_record),
 
     // }}}
 
     // pattern {{{
-    pat_as: ($) => prec.left(0, seq( $._pat_cons, optional(seq("as", $.identifier )))),
+    pat_as: ($) =>
+      prec.left(0, seq($._pat_cons, optional(seq("as", $.identifier)))),
 
-    _pat_cons: ($) => choice(
-      seq($._pattern, "::", $.pat_as),
-      $.pat_variant,
-      $._pattern,
-    ),
+    _pat_cons: ($) =>
+      choice(
+        seq($._pattern, "::", $.pat_as),
+        $.pat_variant,
+        $._pattern,
+      ),
 
-    _pattern: ($) => choice(
-      $.pat_list,
-      seq("(", $.binary_operator ,")"),
-      seq("(", $.unary_operator ,")"),
-      seq("(", $.pat_as ,")"),
-      $.pat_tuple,
-      "_",
-      $.identifier,
-      $._literal,
-    ),
+    _pattern: ($) =>
+      choice(
+        $.pat_list,
+        seq("(", $.binary_operator, ")"),
+        seq("(", $.unary_operator, ")"),
+        seq("(", $.pat_as, ")"),
+        $.pat_tuple,
+        "_",
+        $.identifier,
+        $._literal,
+      ),
 
     pat_variant: ($) => seq($.variant_name, optional($._pattern)),
 
@@ -351,10 +457,6 @@ module.exports = grammar({
     _expr: ($) =>
       choice(
         $.match_expr,
-    //     $._expr_except_match,
-    //   ),
-    // 
-    // _expr_except_match: $ => choice(
         $.bind_stmt,
         $.ctrl_while,
         $.ctrl_if,
@@ -366,15 +468,27 @@ module.exports = grammar({
         $.command_application,
         $.variant_constructor,
         $._unary,
-    ),
+      ),
 
-    match_expr: ($) => prec.left(PREC.match, seq(
-      "match", field('expr', $._expr), "with", optional("|"), sep1("|", $.match_arm),
-    )),
+    match_expr: ($) =>
+      prec.left(
+        PREC.match,
+        seq(
+          "match",
+          field("expr", $._expr),
+          "with",
+          optional("|"),
+          sep1("|", $.match_arm),
+        ),
+      ),
 
-    match_arm: ($) => seq(
-      $.pat_as, optional($.match_guard), "->", $._expr,
-    ),
+    match_arm: ($) =>
+      seq(
+        $.pat_as,
+        optional($.match_guard),
+        "->",
+        $._expr,
+      ),
 
     match_guard: ($) => seq("when", $._expr),
 
@@ -395,9 +509,11 @@ module.exports = grammar({
 
     ctrl_if: ($) => seq("if", $._expr, "then", $._expr, "else", $._expr),
 
-    lambda: ($) => prec.right(PREC.lambda, seq("fun", repeat1($._pattern), "->", $._expr )),
+    lambda: ($) =>
+      prec.right(PREC.lambda, seq("fun", repeat1(field('arg', $._pattern)), "->", $._expr)),
 
-    assignment: ($) => prec.right(PREC.assign, seq( $.identifier, "<-", $._expr )),
+    assignment: ($) =>
+      prec.right(PREC.assign, seq($.identifier, "<-", $._expr)),
 
     binary_expr: ($) => {
       // [-+*/^&|=<>!:~'.?]
@@ -437,11 +553,10 @@ module.exports = grammar({
     binary_operator: (_) => "-",
 
     unary_operator_expr: ($) =>
-    choice(
-      prec.right(PREC.unary, seq( $.unary_operator, $._expr )),
-      prec.right(PREC.stage, seq( $.unary_prefix, $._expr )),
-    )
-    ,
+      choice(
+        prec.right(PREC.unary, seq($.unary_operator, $._expr)),
+        prec.right(PREC.stage, seq($.unary_prefix, $._expr)),
+      ),
 
     unary_operator: (_) => choice("-", "not"),
 
@@ -461,50 +576,57 @@ module.exports = grammar({
 
     _application_args_opt: ($) => seq("?:", $._application_args),
 
-    command_application: ($) => prec.left(PREC.application, seq("command", $.inline_cmd_name)),
+    command_application: ($) =>
+      prec.left(PREC.application, seq("command", $.inline_cmd_name)),
 
-    variant_constructor: ($) => prec.left(PREC.constructor, seq($.variant_name, optional($._unary))),
+    variant_constructor: ($) =>
+      prec.left(PREC.constructor, seq($.variant_name, optional($._unary))),
 
     // }}}
 
     // unary {{{
     _unary: ($) =>
-    seq(
-      choice(
-        $.block_text,
-        $.inline_text,
-        $.inline_text_list,
-        $.inline_text_bullet_list,
-        $.math_text,
-        $.math_list,
-        $.record,
-        $.list,
-        $.tuple,
-        seq("(", $.binary_operator, ")"),
-        seq("(", $._expr, ")"),
-        // $.expr_with_mod,
-        // $.modvar,
-        $._literal,
-        $.identifier,
+      seq(
+        choice(
+          $.block_text,
+          $.inline_text,
+          $.inline_text_list,
+          $.inline_text_bullet_list,
+          $.math_text,
+          $.math_list,
+          $.record,
+          $.list,
+          $.tuple,
+          seq("(", $.binary_operator, ")"),
+          seq("(", $._expr, ")"),
+          $.expr_with_mod,
+          $.modvar,
+          $._literal,
+          $.identifier,
+        ),
       ),
-    ),
 
-    record: ($) => choice(
-      seq( "(|", $._unary, "with", $._record_inner, "|)" ),
-      seq( "(|", optional($._record_inner), "|)" ),
-    ),
+    record: ($) =>
+      choice(
+        seq("(|", $._unary, "with", $._record_inner, "|)"),
+        seq("(|", optional($._record_inner), "|)"),
+      ),
 
-    _record_inner: $ => seq(sep1(";", $.record_unit), optional(";")),
+    _record_inner: ($) => seq(sep1(";", $.record_unit), optional(";")),
 
     record_unit: ($) => seq($.identifier, "=", $._expr),
 
-    list: ($) => choice(
-      seq("[", sep(";", $._expr), optional(";"), "]"),
-    ),
+    list: ($) =>
+      choice(
+        seq("[", sep(";", $._expr), optional(";"), "]"),
+      ),
 
-    tuple: ($) => seq(
-      "(", sep2(",", $._expr), ")"
-    ),
+    tuple: ($) =>
+      seq(
+        "(",
+        sep2(",", $._expr),
+        ")",
+      ),
 
     expr_with_mod: ($) => seq($.module_name, ".(", $._expr, ")"),
 
@@ -579,8 +701,10 @@ module.exports = grammar({
 
     inline_cmd_name: (_) =>
       token.immediate(
-        "\\",
-        CMD_NAME,
+        seq(
+          "\\",
+          CMD_NAME,
+        ),
       ),
 
     block_cmd: ($) =>
@@ -592,7 +716,7 @@ module.exports = grammar({
         choice(repeat1(field("arg", $.cmd_text_arg)), ";"),
       ),
 
-    block_cmd_name: (_) => token.immediate( "+", CMD_NAME ),
+    block_cmd_name: (_) => token.immediate(seq("+", CMD_NAME)),
 
     cmd_expr_arg: ($) => $._cmd_expr_arg_inner,
     cmd_expr_option: ($) => seq("?:", $._cmd_expr_arg_inner),
@@ -604,20 +728,25 @@ module.exports = grammar({
     _cmd_expr_arg_inner: ($) => seq("(", $._expr, ")"),
 
     math_cmd: ($) =>
-      prec.left(1, seq(
-        field("name", $.math_cmd_name),
-        repeat(
-          choice(
-            field("arg", $.math_cmd_expr_arg),
-            field("opt", $.math_cmd_expr_option),
+      prec.left(
+        1,
+        seq(
+          field("name", $.math_cmd_name),
+          repeat(
+            choice(
+              field("arg", $.math_cmd_expr_arg),
+              field("opt", $.math_cmd_expr_option),
+            ),
           ),
         ),
-      )),
+      ),
 
     math_cmd_name: (_) =>
       token.immediate(
-        "\\",
-        CMD_NAME
+        seq(
+          "\\",
+          CMD_NAME,
+        ),
       ),
 
     math_cmd_expr_arg: ($) => seq($._math_cmd_expr_arg_inner),
@@ -663,6 +792,8 @@ module.exports = grammar({
       repeat1(choice(
         $.inline_literal_escaped,
         $.inline_text_embedding,
+        $.math_text,
+        $.literal_string,
         $.inline_cmd,
         $.inline_token,
       )),
@@ -697,7 +828,8 @@ module.exports = grammar({
         "\\ ",
       ),
 
-    inline_text_embedding: ($) => seq($._numbersign_after_nospace, $.identifier, ";"),
+    inline_text_embedding: ($) =>
+      seq($._numbersign_after_nospace, $.identifier, ";"),
 
     // }}}
 
@@ -710,7 +842,8 @@ module.exports = grammar({
         $.block_text_embedding,
       )),
 
-    block_text_embedding: ($) => seq($._numbersign_after_nospace, $.identifier, ";"),
+    block_text_embedding: ($) =>
+      seq($._numbersign_after_nospace, $.identifier, ";"),
 
     // }}}
 
@@ -726,12 +859,23 @@ module.exports = grammar({
     math: ($) => prec.left(0, repeat1(choice($.math_token, $.math_unary))),
 
     math_token: ($) =>
-      prec.left(0, choice(
-        seq($.math_unary, field('sup', $._math_sup), field('sub', $._math_sub)),
-        seq($.math_unary, field('sub', $._math_sub), field('sup', $._math_sup)),
-        seq($.math_unary, field('sup', $._math_sup)),
-        seq($.math_unary, field('sub', $._math_sub)),
-      )),
+      prec.left(
+        0,
+        choice(
+          seq(
+            $.math_unary,
+            field("sup", $._math_sup),
+            field("sub", $._math_sub),
+          ),
+          seq(
+            $.math_unary,
+            field("sub", $._math_sub),
+            field("sup", $._math_sup),
+          ),
+          seq($.math_unary, field("sup", $._math_sup)),
+          seq($.math_unary, field("sub", $._math_sub)),
+        ),
+      ),
 
     _math_sup: ($) => seq("^", $._math_group),
 
@@ -758,13 +902,13 @@ module.exports = grammar({
 });
 
 function sep(delimiter, rule) {
-  return optional(sep1(delimiter, rule))
+  return optional(sep1(delimiter, rule));
 }
 
 function sep1(delimiter, rule) {
-  return seq(rule, repeat(seq(delimiter, rule)))
+  return seq(rule, repeat(seq(delimiter, rule)));
 }
 
 function sep2(delimiter, rule) {
-  return seq(rule, repeat1(seq(delimiter, rule)))
+  return seq(rule, repeat1(seq(delimiter, rule)));
 }

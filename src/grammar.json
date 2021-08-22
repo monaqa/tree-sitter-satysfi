@@ -307,6 +307,10 @@
           },
           {
             "type": "SYMBOL",
+            "name": "module_stmt"
+          },
+          {
+            "type": "SYMBOL",
             "name": "open_stmt"
           }
         ]
@@ -1815,8 +1819,17 @@
     "type_param": {
       "type": "IMMEDIATE_TOKEN",
       "content": {
-        "type": "STRING",
-        "value": "'"
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "'"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[a-z][-A-Za-z0-9]*"
+          }
+        ]
       }
     },
     "type_name": {
@@ -2363,8 +2376,12 @@
           {
             "type": "REPEAT1",
             "content": {
-              "type": "SYMBOL",
-              "name": "_pattern"
+              "type": "FIELD",
+              "name": "arg",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_pattern"
+              }
             }
           },
           {
@@ -3179,6 +3196,14 @@
             },
             {
               "type": "SYMBOL",
+              "name": "expr_with_mod"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "modvar"
+            },
+            {
+              "type": "SYMBOL",
               "name": "_literal"
             },
             {
@@ -3815,8 +3840,17 @@
     "inline_cmd_name": {
       "type": "IMMEDIATE_TOKEN",
       "content": {
-        "type": "STRING",
-        "value": "\\"
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "\\"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[A-Za-z][-A-Za-z0-9]*"
+          }
+        ]
       }
     },
     "block_cmd": {
@@ -3879,8 +3913,17 @@
     "block_cmd_name": {
       "type": "IMMEDIATE_TOKEN",
       "content": {
-        "type": "STRING",
-        "value": "+"
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "+"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[A-Za-z][-A-Za-z0-9]*"
+          }
+        ]
       }
     },
     "cmd_expr_arg": {
@@ -4016,8 +4059,17 @@
     "math_cmd_name": {
       "type": "IMMEDIATE_TOKEN",
       "content": {
-        "type": "STRING",
-        "value": "\\"
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "\\"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[A-Za-z][-A-Za-z0-9]*"
+          }
+        ]
       }
     },
     "math_cmd_expr_arg": {
@@ -4270,6 +4322,14 @@
           {
             "type": "SYMBOL",
             "name": "inline_text_embedding"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "math_text"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "literal_string"
           },
           {
             "type": "SYMBOL",

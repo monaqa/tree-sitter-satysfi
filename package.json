@@ -16,7 +16,7 @@
   },
   "tree-sitter": [{
     "scope": "source.satysfi",
-    "file-types": ["saty"],
+    "file-types": ["saty", "satyh", "satyg"],
     "injection-regex": "satysfi"
   }]
 }
