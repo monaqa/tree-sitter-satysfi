@@ -7,7 +7,6 @@ enum TokenType {
   INLINE_TOKEN,
   INLINE_TOKEN_COMPOUND,
   NUMBERSIGN_AFTER_NOSPACE,
-  NO_EXTRAS,
   DUMMY,
 };
 
@@ -23,24 +22,23 @@ static void advance(TSLexer *lexer) {
 
 bool tree_sitter_satysfi_external_scanner_scan(void *payload, TSLexer *lexer,
                                             const bool *valid_symbols) {
-    if (valid_symbols[NO_EXTRAS]) {
-        lexer->result_symbol = NO_EXTRAS;
-        if (iswspace(lexer->lookahead) || lexer->lookahead == '#') {
-            return false;
-        } else {
-            return true;
-        }
-    }
+    // if (valid_symbols[NO_EXTRAS]) {
+    //     lexer->result_symbol = NO_EXTRAS;
+    //     if (iswspace(lexer->lookahead) || lexer->lookahead == '#') {
+    //         return false;
+    //     } else {
+    //         return true;
+    //     }
+    // }
 
     if (valid_symbols[NUMBERSIGN_AFTER_NOSPACE] && lexer->lookahead == '#') {
-        advance(lexer);
         if ((lexer->lookahead >= 'a' && lexer->lookahead <= 'z')
                 || (lexer->lookahead >= 'A' && lexer->lookahead <= 'Z')) {
             lexer->result_symbol = NUMBERSIGN_AFTER_NOSPACE;
+            advance(lexer);
             lexer->mark_end(lexer);
             return true;
         }
-        return false;
     }
 
     if (valid_symbols[LITERAL_STRING]

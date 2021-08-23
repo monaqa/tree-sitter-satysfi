@@ -50,14 +50,14 @@ module.exports = grammar({
     $._inline_token_compound,
     // 空白やコメントが入らないことを保証するが、 Lexer は進めない。
     $._numbersign_after_nospace,
-    $.no_extras,
+    // $.no_extras,
     // 決してマッチしないダミーパターン。
     $._dummy,
   ],
 
   rules: {
     // program {{{
-    source_file: ($) => $.program_saty,
+    source_file: ($) => choice($.program_saty, $.program_satyh),
 
     comment: (_) => token(seq("%", /.*/)),
 
@@ -86,14 +86,14 @@ module.exports = grammar({
         seq(
           "@require:",
           repeat(/\s/),
-          $.no_extras,
+          // $.no_extras,
           field("require", $.pkgname),
           "\n",
         ),
         seq(
           "@import:",
           repeat(/\s/),
-          $.no_extras,
+          // $.no_extras,
           field("import", $.pkgname),
           "\n",
         ),

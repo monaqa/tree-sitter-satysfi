@@ -1887,16 +1887,6 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "no_extras",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -5950,6 +5940,42 @@
     }
   },
   {
+    "type": "program_satyh",
+    "named": true,
+    "fields": {
+      "headers": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "headers",
+            "named": true
+          }
+        ]
+      },
+      "preamble": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "preamble",
+            "named": true
+          }
+        ]
+      },
+      "stage": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "header_stage",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "record",
     "named": true,
     "fields": {},
@@ -6452,6 +6478,10 @@
       "types": [
         {
           "type": "program_saty",
+          "named": true
+        },
+        {
+          "type": "program_satyh",
           "named": true
         }
       ]
@@ -7829,10 +7859,6 @@
   {
     "type": "module",
     "named": false
-  },
-  {
-    "type": "no_extras",
-    "named": true
   },
   {
     "type": "not",

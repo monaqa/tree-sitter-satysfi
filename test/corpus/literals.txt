@@ -2,128 +2,90 @@
 integer
 =======
 
-let x = 123 in
-let x = 0x12 in
-let x = 0xAB in
-0
+let _ = 123
+let _ = 0x12
+let _ = 0xAB
 
 ---
 
 (source_file
-  (program_saty
-    (bind_stmt
-      (identifier)
-      (literal_int)
-      (bind_stmt
-        (identifier)
-        (literal_int)
-        (bind_stmt
-          (identifier)
-          (literal_int)
-          (literal_int))))))
+  (program_satyh
+    (preamble
+      (let_stmt
+        (literal_int))
+      (let_stmt
+        (literal_int))
+      (let_stmt
+        (literal_int)))))
 
 =======
 float
 =======
 
-let x = 1.23 in
-let x = .56 in
-0.
+let _ = 1.23
+let _ = .56
+let _ = 0.
 
 ---
 
 (source_file
-  (program_saty
-    (bind_stmt
-      (identifier)
-      (literal_float)
-      (bind_stmt
-        (identifier)
-        (literal_float)
+  (program_satyh
+    (preamble
+      (let_stmt
+        (literal_float))
+      (let_stmt
+        (literal_float))
+      (let_stmt
         (literal_float)))))
 
 =======
 length
 =======
 
-let x = 1.23pt in
-let x = 0pt in
-let x = 3cm in
-let x = .3cm in
--1.23pt
+let _ = 1.23pt
+let _ = 0pt
+let _ = 3cm
+let _ = .3cm
+let _ = -1.23pt
 
 ---
 
 (source_file
-  (program_saty
-    (bind_stmt
-      (identifier)
-      (literal_length)
-      (bind_stmt
-        (identifier)
-        (literal_length)
-        (bind_stmt
-          (identifier)
-          (literal_length)
-          (bind_stmt
-            (identifier)
-            (literal_length)
-            (literal_length)))))))
+  (program_satyh
+    (preamble
+      (let_stmt
+        (literal_length))
+      (let_stmt
+        (literal_length))
+      (let_stmt
+        (literal_length))
+      (let_stmt
+        (literal_length))
+      (let_stmt
+        (literal_length)))))
 
 =======
 string
 =======
 
-let x = `a` in
-let x = ``a`` in
-let x = ``a` `` in
-let x = ``a` ``# in
-let x = #``a` ``# in
-#` `#
+let _ = `a`
+let _ = ``a``
+let _ = ``a` ``
+let _ = ``a` ``#
+let _ = #``a` ``#
 
 ---
 
 (source_file
-  (program_saty
-    (bind_stmt
-      (identifier)
-      (literal_string)
-      (bind_stmt
-        (identifier)
-        (literal_string)
-        (bind_stmt
-          (identifier)
-          (literal_string)
-          (bind_stmt
-            (identifier)
-            (literal_string)
-            (bind_stmt
-              (identifier)
-              (literal_string)
-              (literal_string))))))))
-
-==============
-string_error
-==============
-
-let x = ``a`` `` in
-let x = ``a``` `` in
-#` `#
-
----
-
-(source_file
-  (program_saty
-    (bind_stmt
-      (identifier)
-      (application
-        (literal_string)
-        (application_args
-          (literal_string))
-        (application_args
-          (identifier))
-        (ERROR
-          (UNEXPECTED '`'))
-        (application_args
-          (literal_string)))
-      (literal_string))))
+  (program_satyh
+    (preamble
+      (let_stmt
+        (literal_string))
+      (let_stmt
+        (literal_string))
+      (let_stmt
+        (literal_string))
+      (let_stmt
+        (literal_string))
+      (let_stmt
+        (literal_string)))))

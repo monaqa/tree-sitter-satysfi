@@ -3,8 +3,17 @@
   "word": "identifier",
   "rules": {
     "source_file": {
-      "type": "SYMBOL",
-      "name": "program_saty"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "program_saty"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "program_satyh"
+        }
+      ]
     },
     "comment": {
       "type": "TOKEN",
@@ -167,10 +176,6 @@
               }
             },
             {
-              "type": "SYMBOL",
-              "name": "no_extras"
-            },
-            {
               "type": "FIELD",
               "name": "require",
               "content": {
@@ -197,10 +202,6 @@
                 "type": "PATTERN",
                 "value": "\\s"
               }
-            },
-            {
-              "type": "SYMBOL",
-              "name": "no_extras"
             },
             {
               "type": "FIELD",
@@ -4854,10 +4855,6 @@
     {
       "type": "SYMBOL",
       "name": "_numbersign_after_nospace"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "no_extras"
     },
     {
       "type": "SYMBOL",
