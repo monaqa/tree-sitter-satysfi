@@ -8,7 +8,6 @@
  "do"
  "else"
  "end"
- "false"
  "fun"
  "if"
  "in"
@@ -28,7 +27,6 @@
  "sig"
  "struct"
  "then"
- "true"
  "type"
  "val"
  "when"
@@ -38,6 +36,11 @@
  "@require:"
  "@import:"
 ] @keyword
+
+[
+ "true"
+ "false"
+] @constant.builtin
 
 ;; types
 

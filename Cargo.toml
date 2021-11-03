@@ -1,10 +1,10 @@
 [package]
-name = "tree-sitter-YOUR-LANGUAGE-NAME"
-description = "YOUR-LANGUAGE-NAME grammar for the tree-sitter parsing library"
+name = "tree_sitter_satysfi"
+description = "SATySFi grammar for the tree-sitter parsing library"
 version = "0.0.1"
-keywords = ["incremental", "parsing", "YOUR-LANGUAGE-NAME"]
+keywords = ["incremental", "parsing", "satysfi"]
 categories = ["parsing", "text-editors"]
-repository = "https://github.com/tree-sitter/tree-sitter-YOUR-LANGUAGE-NAME"
+repository = "https://github.com/monaqa/tree-sitter-satysfi"
 edition = "2018"
 license = "MIT"
 
@@ -19,8 +19,14 @@ include = [
 [lib]
 path = "bindings/rust/lib.rs"
 
+[[bin]]
+name = "tree-sitter-satysfi"
+path = "bindings/rust/main.rs"
+
 [dependencies]
-tree-sitter = "~0.20.0"
+anyhow = "1.0.43"
+structopt = "0.3.22"
+tree-sitter = "*"
 
 [build-dependencies]
 cc = "1.0"

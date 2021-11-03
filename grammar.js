@@ -40,6 +40,7 @@ module.exports = grammar({
 
   conflicts: ($) => [
     [$.binary_operator, $.unary_operator],
+    [$.record_member, $.inline_text_embedding, $.block_text_embedding, $.math_embedding],
   ],
 
   externals: ($) => [
@@ -415,8 +416,8 @@ module.exports = grammar({
 
     type_param: (_) => token.immediate(seq("'", /[a-z][-A-Za-z0-9]*/)),
 
-    // type_name: ($) => choice($.identifier, $.modvar),
-    type_name: ($) => $.identifier,
+    type_name: ($) => choice($.identifier, $.modvar),
+    // type_name: ($) => $.identifier,
 
     constraint: ($) => seq("constraint", $.type_param, "::", $.type_record),
 
@@ -467,6 +468,7 @@ module.exports = grammar({
         $.application,
         $.command_application,
         $.variant_constructor,
+        $.record_member,
         $._unary,
       ),
 
@@ -572,7 +574,7 @@ module.exports = grammar({
       ),
 
     // TODO: 本当は unary ではない
-    _application_args: ($) => choice($.variant_constructor, $._unary),
+    _application_args: ($) => choice($.variant_constructor, $.record_member, $._unary),
 
     _application_args_opt: ($) => seq("?:", $._application_args),
 
@@ -581,6 +583,9 @@ module.exports = grammar({
 
     variant_constructor: ($) =>
       prec.left(PREC.constructor, seq($.variant_name, optional($._unary))),
+
+    record_member: $ =>
+      prec.left(PREC.recordmember, seq($._unary, "#", $.identifier)),
 
     // }}}
 

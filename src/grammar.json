@@ -1834,8 +1834,17 @@
       }
     },
     "type_name": {
-      "type": "SYMBOL",
-      "name": "identifier"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "modvar"
+        }
+      ]
     },
     "constraint": {
       "type": "SEQ",
@@ -2161,6 +2170,10 @@
         {
           "type": "SYMBOL",
           "name": "variant_constructor"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "record_member"
         },
         {
           "type": "SYMBOL",
@@ -3060,6 +3073,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "record_member"
+        },
+        {
+          "type": "SYMBOL",
           "name": "_unary"
         }
       ]
@@ -3115,6 +3132,27 @@
                 "type": "BLANK"
               }
             ]
+          }
+        ]
+      }
+    },
+    "record_member": {
+      "type": "PREC_LEFT",
+      "value": 13,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_unary"
+          },
+          {
+            "type": "STRING",
+            "value": "#"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "identifier"
           }
         ]
       }
@@ -4836,6 +4874,12 @@
     [
       "binary_operator",
       "unary_operator"
+    ],
+    [
+      "record_member",
+      "inline_text_embedding",
+      "block_text_embedding",
+      "math_embedding"
     ]
   ],
   "precedences": [],
