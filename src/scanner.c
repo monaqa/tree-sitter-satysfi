@@ -3,11 +3,11 @@
 #include <wctype.h>
 
 enum TokenType {
-  LITERAL_STRING,
-  INLINE_TOKEN,
-  INLINE_TOKEN_COMPOUND,
-  NUMBERSIGN_AFTER_NOSPACE,
-  DUMMY,
+    LITERAL_STRING,
+    INLINE_TOKEN,
+    INLINE_TOKEN_COMPOUND,
+    NUMBERSIGN_AFTER_NOSPACE,
+    DUMMY,
 };
 
 void *tree_sitter_satysfi_external_scanner_create() { return NULL; }
@@ -17,11 +17,11 @@ unsigned tree_sitter_satysfi_external_scanner_serialize(void *p, char *buffer) {
 void tree_sitter_satysfi_external_scanner_deserialize(void *p, const char *b, unsigned n) {}
 
 static void advance(TSLexer *lexer) {
-  lexer->advance(lexer, false);
+    lexer->advance(lexer, false);
 }
 
 bool tree_sitter_satysfi_external_scanner_scan(void *payload, TSLexer *lexer,
-                                            const bool *valid_symbols) {
+        const bool *valid_symbols) {
     // if (valid_symbols[NO_EXTRAS]) {
     //     lexer->result_symbol = NO_EXTRAS;
     //     if (iswspace(lexer->lookahead) || lexer->lookahead == '#') {
@@ -31,15 +31,15 @@ bool tree_sitter_satysfi_external_scanner_scan(void *payload, TSLexer *lexer,
     //     }
     // }
 
-    if (valid_symbols[NUMBERSIGN_AFTER_NOSPACE] && lexer->lookahead == '#') {
-        if ((lexer->lookahead >= 'a' && lexer->lookahead <= 'z')
-                || (lexer->lookahead >= 'A' && lexer->lookahead <= 'Z')) {
-            lexer->result_symbol = NUMBERSIGN_AFTER_NOSPACE;
-            advance(lexer);
-            lexer->mark_end(lexer);
-            return true;
-        }
-    }
+    // if (valid_symbols[NUMBERSIGN_AFTER_NOSPACE] && lexer->lookahead == '#') {
+    //     if ((lexer->lookahead >= 'a' && lexer->lookahead <= 'z')
+    //             || (lexer->lookahead >= 'A' && lexer->lookahead <= 'Z')) {
+    //         lexer->result_symbol = NUMBERSIGN_AFTER_NOSPACE;
+    //         advance(lexer);
+    //         lexer->mark_end(lexer);
+    //         return true;
+    //     }
+    // }
 
     if (valid_symbols[LITERAL_STRING]
             && (lexer->lookahead == '#' || lexer->lookahead == '`')) {
