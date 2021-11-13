@@ -141,6 +141,10 @@
       "required": true,
       "types": [
         {
+          "type": "constructor_branch",
+          "named": true
+        },
+        {
           "type": "type",
           "named": true
         },
@@ -565,6 +569,25 @@
         },
         {
           "type": "vertical",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "constructor_branch",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "variant_name",
           "named": true
         }
       ]
