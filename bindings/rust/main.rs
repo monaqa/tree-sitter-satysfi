@@ -24,17 +24,17 @@ fn main() -> Result<()> {
     let node = tree.root_node();
     let mut cursor = node.walk();
 
-    let query_sexp = std::fs::read_to_string("queries/highlights.scm")?;
-    let query = Query::new(language_satysfi, &query_sexp)?;
-    let cap_names = query.capture_names();
-    let mut qmatch = QueryCursor::new();
-    // この第3引数の text_callback ってなに？？ predicate と関係ありそうだけど
-    for m in qmatch.matches(&query, node, |_| &[]) {
-        println!("{:?}", m);
-        for cap in m.captures {
-            println!("{}", cap_names[cap.index as usize]);
-        }
-    }
+    // let query_sexp = std::fs::read_to_string("queries/highlights.scm")?;
+    // let query = Query::new(language_satysfi, &query_sexp)?;
+    // let cap_names = query.capture_names();
+    // let mut qmatch = QueryCursor::new();
+    // // この第3引数の text_callback ってなに？？ predicate と関係ありそうだけど
+    // for m in qmatch.matches(&query, node, |_| &[]) {
+    //     println!("{:?}", m);
+    //     for cap in m.captures {
+    //         println!("{}", cap_names[cap.index as usize]);
+    //     }
+    // }
 
     let cst = Cst::from_cursor(&mut cursor, &text);
 

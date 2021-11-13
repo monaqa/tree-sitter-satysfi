@@ -22,6 +22,26 @@ const PREC = {
 
 };
 
+// [-+*/^&|=<>!:~'.?]
+const OPERATOR_PREC = [
+  [PREC.and, /&[-+*/^&|=<>!:~'.?]+/],
+  [PREC.or, /\|[-+*/^&|=<>!:~'.?]+/],
+  [PREC.comparative, /=[-+*/^&|=<>!:~'.?]+/],
+  // <- は許されない
+  [PREC.comparative, /<[+*/^&|=<>!:~'.?]?/],
+  [PREC.comparative, /<[-+*/^&|=<>!:~'.?]{2,}/],
+  [PREC.comparative, />[+*/^&|=<>!:~'.?]*/],
+  [PREC.concat, /\^[-+*/^&|=<>!:~'.?]*/],
+  [PREC.concat, "::"],
+  [PREC.additive, /\+[-+*/^&|=<>!:~'.?]*/],
+  // -> は許されない
+  [PREC.subtractive, /-[+*/^&|=<!:~'.?]?/],
+  [PREC.subtractive, /-[-+*/^&|=<>!:~'.?]{2,}/],
+  [PREC.multiplicative, /\*[-+*/^&|=<>!:~'.?]*/],
+  [PREC.divisive, /\/[-+*/^&|=<>!:~'.?]*/],
+  [PREC.divisive, "mod"],
+];
+
 const INLINE_CMD_NAME = /\\([A-Z][-A-Za-z0-9]*\.)*[A-Za-z][-A-Za-z0-9]*/;
 const BLOCK_CMD_NAME = /\+([A-Z][-A-Za-z0-9]*\.)*[A-Za-z][-A-Za-z0-9]*/;
 const VARIABLE_NAME = /[a-z][-A-Za-z0-9]*/;
@@ -32,11 +52,18 @@ const ROW_VARIABLE = /'?[a-z][-A-Za-z0-9]*/;
 module.exports = grammar({
   name: "satysfi",
 
-  // extras: ($) => [/\s/, $.comment],
+  extras: ($) => [/\s/, $.comment],
 
   // word: ($) => $.var_name,
 
-  supertype: ($) => [],
+  supertype: ($) => [
+    $._module,
+    $._binding,
+    $._signature,
+    $._declaration,
+    $._expr,
+    $._pattern,
+  ],
 
   conflicts: ($) => [],
 
@@ -54,15 +81,18 @@ module.exports = grammar({
   ],
 
   rules: {
+
     source_file: ($) =>
       seq(
         optional($.headers),
         "module",
         $.module_name,
-        optional(seq(":>", $.signature)),
+        optional(seq(":>", $._signature)),
         "=",
-        $.module,
+        $._module,
       ),
+
+    comment: (_) => token(seq("%", /.*/)),
 
     //$1. header
     headers: ($) => seq(repeat1($._header)),
@@ -99,37 +129,60 @@ module.exports = grammar({
     pkgname: (_) => /[^\n\r]+/,
 
     //$1. module expression
-    module: ($) =>
+    _module: ($) =>
       choice(
-        seq("(", $.module, ")"),
+        seq("(", $._module, ")"),
+        $.module_path,
+        $.module_functor_abstraction,
+        $.module_functor_application,
+        $.module_structure,
+        $.module_coerction,
+      ),
+
+    module_path: $ => 
         repeat1_with_delim($.module_name, "."),
-        seq("fun", "(", $.module_name, ":", $.signature, ")", "->", $.module),
+    module_functor_abstraction: $ =>
+        seq("fun", "(", $.module_name, ":", $._signature, ")", "->", $._module),
+    module_functor_application: $ => 
         seq(
           repeat1_with_delim($.module_name, "."),
           repeat1_with_delim($.module_name, "."),
         ),
-        seq("struct", repeat($.binding), "end"),
-        seq(repeat1_with_delim($.module_name, "."), ":>", $.signature),
-      ),
+    module_structure: $ =>
+        seq("struct", repeat($._binding), "end"),
+    module_coerction: $ =>
+        seq(repeat1_with_delim($.module_name, "."), ":>", $._signature),
+
 
     module_name: (_) => MODULE_NAME,
 
-    binding: ($) =>
+    _binding: ($) =>
       choice(
-        seq("val", $.bind_val),
-        seq("type", $.bind_type),
+        $.bind_val,
+        $.bind_type,
+        $.bind_module,
+        $.bind_signature,
+        $.bind_include,
+      ),
+
+    bind_val: $ => 
+        seq("val", $._bind_val),
+    bind_type: $ =>
+        seq("type", $._bind_type),
+    bind_module: $ =>
         seq(
           "module",
           $.module_name,
-          optional(seq(":>", $.signature)),
+          optional(seq(":>", $._signature)),
           "=",
-          $.module,
+          $._module,
         ),
-        seq("signature", $.module_name, "=", $.signature),
-        seq("include", $.module),
-      ),
+    bind_signature: $ =>
+        seq("signature", $.module_name, "=", $._signature),
+    bind_include: $ =>
+        seq("include", $._module),
 
-    bind_val: ($) =>
+    _bind_val: ($) =>
       choice(
         $.bind_val_single,
         seq("rec", repeat1_with_delim($.bind_val_single, "and")),
@@ -142,7 +195,7 @@ module.exports = grammar({
           optional($.quant),
           repeat($.bind_val_parameter),
           "=",
-          $.expr,
+          $._expr,
         ),
         seq(
           "math",
@@ -150,7 +203,7 @@ module.exports = grammar({
           $.math_cmd_name,
           repeat($.bind_val_parameter),
           "=",
-          $.expr,
+          $._expr,
         ),
         seq(
           "inline",
@@ -158,7 +211,7 @@ module.exports = grammar({
           $.inline_cmd_name,
           repeat($.bind_val_parameter),
           "=",
-          $.expr,
+          $._expr,
         ),
         seq(
           "block",
@@ -166,17 +219,18 @@ module.exports = grammar({
           $.block_cmd_name,
           repeat($.bind_val_parameter),
           "=",
-          $.expr,
+          $._expr,
         ),
       ),
 
     bind_val_parameter: ($) =>
       seq(
-        optional(seq("?(", repeat_with_delim($.opt_parameter, ","), ")")),
+        optional(seq("?(", ")")),
+        optional(seq("?(", repeat1_with_delim($.opt_parameter, ","), ")")),
         $.parameter,
       ),
 
-    bind_type: ($) => repeat1_with_delim($.bind_type_single, "and"),
+    _bind_type: ($) => repeat1_with_delim($.bind_type_single, "and"),
     bind_type_single: ($) => seq($.type_name, repeat($.type_var), "=", $.type),
 
     constructor_branch: ($) => seq($.variant_name, "of", $.type),
@@ -185,31 +239,53 @@ module.exports = grammar({
       seq(
         $.label_name,
         "=",
-        $.pattern,
+        $._pattern,
         optional(seq(":", $.type)),
-        optional(seq("=", $.expr)),
+        optional(seq("=", $._expr)),
       ),
-    parameter: ($) => choice($.pattern, seq("(", $.pattern, ":", $.type, ")")),
+    parameter: ($) => choice($._pattern, seq("(", $._pattern, ":", $.type, ")")),
 
-    signature: ($) =>
+    _signature: ($) =>
       choice(
-        prec(PREC.signatureFunctor, seq("(", $.module_name, ":", $.signature, ")", "->", $.signature),),
-        prec(PREC.signatureWithType, seq($.signature, seq("with", "type", $.bind_type))),
-        seq("(", $.signature, ")"),
-        repeat1_with_delim($.module_name, "."),
-        seq("sig", repeat($.declaration), "end"),
+        seq("(", $._signature, ")"),
+        $.signature_path,
+        $.signature_functor,
+        $.signature_structure,
+        $.signature_with_bind_type,
       ),
+
+      signature_functor: $ =>
+        prec(PREC.signatureFunctor, seq("(", $.module_name, ":", $._signature, ")", "->", $._signature),),
+      signature_with_bind_type: $ =>
+        prec(PREC.signatureWithType, seq($._signature, seq("with", "type", $.bind_type))),
+    signature_path: $ =>
+        repeat1_with_delim($.module_name, "."),
+    signature_structure: $ =>
+        seq("sig", repeat($._declaration), "end"),
+
 
     //$1. declaration
-    declaration: ($) =>
+    _declaration: ($) =>
       choice(
-        seq("val", $.var_name, optional($.quant), ":", $.type),
-        seq("type", $.type_name, "::", $.type_kind),
-        seq("type", $.bind_type),
-        seq("module", $.module_name, ":", $.signature),
-        seq("signature", $.module_name, "=", $.signature),
-        seq("include", $.signature),
+        $.declaration_val,
+        $.declaration_type_kind,
+        $.declaration_type,
+        $.declaration_module,
+        $.declaration_signature,
+        $.declaration_include,
       ),
+    declaration_val: $ =>
+        seq("val", $.var_name, optional($.quant), ":", $.type),
+    declaration_type_kind: $ =>
+        seq("type", $.type_name, "::", $.type_kind),
+    declaration_type: $ =>
+        seq("type", $.bind_type),
+    declaration_module: $ =>
+        seq("module", $.module_name, ":", $._signature),
+    declaration_signature: $ =>
+        seq("signature", $.module_name, "=", $._signature),
+    declaration_include: $ =>
+        seq("include", $._signature),
 
     type_kind: ($) => repeat1_with_delim($.base_kind, "->"),
     base_kind: (_) => "o",
@@ -218,6 +294,7 @@ module.exports = grammar({
       seq("(", "|", repeat1_with_delim($.label_name, ","), "|", ")"),
 
     label_name: _ => VARIABLE_NAME,
+
     //$1. type
     type: ($) =>
       choice(
@@ -240,7 +317,10 @@ module.exports = grammar({
     type_var: (_) => TYPE_VARIABLE,
 
     cmd_parameter_types: ($) =>
-      seq("[", repeat_with_delim($.cmd_parameter_type, ","), "]"),
+    choice(
+      seq("[", "]"),
+      seq("[", repeat1_with_delim($.cmd_parameter_type, ","), "]"),
+    ),
 
     cmd_parameter_type: ($) => seq(optional(seq($.type_opts_closed, ",")), $.type),
 
@@ -262,79 +342,116 @@ module.exports = grammar({
     row_var: (_) => ROW_VARIABLE,
 
     //$1. expr
-    expr: ($) =>
+    _expr: ($) =>
       choice(
-        prec.left(PREC.application, seq($.expr, optional($.expr_opts), $.expr),),
-        prec.left(PREC.constructor, seq(repeat(seq($.module_name, ".")), $.variant_name, optional($.expr))),
-        seq("(", $.expr, ")"),
-        seq(repeat(seq($.module_name, ".")), $.var_name),
-        seq("fun", repeat($.bind_val_parameter), "->", $.expr),
-        seq("let", $.bind_val, "in", $.expr),
-        seq("let", $.non_var_pattern, "=", $.expr, "in", $.expr),
-        seq(
-          "let",
-          "open",
-          repeat1_with_delim($.module_name, "."),
-          "in",
-          $.expr,
-        ),
-        seq(
-          "match",
-          $.expr,
-          "with",
-          optional("|"),
-          repeat1_with_delim(seq($.pattern, "->", $.expr), "|"),
-          "end",
-        ),
-        seq("if", $.expr, "then", $.expr, "else", $.expr),
-        $._binary_expr,
-        seq($.un_op, $.expr),
-        seq($.matchable_const),
-        seq($.non_matchable_const),
-        seq("{", optional($.horizontal), "}"),
-        seq("'<", optional($.vertical), ">"),
-        seq("${", optional($.math), "}"),
+        seq("(", $._expr, ")"),
+        $.expr_application,
+        $.expr_constructor,
+        $.expr_modvar,
+        $.expr_lambda,
+        $.expr_bind,
+        $.expr_open,
+        $.expr_match,
+        $.expr_if,
+        $.expr_binary_operation,
+        $.expr_binary_operator,
+        $.expr_unary_operation,
+        $.expr_literal,
+        $.expr_inline_text,
+        $.expr_block_text,
+        $.expr_math_text,
+        $.expr_record,
+        $.expr_list,
+        $.expr_tuple,
       ),
 
-    _binary_expr: ($) => {
-      // [-+*/^&|=<>!:~'.?]
-      const table = [
-        [PREC.and, /&[-+*/^&|=<>!:~'.?]+/],
-        [PREC.or, /\|[-+*/^&|=<>!:~'.?]+/],
-        [PREC.comparative, /=[-+*/^&|=<>!:~'.?]+/],
-        // <- は許されない
-        [PREC.comparative, /<[+*/^&|=<>!:~'.?]?/],
-        [PREC.comparative, /<[-+*/^&|=<>!:~'.?]{2,}/],
-        [PREC.comparative, />[+*/^&|=<>!:~'.?]*/],
-        [PREC.concat, /\^[-+*/^&|=<>!:~'.?]*/],
-        [PREC.concat, "::"],
-        [PREC.additive, /\+[-+*/^&|=<>!:~'.?]*/],
-        // -> は許されない
-        [PREC.subtractive, /-[+*/^&|=<!:~'.?]?/],
-        [PREC.subtractive, /-[-+*/^&|=<>!:~'.?]{2,}/],
-        [PREC.multiplicative, /\*[-+*/^&|=<>!:~'.?]*/],
-        [PREC.divisive, /\/[-+*/^&|=<>!:~'.?]*/],
-        [PREC.divisive, "mod"],
-      ];
+    expr_application: $ =>
+    prec.left(PREC.application, seq($._expr, optional($.expr_opts), $._expr),),
+    expr_constructor: $ =>
+    prec.left(PREC.constructor, seq(repeat(seq($.module_name, ".")), $.variant_name, optional($._expr))),
+    expr_modvar: $ =>
+    seq(repeat(seq($.module_name, ".")), $.var_name),
+    expr_lambda: $ =>
+    seq("fun", repeat($.bind_val_parameter), "->", $._expr),
+    expr_bind: $ => choice (
+      seq("let", $.bind_val, "in", $._expr),
+      seq("let", $._non_var_pattern, "=", $._expr, "in", $._expr),
+    ),
+    expr_open: $ =>
+    seq(
+      "let",
+      "open",
+      repeat1_with_delim($.module_name, "."),
+      "in",
+      $._expr,
+    ),
+    expr_match: $ =>
+    seq(
+      "match",
+      field("expr", $._expr),
+      "with",
+      optional("|"),
+      repeat1_with_delim(seq($._pattern, "->", $._expr), "|"),
+      "end",
+    ),
+    expr_if: $ => seq("if", $._expr, "then", $._expr, "else", $._expr),
+    expr_binary_operation: $ => $._binary_expr,
+    expr_binary_operator: $ => seq("(", $.binary_operator, ")"),
+    expr_unary_operation: $ => seq($._un_op, $._expr),
+    expr_literal: $ => choice (
+      seq($.matchable_const),
+      seq($.non_matchable_const),
+    ),
 
-      return choice(
-        ...table.map(([precedence, operator]) =>
+    expr_record: ($) =>
+      choice(
+        seq("(|", $._expr, "with", $._record_inner, "|)"),
+        seq("(|", optional($._record_inner), "|)"),
+      ),
+
+    _record_inner: ($) => seq(repeat1_with_delim($.record_unit, ","), optional(",")),
+
+    record_unit: ($) => seq($.label_name, "=", $._expr),
+
+    expr_list: ($) =>
+      choice(
+        seq("[", "]"),
+        seq("[", repeat1_with_delim($._expr, ","), optional(","), "]"),
+      ),
+
+    expr_tuple: ($) =>
+      seq(
+        "(",
+          repeat2_with_delim($._expr, ","),
+        ")",
+      ),
+
+
+    expr_inline_text: $ => seq("{", optional($.horizontal), "}"),
+    expr_block_text: $ => seq("'<", optional($.vertical), ">"),
+    expr_math_text: $ => seq("${", optional($.math), "}"),
+
+    binary_operator: $ =>
+    choice(...OPERATOR_PREC.map(([_prec, operator]) => operator)),
+
+    _binary_expr: ($) => 
+      choice(
+        ...OPERATOR_PREC.map(([precedence, operator]) =>
           prec.left(
             precedence,
             seq(
-              field("left", $.expr),
+              field("left", $._expr),
               field("operator", alias(operator, "bin_op")),
-              field("right", $.expr),
+              field("right", $._expr),
             ),
           )
         ),
-      );
-    },
+      ),
 
-    un_op: _ => choice("-", "not"),
+    _un_op: _ => choice("-", "not"),
 
     expr_opts: ($) =>
-      seq("?(", repeat1_with_delim(seq($.label_name, "=", $.expr), ","), ")"),
+      seq("?(", repeat1_with_delim(seq($.label_name, "=", $._expr), ","), ")"),
 
     matchable_const: ($) =>
       choice(
@@ -351,27 +468,32 @@ module.exports = grammar({
         $.literal_length,
       ),
 
-    pattern: ($) =>
+    _pattern: ($) =>
       choice(
         $.var_name,
-        $.non_var_pattern,
+        $._non_var_pattern,
       ),
 
-    non_var_pattern: ($) =>
+    _non_var_pattern: ($) =>
       choice(
-        seq("(", $.non_var_pattern, ")"),
-        "_",
-        $.variant,
-        seq("(", repeat2_with_delim($.pattern, ","), ")"),
-        $.matchable_const,
+        seq("(", $._non_var_pattern, ")"),
+        $.pattern_ignore,
+        $.pattern_variant,
+        $.pattern_tuple,
+        $.pattern_const,
       ),
+
+        pattern_ignore: $ => "_",
+        pattern_variant: $ => $.variant,
+        pattern_tuple: $ => seq("(", repeat2_with_delim($._pattern, ","), ")"),
+        pattern_const: $ => $.matchable_const,
 
     variant : $ => 
     prec.right(
         seq(
           repeat(seq($.module_name, ".")),
           $.variant_name,
-          optional($.pattern),
+          optional($._pattern),
         ),
     ),
 
@@ -529,7 +651,7 @@ module.exports = grammar({
         seq("{", optional($.horizontal), "}"),
         seq("<", optional($.vertical), ">"),
       ),
-    _cmd_expr_arg_inner: ($) => seq("(", $.expr, ")"),
+    _cmd_expr_arg_inner: ($) => seq("(", $._expr, ")"),
 
     math_cmd: ($) =>
       prec.left(
@@ -554,7 +676,7 @@ module.exports = grammar({
         seq("{", $.math, "}"),
         seq("!", $.inline_text),
         seq("!", "<", $.vertical, ">"),
-        seq("!", "(", $.expr, ")"),
+        seq("!", "(", $._expr, ")"),
         // seq("!", $.list),
         // seq("!", $.record),
       ),
