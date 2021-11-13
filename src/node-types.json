@@ -742,88 +742,189 @@
   {
     "type": "expr_application",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "expr_application",
-          "named": true
-        },
-        {
-          "type": "expr_binary_operation",
-          "named": true
-        },
-        {
-          "type": "expr_binary_operator",
-          "named": true
-        },
-        {
-          "type": "expr_bind",
-          "named": true
-        },
-        {
-          "type": "expr_block_text",
-          "named": true
-        },
-        {
-          "type": "expr_constructor",
-          "named": true
-        },
-        {
-          "type": "expr_if",
-          "named": true
-        },
-        {
-          "type": "expr_inline_text",
-          "named": true
-        },
-        {
-          "type": "expr_lambda",
-          "named": true
-        },
-        {
-          "type": "expr_list",
-          "named": true
-        },
-        {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
-          "type": "expr_match",
-          "named": true
-        },
-        {
-          "type": "expr_math_text",
-          "named": true
-        },
-        {
-          "type": "expr_modvar",
-          "named": true
-        },
-        {
-          "type": "expr_open",
-          "named": true
-        },
-        {
-          "type": "expr_opts",
-          "named": true
-        },
-        {
-          "type": "expr_record",
-          "named": true
-        },
-        {
-          "type": "expr_tuple",
-          "named": true
-        },
-        {
-          "type": "expr_unary_operation",
-          "named": true
-        }
-      ]
+    "fields": {
+      "arg": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "expr_application",
+            "named": true
+          },
+          {
+            "type": "expr_binary_operation",
+            "named": true
+          },
+          {
+            "type": "expr_binary_operator",
+            "named": true
+          },
+          {
+            "type": "expr_bind",
+            "named": true
+          },
+          {
+            "type": "expr_block_text",
+            "named": true
+          },
+          {
+            "type": "expr_constructor",
+            "named": true
+          },
+          {
+            "type": "expr_if",
+            "named": true
+          },
+          {
+            "type": "expr_inline_text",
+            "named": true
+          },
+          {
+            "type": "expr_lambda",
+            "named": true
+          },
+          {
+            "type": "expr_list",
+            "named": true
+          },
+          {
+            "type": "expr_literal",
+            "named": true
+          },
+          {
+            "type": "expr_match",
+            "named": true
+          },
+          {
+            "type": "expr_math_text",
+            "named": true
+          },
+          {
+            "type": "expr_modvar",
+            "named": true
+          },
+          {
+            "type": "expr_open",
+            "named": true
+          },
+          {
+            "type": "expr_record",
+            "named": true
+          },
+          {
+            "type": "expr_tuple",
+            "named": true
+          },
+          {
+            "type": "expr_unary_operation",
+            "named": true
+          }
+        ]
+      },
+      "function": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "expr_application",
+            "named": true
+          },
+          {
+            "type": "expr_binary_operation",
+            "named": true
+          },
+          {
+            "type": "expr_binary_operator",
+            "named": true
+          },
+          {
+            "type": "expr_bind",
+            "named": true
+          },
+          {
+            "type": "expr_block_text",
+            "named": true
+          },
+          {
+            "type": "expr_constructor",
+            "named": true
+          },
+          {
+            "type": "expr_if",
+            "named": true
+          },
+          {
+            "type": "expr_inline_text",
+            "named": true
+          },
+          {
+            "type": "expr_lambda",
+            "named": true
+          },
+          {
+            "type": "expr_list",
+            "named": true
+          },
+          {
+            "type": "expr_literal",
+            "named": true
+          },
+          {
+            "type": "expr_match",
+            "named": true
+          },
+          {
+            "type": "expr_math_text",
+            "named": true
+          },
+          {
+            "type": "expr_modvar",
+            "named": true
+          },
+          {
+            "type": "expr_open",
+            "named": true
+          },
+          {
+            "type": "expr_record",
+            "named": true
+          },
+          {
+            "type": "expr_tuple",
+            "named": true
+          },
+          {
+            "type": "expr_unary_operation",
+            "named": true
+          }
+        ]
+      },
+      "opt_arg": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "expr_opts",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
