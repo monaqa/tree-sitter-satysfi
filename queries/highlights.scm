@@ -34,6 +34,7 @@
  "when"
  "while"
  "with"
+ "|"
 ] @keyword
 
 [
@@ -81,10 +82,6 @@
 
 ;; expr
 
-(match_expr
-  "|" @keyword
-  )
-
 (lambda
   arg: (_) @parameter
   )
@@ -103,6 +100,7 @@
 
 [
  "?:"
+ "?->"
  "->"
  "<-"
  "="
@@ -117,14 +115,15 @@
   )
 
 ; (inline_token) @embedded
+(inline_text_list
+  "|" @punctuation.delimiter
+  )
 
 ;; brackets/punctuations
 [
 "{"
 "${"
 "}"
-
-"|"
 
 "("
 ")"

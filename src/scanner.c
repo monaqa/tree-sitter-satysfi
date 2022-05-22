@@ -166,7 +166,8 @@ bool tree_sitter_satysfi_external_scanner_scan(void *payload, TSLexer *lexer,
         } else {
             lexer->result_symbol = INLINE_TOKEN_COMPOUND;
         }
-        for (bool has_content = false;; has_content = true) {
+        bool has_content = false;
+        for (;;) {
             lexer->mark_end(lexer);
             switch(lexer->lookahead) {
                 case '}':
@@ -174,6 +175,7 @@ bool tree_sitter_satysfi_external_scanner_scan(void *payload, TSLexer *lexer,
                 case '#':
                 case '%':
                 case '$':
+                case '`':
                     return has_content;
                 case '*':
                 case '|':
@@ -189,6 +191,7 @@ bool tree_sitter_satysfi_external_scanner_scan(void *payload, TSLexer *lexer,
                 default:
                     advance(lexer);
             }
+            has_content = true;
         }
     }
 

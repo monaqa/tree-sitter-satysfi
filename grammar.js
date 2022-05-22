@@ -753,10 +753,16 @@ module.exports = grammar({
     cmd_expr_option: ($) => seq("?:", $._cmd_expr_arg_inner),
     cmd_text_arg: ($) =>
       choice(
-        seq("{", optional($.horizontal), "}"),
+        $.inline_text,
+        $.inline_text_list,
+        $.inline_text_bullet_list,
         seq("<", optional($.vertical), ">"),
       ),
-    _cmd_expr_arg_inner: ($) => seq("(", $._expr, ")"),
+    _cmd_expr_arg_inner: ($) => choice(
+      seq("(", $._expr, ")"),
+      $.list,
+      $.record,
+    ),
 
     math_cmd: ($) =>
       prec.left(
@@ -788,6 +794,8 @@ module.exports = grammar({
       choice(
         seq("{", $.math, "}"),
         seq("!", $.inline_text),
+        seq("!", $.inline_text_list),
+        seq("!", $.inline_text_bullet_list),
         seq("!", "<", $.vertical, ">"),
         seq("!", "(", $._expr, ")"),
         seq("!", $.list),
@@ -808,7 +816,9 @@ module.exports = grammar({
           repeat(
             seq("|", optional(alias($._horizontal_compound, $.horizontal))),
           ),
-          /\|\s*\}/,
+          // /\|\s*\}/,
+          "|",
+          "}",
         ),
       ),
 
@@ -832,6 +842,9 @@ module.exports = grammar({
     _horizontal_compound: ($) =>
       repeat1(choice(
         $.inline_literal_escaped,
+        $.inline_text_embedding,
+        $.math_text,
+        $.literal_string,
         $.inline_cmd,
         alias($._inline_token_compound, $.inline_token),
       )),

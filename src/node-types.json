@@ -1393,7 +1393,15 @@
       "required": false,
       "types": [
         {
-          "type": "horizontal",
+          "type": "inline_text",
+          "named": true
+        },
+        {
+          "type": "inline_text_bullet_list",
+          "named": true
+        },
+        {
+          "type": "inline_text_list",
           "named": true
         },
         {
