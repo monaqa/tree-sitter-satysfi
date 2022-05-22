@@ -6,6 +6,7 @@ enum TokenType {
   LITERAL_STRING,
   INLINE_TOKEN,
   INLINE_TOKEN_COMPOUND,
+  PKGNAME,
   NUMBERSIGN_AFTER_NOSPACE,
   DUMMY,
 };
@@ -32,12 +33,15 @@ bool tree_sitter_satysfi_external_scanner_scan(void *payload, TSLexer *lexer,
     // }
 
     if (valid_symbols[NUMBERSIGN_AFTER_NOSPACE] && lexer->lookahead == '#') {
+        lexer->result_symbol = NUMBERSIGN_AFTER_NOSPACE;
+        advance(lexer);
+        lexer->mark_end(lexer);
         if ((lexer->lookahead >= 'a' && lexer->lookahead <= 'z')
                 || (lexer->lookahead >= 'A' && lexer->lookahead <= 'Z')) {
-            lexer->result_symbol = NUMBERSIGN_AFTER_NOSPACE;
-            advance(lexer);
-            lexer->mark_end(lexer);
             return true;
+        }
+        else {
+            return false;
         }
     }
 
@@ -115,7 +119,23 @@ bool tree_sitter_satysfi_external_scanner_scan(void *payload, TSLexer *lexer,
                     advance(lexer);
             }
         }
+    }
 
+    if (valid_symbols[PKGNAME]) {
+        lexer->result_symbol = PKGNAME;
+        // 最初の space と tab だけは無視する
+        if (lexer->lookahead == ' ' || lexer->lookahead == '\t') {
+            return false;
+        }
+        for(;;) {
+            if (lexer->lookahead == 0) {
+                return false;
+            } if (lexer->lookahead=='\n') {
+                // lexer->mark_end(lexer);
+                return true;
+            }
+            advance(lexer);
+        }
     }
 
     return false;

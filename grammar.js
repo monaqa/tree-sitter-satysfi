@@ -26,11 +26,22 @@ const PREC = {
 
 const CMD_NAME = /[A-Za-z][-A-Za-z0-9]*/;
 
+
+const tokens = {
+  whitespace: /\s+/,
+}
+
+const tokensFunc = Object.fromEntries(
+    Object.entries(tokens).map(
+      ([k, v]) => [k, (_) => v]
+    )
+  )
+
 module.exports = grammar({
   name: "satysfi",
 
   extras: ($) => [
-    /\s/,
+    $.whitespace,
     $.comment
   ],
 
@@ -51,6 +62,8 @@ module.exports = grammar({
     $.inline_token,
     // {||} や {* } の中に入っているインラインテキスト。
     $._inline_token_compound,
+    // パッケージ名。
+    $.pkgname,
     // 空白やコメントが入らないことを保証するが、 Lexer は進めない。
     $._numbersign_after_nospace,
     // $.no_extras,
@@ -84,25 +97,15 @@ module.exports = grammar({
     // header {{{
     headers: ($) => seq(repeat1($._header)),
 
-    _header: ($) =>
-      choice(
-        seq(
-          "@require:",
-          repeat(/\s/),
-          // $.no_extras,
-          field("require", $.pkgname),
-          "\n",
-        ),
-        seq(
-          "@import:",
-          repeat(/\s/),
-          // $.no_extras,
-          field("import", $.pkgname),
-          "\n",
-        ),
-      ),
+    _header: ($) => choice(
+      $.header_require,
+      $.header_import,
+    ),
 
-    header_stage: (_) =>
+    header_require: $ => seq("@require:", optional($.whitespace), field("require", $.pkgname)),
+    header_import: $ => seq("@import:", optional($.whitespace), field("import", $.pkgname)),
+
+    header_stage: ($) =>
       seq(
         "@stage:",
         choice(
@@ -110,10 +113,10 @@ module.exports = grammar({
           field("1", "1"),
           field("persistent", "persistent"),
         ),
-        "\n",
+        // "\n",
       ),
 
-    pkgname: (_) => /[^\n\r]+/,
+    // pkgname: (_) => /[^\n\r]+/,
 
     // }}}
 
@@ -356,6 +359,7 @@ module.exports = grammar({
     _type_expr: ($) =>
       choice(
         $.type_fun,
+        $.type_prod,
         $.type_inline_cmd,
         $.type_block_cmd,
         $.type_math_cmd,
@@ -418,8 +422,8 @@ module.exports = grammar({
 
     type_param: (_) => token.immediate(seq("'", /[a-z][-A-Za-z0-9]*/)),
 
-    // type_name: ($) => choice($.identifier, $.modvar),
-    type_name: ($) => $.identifier,
+    type_name: ($) => choice($.identifier, $.modvar),
+    // type_name: ($) => $.identifier,
 
     constraint: ($) => seq("constraint", $.type_param, "::", $.type_record),
 
@@ -466,10 +470,11 @@ module.exports = grammar({
         $.lambda,
         $.assignment,
         $.binary_expr,
-        $.unary_operator_expr,
         $.application,
+        $.unary_operator_expr,
         $.command_application,
         $.variant_constructor,
+        $.record_member,
         $._unary,
       ),
 
@@ -561,21 +566,30 @@ module.exports = grammar({
         prec.right(PREC.stage, seq($.unary_prefix, $._expr)),
       ),
 
-    unary_operator: (_) => choice("-", "not"),
+    unary_operator: (_) => choice("-", "not", "!"),
 
     unary_prefix: (_) => /[&!~]/,
 
     application: ($) =>
+    prec.left(
+      PREC.application,
       seq(
-        field("function", $._unary),
-        repeat1(choice(
+        field("function", choice(
+          $.application,
+          $.unary_operator_expr,
+          $.variant_constructor,
+          $.record_member,
+          $._unary,
+        )),
+        choice(
           field("arg", $._application_args),
           field("opt", $._application_args_opt),
-        )),
+        ),
       ),
+    ),
 
     // TODO: 本当は unary ではない
-    _application_args: ($) => choice($.variant_constructor, $._unary),
+    _application_args: ($) => choice($.unary_operator_expr, $.variant_constructor, $.record_member, $._unary),
 
     _application_args_opt: ($) => seq("?:", $._application_args),
 
@@ -584,6 +598,9 @@ module.exports = grammar({
 
     variant_constructor: ($) =>
       prec.left(PREC.constructor, seq($.variant_name, optional($._unary))),
+
+    record_member: $ =>
+      seq($._unary, "#", $.identifier),
 
     // }}}
 
@@ -652,7 +669,6 @@ module.exports = grammar({
         $.literal_int,
         $.literal_string,
         $.literal_float,
-        $.inline_text_embedding,
       ),
 
     identifier: (_) => /[a-z][-a-zA-Z0-9]*/,
@@ -901,6 +917,8 @@ module.exports = grammar({
 
     math_embedding: ($) => seq($._numbersign_after_nospace, $.identifier, ";"),
     // }}}
+
+    ...tokensFunc
   },
 });
 
