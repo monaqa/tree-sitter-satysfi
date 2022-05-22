@@ -2974,8 +2974,65 @@
       ]
     },
     "binary_operator": {
-      "type": "STRING",
-      "value": "-"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "&[-+*/^&|=<>!:~'.?]+"
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\|[-+*/^&|=<>!:~'.?]+"
+        },
+        {
+          "type": "PATTERN",
+          "value": "=[-+*/^&|=<>!:~'.?]+"
+        },
+        {
+          "type": "PATTERN",
+          "value": "<[+*/^&|=<>!:~'.?]?"
+        },
+        {
+          "type": "PATTERN",
+          "value": "<[-+*/^&|=<>!:~'.?]{2,}"
+        },
+        {
+          "type": "PATTERN",
+          "value": ">[+*/^&|=<>!:~'.?]*"
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\^[-+*/^&|=<>!:~'.?]*"
+        },
+        {
+          "type": "STRING",
+          "value": "::"
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\+[-+*/^&|=<>!:~'.?]*"
+        },
+        {
+          "type": "PATTERN",
+          "value": "-[+*/^&|=<!:~'.?]?"
+        },
+        {
+          "type": "PATTERN",
+          "value": "-[-+*/^&|=<>!:~'.?]{2,}"
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\*[-+*/^&|=<>!:~'.?]*"
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\/[-+*/^&|=<>!:~'.?]*"
+        },
+        {
+          "type": "STRING",
+          "value": "mod"
+        }
+      ]
     },
     "unary_operator_expr": {
       "type": "CHOICE",
@@ -3504,8 +3561,13 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "module_name"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_module_prefix"
+          },
+          "named": true,
+          "value": "module_name"
         },
         {
           "type": "STRING",
@@ -3525,8 +3587,13 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "module_name"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_module_prefix"
+          },
+          "named": true,
+          "value": "module_name"
         },
         {
           "type": "STRING",
@@ -3538,20 +3605,25 @@
         }
       ]
     },
-    "mod_cmd_name": {
+    "_mod_cmd_name": {
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "module_name"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_module_prefix"
+          },
+          "named": true,
+          "value": "module_name"
         },
         {
           "type": "STRING",
           "value": "."
         },
         {
-          "type": "PATTERN",
-          "value": "[A-Za-z][-A-Za-z0-9]*"
+          "type": "SYMBOL",
+          "name": "cmd_name"
         }
       ]
     },
@@ -3905,20 +3977,31 @@
       ]
     },
     "inline_cmd_name": {
-      "type": "IMMEDIATE_TOKEN",
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "\\"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_inline_cmd_prefix"
           },
-          {
-            "type": "PATTERN",
-            "value": "[A-Za-z][-A-Za-z0-9]*"
-          }
-        ]
-      }
+          "named": false,
+          "value": "\\"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_mod_cmd_name"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "cmd_name"
+            }
+          ]
+        }
+      ]
     },
     "block_cmd": {
       "type": "SEQ",
@@ -3978,20 +4061,31 @@
       ]
     },
     "block_cmd_name": {
-      "type": "IMMEDIATE_TOKEN",
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "+"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_block_cmd_prefix"
           },
-          {
-            "type": "PATTERN",
-            "value": "[A-Za-z][-A-Za-z0-9]*"
-          }
-        ]
-      }
+          "named": false,
+          "value": "+"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_mod_cmd_name"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "cmd_name"
+            }
+          ]
+        }
+      ]
     },
     "cmd_expr_arg": {
       "type": "SYMBOL",
@@ -4124,20 +4218,31 @@
       }
     },
     "math_cmd_name": {
-      "type": "IMMEDIATE_TOKEN",
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "\\"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_inline_cmd_prefix"
           },
-          {
-            "type": "PATTERN",
-            "value": "[A-Za-z][-A-Za-z0-9]*"
-          }
-        ]
-      }
+          "named": false,
+          "value": "\\"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_mod_cmd_name"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "cmd_name"
+            }
+          ]
+        }
+      ]
     },
     "math_cmd_expr_arg": {
       "type": "SEQ",
@@ -4514,6 +4619,10 @@
         {
           "type": "STRING",
           "value": "\\ "
+        },
+        {
+          "type": "STRING",
+          "value": "\\\""
         }
       ]
     },
@@ -4880,16 +4989,16 @@
         {
           "type": "SYMBOL",
           "name": "identifier"
-        },
-        {
-          "type": "STRING",
-          "value": ";"
         }
       ]
     },
     "whitespace": {
       "type": "PATTERN",
       "value": "\\s+"
+    },
+    "cmd_name": {
+      "type": "PATTERN",
+      "value": "[A-Za-z][-A-Za-z0-9]*"
     }
   },
   "extras": [
@@ -4925,6 +5034,18 @@
     {
       "type": "SYMBOL",
       "name": "pkgname"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_module_prefix"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_inline_cmd_prefix"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_block_cmd_prefix"
     },
     {
       "type": "SYMBOL",

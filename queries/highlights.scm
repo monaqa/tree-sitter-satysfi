@@ -34,27 +34,49 @@
  "when"
  "while"
  "with"
+] @keyword
+
+[
  "@stage:"
  "@require:"
  "@import:"
-] @keyword
+ ] @include
+
+(module_name) @namespace
 
 ;; types
 
 [
-  (type_param)
   (type_name)
   ] @type
 
+(type_param) @parameter
+
+(type_prod "*") @operator.special
+(type_list "?") @operator.special
+
 (type_record_unit
-  (identifier) @property
+  (identifier) @field
   )
 
 ;; stmt
 (let_stmt
-  pattern: (_) @function
-  arg: (_) @variable.parameter
-  optarg: (_) @variable.parameter
+  pattern: (identifier) @function
+  [
+  arg: (_) @parameter
+  optarg: (_) @parameter
+  ]
+  )
+
+(let_rec_inner
+  pattern: (identifier) @function
+  )
+
+(let_inline_stmt
+  [
+  arg: (_) @parameter
+  optarg: (_) @parameter
+  ]
   )
 
 ;; expr
@@ -64,37 +86,55 @@
   )
 
 (lambda
-  arg: (_) @variable.parameter
+  arg: (_) @parameter
   )
 
 (application
   function: (identifier) @function
   )
 
+(application
+  function: (modvar (identifier) @function)
+  )
+
+(modvar "." @namespace)
+
 (binary_operator) @operator
 
-(inline_cmd_name) @function.special
-(block_cmd_name) @function.special
-(math_cmd_name) @math
+[
+ "?:"
+ "->"
+ "<-"
+ "="
+ "!"
+ "::"
+ ]  @operator.special
 
-(inline_token) @embedded
+(variant_name) @type
 
-;; brackets
+(record_unit
+  . (identifier) @field
+  )
 
-"{" @punctuation.bracket
-"${" @punctuation.bracket
-"}" @punctuation.bracket
+; (inline_token) @embedded
 
-"|" @punctuation.bracket
+;; brackets/punctuations
+[
+"{"
+"${"
+"}"
 
-"(" @punctuation.bracket
-")" @punctuation.bracket
+"|"
 
-"(|" @punctuation.bracket
-"|)" @punctuation.bracket
+"("
+")"
 
-"[" @punctuation.bracket
-"]" @punctuation.bracket
+"(|"
+"|)"
+
+"["
+"]"
+ ] @punctuation.bracket
 
 (block_text
   "'<" @punctuation.bracket
@@ -105,6 +145,41 @@
   "<" @punctuation.bracket
   ">" @punctuation.bracket
   )
+
+[
+ ";"
+ ":"
+ ","
+ ]  @punctuation.delimiter
+
+;; horizontal/vertical mode
+
+(inline_cmd_name) @function.special
+(block_cmd_name) @function.special
+; inline_cmd_name と見分け付かないので一旦 parameter にしておく
+(math_cmd_name) @parameter
+
+(sig_val_stmt
+ name: (inline_cmd_name) @parameter
+ signature: (type_math_cmd)
+ )
+
+(sig_direct_stmt
+ name: (inline_cmd_name) @parameter
+ signature: (type_math_cmd)
+ )
+
+[
+ (inline_text_embedding)
+ (block_text_embedding)
+ (math_embedding)
+ ] @function.special
+
+(block_cmd_name
+  (module_name) @function.special
+  )
+
+(inline_literal_escaped) @string.escape
 
 ;; literal
 

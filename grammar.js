@@ -24,11 +24,9 @@ const PREC = {
   typeprod: 1,
 };
 
-const CMD_NAME = /[A-Za-z][-A-Za-z0-9]*/;
-
-
 const tokens = {
   whitespace: /\s+/,
+  cmd_name: /[A-Za-z][-A-Za-z0-9]*/,
 }
 
 const tokensFunc = Object.fromEntries(
@@ -36,6 +34,26 @@ const tokensFunc = Object.fromEntries(
       ([k, v]) => [k, (_) => v]
     )
   )
+
+const binary_operator_table = [
+  [PREC.and, /&[-+*/^&|=<>!:~'.?]+/],
+  [PREC.or, /\|[-+*/^&|=<>!:~'.?]+/],
+  [PREC.comparative, /=[-+*/^&|=<>!:~'.?]+/],
+  // <- は許されない
+  [PREC.comparative, /<[+*/^&|=<>!:~'.?]?/],
+  [PREC.comparative, /<[-+*/^&|=<>!:~'.?]{2,}/],
+  [PREC.comparative, />[+*/^&|=<>!:~'.?]*/],
+  [PREC.concat, /\^[-+*/^&|=<>!:~'.?]*/],
+  [PREC.concat, "::"],
+  [PREC.additive, /\+[-+*/^&|=<>!:~'.?]*/],
+  // -> は許されない
+  [PREC.subtractive, /-[+*/^&|=<!:~'.?]?/],
+  [PREC.subtractive, /-[-+*/^&|=<>!:~'.?]{2,}/],
+  [PREC.multiplicative, /\*[-+*/^&|=<>!:~'.?]*/],
+  [PREC.divisive, /\/[-+*/^&|=<>!:~'.?]*/],
+  [PREC.divisive, "mod"],
+];
+
 
 module.exports = grammar({
   name: "satysfi",
@@ -64,6 +82,12 @@ module.exports = grammar({
     $._inline_token_compound,
     // パッケージ名。
     $.pkgname,
+    // +Mod.alpha や Mod.(1 + 2) などの Mod. の部分。ピリオド前後のスペースが許されない。
+    $._module_prefix,
+    // "\" の直後に空白が入ってはならないような"\"。
+    $._inline_cmd_prefix,
+    // "+" の直後に空白が入ってはならないような"+"。
+    $._block_cmd_prefix,
     // 空白やコメントが入らないことを保証するが、 Lexer は進めない。
     $._numbersign_after_nospace,
     // $.no_extras,
@@ -523,29 +547,9 @@ module.exports = grammar({
     assignment: ($) =>
       prec.right(PREC.assign, seq($.identifier, "<-", $._expr)),
 
-    binary_expr: ($) => {
-      // [-+*/^&|=<>!:~'.?]
-      const table = [
-        [PREC.and, /&[-+*/^&|=<>!:~'.?]+/],
-        [PREC.or, /\|[-+*/^&|=<>!:~'.?]+/],
-        [PREC.comparative, /=[-+*/^&|=<>!:~'.?]+/],
-        // <- は許されない
-        [PREC.comparative, /<[+*/^&|=<>!:~'.?]?/],
-        [PREC.comparative, /<[-+*/^&|=<>!:~'.?]{2,}/],
-        [PREC.comparative, />[+*/^&|=<>!:~'.?]*/],
-        [PREC.concat, /\^[-+*/^&|=<>!:~'.?]*/],
-        [PREC.concat, "::"],
-        [PREC.additive, /\+[-+*/^&|=<>!:~'.?]*/],
-        // -> は許されない
-        [PREC.subtractive, /-[+*/^&|=<!:~'.?]?/],
-        [PREC.subtractive, /-[-+*/^&|=<>!:~'.?]{2,}/],
-        [PREC.multiplicative, /\*[-+*/^&|=<>!:~'.?]*/],
-        [PREC.divisive, /\/[-+*/^&|=<>!:~'.?]*/],
-        [PREC.divisive, "mod"],
-      ];
-
-      return choice(
-        ...table.map(([precedence, operator]) =>
+    binary_expr: ($) => 
+      choice(
+        ...binary_operator_table.map(([precedence, operator]) =>
           prec.left(
             precedence,
             seq(
@@ -555,10 +559,11 @@ module.exports = grammar({
             ),
           )
         ),
-      );
-    },
+      ),
 
-    binary_operator: (_) => "-",
+    binary_operator: (_) => choice(
+      ...binary_operator_table.map(([precedence, operator]) => operator)
+    ),
 
     unary_operator_expr: ($) =>
       choice(
@@ -648,11 +653,11 @@ module.exports = grammar({
         ")",
       ),
 
-    expr_with_mod: ($) => seq($.module_name, ".(", $._expr, ")"),
+    expr_with_mod: ($) => seq(alias($._module_prefix, $.module_name), ".(", $._expr, ")"),
 
-    modvar: ($) => seq($.module_name, ".", $.identifier),
+    modvar: ($) => seq(alias($._module_prefix, $.module_name), ".", $.identifier),
 
-    mod_cmd_name: ($) => seq($.module_name, ".", CMD_NAME),
+    _mod_cmd_name: ($) => seq(alias($._module_prefix, $.module_name), ".", $.cmd_name),
 
     module_name: (_) => /[A-Z][-A-Za-z0-9]*/,
 
@@ -718,13 +723,13 @@ module.exports = grammar({
         choice(repeat1(field("arg", $.cmd_text_arg)), ";"),
       ),
 
-    inline_cmd_name: (_) =>
-      token.immediate(
-        seq(
-          "\\",
-          CMD_NAME,
-        ),
-      ),
+    inline_cmd_name: ($) => seq(
+      alias($._inline_cmd_prefix, "\\"),
+      choice(
+        $._mod_cmd_name,
+        $.cmd_name,
+      )
+    ),
 
     block_cmd: ($) =>
       seq(
@@ -735,7 +740,14 @@ module.exports = grammar({
         choice(repeat1(field("arg", $.cmd_text_arg)), ";"),
       ),
 
-    block_cmd_name: (_) => token.immediate(seq("+", CMD_NAME)),
+    block_cmd_name: ($) => seq(
+      alias($._block_cmd_prefix, "+"),
+      choice(
+        $._mod_cmd_name,
+        $.cmd_name,
+      )
+    ),
+
 
     cmd_expr_arg: ($) => $._cmd_expr_arg_inner,
     cmd_expr_option: ($) => seq("?:", $._cmd_expr_arg_inner),
@@ -760,13 +772,13 @@ module.exports = grammar({
         ),
       ),
 
-    math_cmd_name: (_) =>
-      token.immediate(
-        seq(
-          "\\",
-          CMD_NAME,
-        ),
-      ),
+    math_cmd_name: ($) => seq(
+      alias($._inline_cmd_prefix, "\\"),
+      choice(
+        $._mod_cmd_name,
+        $.cmd_name,
+      )
+    ),
 
     math_cmd_expr_arg: ($) => seq($._math_cmd_expr_arg_inner),
 
@@ -845,6 +857,7 @@ module.exports = grammar({
         "\\#",
         "\\;",
         "\\ ",
+        '\\"',
       ),
 
     inline_text_embedding: ($) =>
@@ -915,7 +928,7 @@ module.exports = grammar({
         $.math_embedding,
       ),
 
-    math_embedding: ($) => seq($._numbersign_after_nospace, $.identifier, ";"),
+    math_embedding: ($) => seq($._numbersign_after_nospace, $.identifier),
     // }}}
 
     ...tokensFunc

@@ -7,6 +7,9 @@ enum TokenType {
   INLINE_TOKEN,
   INLINE_TOKEN_COMPOUND,
   PKGNAME,
+  MODULE_PREFIX,
+  INLINE_CMD_PREFIX,
+  BLOCK_CMD_PREFIX,
   NUMBERSIGN_AFTER_NOSPACE,
   DUMMY,
 };
@@ -43,6 +46,74 @@ bool tree_sitter_satysfi_external_scanner_scan(void *payload, TSLexer *lexer,
         else {
             return false;
         }
+    }
+
+    if (valid_symbols[MODULE_PREFIX]
+            && (
+                (lexer->lookahead >= 'A' && lexer->lookahead <= 'Z')
+                )
+            ) {
+        lexer->result_symbol = MODULE_PREFIX;
+
+        advance(lexer);
+        for (;;) {
+            // [-A-Za-z]*を読み切る
+            if ((lexer->lookahead >= 'a' && lexer->lookahead <= 'z')
+                    || (lexer->lookahead >= 'A' && lexer->lookahead <= 'Z')
+                    || lexer->lookahead == '-'
+               ) {
+                advance(lexer);
+                continue;
+            }
+            break;
+        }
+
+        // mod name として登録する部分はこれで終わり
+        lexer->mark_end(lexer);
+
+        // 次の文字は空白等を挟まずピリオドでないといけない
+        if (lexer->lookahead != '.') {
+            return false;
+        }
+        advance(lexer);
+
+        // 次の文字にも空白等がきてはならない
+        if (
+                (lexer->lookahead == ' '
+                 || lexer->lookahead == '\t'
+                 || lexer->lookahead == '\n'
+                 || lexer->lookahead == '\r'
+                 || lexer->lookahead == '%'
+                )) {
+            return false;
+        }
+        return true;
+    }
+
+    if (valid_symbols[INLINE_CMD_PREFIX] && (lexer->lookahead == '\\')) {
+        lexer->result_symbol = INLINE_CMD_PREFIX;
+        advance(lexer);
+        lexer->mark_end(lexer);
+        if (
+                (lexer->lookahead >= 'a' && lexer->lookahead <= 'z')
+                || (lexer->lookahead >= 'A' && lexer->lookahead <= 'Z')
+           ) {
+            return true;
+        }
+        return false;
+    }
+
+    if (valid_symbols[BLOCK_CMD_PREFIX] && (lexer->lookahead == '+')) {
+        lexer->result_symbol = BLOCK_CMD_PREFIX;
+        advance(lexer);
+        lexer->mark_end(lexer);
+        if (
+                (lexer->lookahead >= 'a' && lexer->lookahead <= 'z')
+                || (lexer->lookahead >= 'A' && lexer->lookahead <= 'Z')
+           ) {
+            return true;
+        }
+        return false;
     }
 
     if (valid_symbols[LITERAL_STRING]

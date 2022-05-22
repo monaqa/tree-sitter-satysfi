@@ -1066,6 +1066,25 @@
     }
   },
   {
+    "type": "block_cmd_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "cmd_name",
+          "named": true
+        },
+        {
+          "type": "module_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "block_text",
     "named": true,
     "fields": {},
@@ -2012,7 +2031,21 @@
   {
     "type": "inline_cmd_name",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "cmd_name",
+          "named": true
+        },
+        {
+          "type": "module_name",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "inline_literal_escaped",
@@ -5338,7 +5371,21 @@
   {
     "type": "math_cmd_name",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "cmd_name",
+          "named": true
+        },
+        {
+          "type": "module_name",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "math_embedding",
@@ -7804,6 +7851,10 @@
     "named": false
   },
   {
+    "type": "+",
+    "named": false
+  },
+  {
     "type": ",",
     "named": false
   },
@@ -7888,7 +7939,15 @@
     "named": false
   },
   {
+    "type": "\\",
+    "named": false
+  },
+  {
     "type": "\\ ",
+    "named": false
+  },
+  {
+    "type": "\\\"",
     "named": false
   },
   {
@@ -7960,7 +8019,7 @@
     "named": false
   },
   {
-    "type": "block_cmd_name",
+    "type": "cmd_name",
     "named": true
   },
   {
@@ -8069,6 +8128,10 @@
   },
   {
     "type": "math-cmd",
+    "named": false
+  },
+  {
+    "type": "mod",
     "named": false
   },
   {
