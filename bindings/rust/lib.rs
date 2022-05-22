@@ -1,4 +1,4 @@
-//! This crate provides YOUR_LANGUAGE_NAME language support for the [tree-sitter][] parsing library.
+//! This crate provides satysfi language support for the [tree-sitter][] parsing library.
 //!
 //! Typically, you will use the [language][language func] function to add this language to a
 //! tree-sitter [Parser][], and then use the parser to parse some code:
@@ -6,7 +6,7 @@
 //! ```
 //! let code = "";
 //! let mut parser = tree_sitter::Parser::new();
-//! parser.set_language(tree_sitter_YOUR_LANGUAGE_NAME::language()).expect("Error loading YOUR_LANGUAGE_NAME grammar");
+//! parser.set_language(tree_sitter_satysfi::language()).expect("Error loading satysfi grammar");
 //! let tree = parser.parse(code, None).unwrap();
 //! ```
 //!
@@ -15,23 +15,26 @@
 //! [Parser]: https://docs.rs/tree-sitter/*/tree_sitter/struct.Parser.html
 //! [tree-sitter]: https://tree-sitter.github.io/
 
+pub mod errors;
+pub mod syntax;
+
 use tree_sitter::Language;
 
 extern "C" {
-    fn tree_sitter_YOUR_LANGUAGE_NAME() -> Language;
+    fn tree_sitter_satysfi() -> Language;
 }
 
 /// Get the tree-sitter [Language][] for this grammar.
 ///
 /// [Language]: https://docs.rs/tree-sitter/*/tree_sitter/struct.Language.html
 pub fn language() -> Language {
-    unsafe { tree_sitter_YOUR_LANGUAGE_NAME() }
+    unsafe { tree_sitter_satysfi() }
 }
 
 /// The content of the [`node-types.json`][] file for this grammar.
 ///
 /// [`node-types.json`]: https://tree-sitter.github.io/tree-sitter/using-parsers#static-node-types
-pub const NODE_TYPES: &'static str = include_str!("../../src/node-types.json");
+pub const NODE_TYPES: &str = include_str!("../../src/node-types.json");
 
 // Uncomment these to include any queries that this grammar contains
 
@@ -47,6 +50,6 @@ mod tests {
         let mut parser = tree_sitter::Parser::new();
         parser
             .set_language(super::language())
-            .expect("Error loading YOUR_LANGUAGE_NAME language");
+            .expect("Error loading SATySFi language");
     }
 }

@@ -1,4 +1,4 @@
-// vim:sw=2
+// vim:sw=2:fdm=marker
 
 const PREC = {
   recordmember: 13,
@@ -29,7 +29,10 @@ const CMD_NAME = /[A-Za-z][-A-Za-z0-9]*/;
 module.exports = grammar({
   name: "satysfi",
 
-  extras: ($) => [/\s/, $.comment],
+  extras: ($) => [
+    /\s/,
+    $.comment
+  ],
 
   word: ($) => $.identifier,
 
