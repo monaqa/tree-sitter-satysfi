@@ -80,6 +80,13 @@
   ]
   )
 
+(let_block_stmt
+  [
+  arg: (_) @parameter
+  optarg: (_) @parameter
+  ]
+  )
+
 ;; expr
 
 (lambda
@@ -149,6 +156,8 @@
  ";"
  ":"
  ","
+ (inline_text_bullet_star)
+ "#"
  ]  @punctuation.delimiter
 
 ;; horizontal/vertical mode
