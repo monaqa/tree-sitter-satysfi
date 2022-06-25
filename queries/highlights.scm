@@ -125,6 +125,17 @@
 (inline_text_list
   "|" @punctuation.delimiter
   )
+(math_list
+  "|" @punctuation.delimiter
+  )
+
+(math_token
+  [
+   "^"
+   "_"
+   ] @operator
+  )
+
 
 ;; brackets/punctuations
 [
@@ -143,13 +154,8 @@
  ] @punctuation.bracket
 
 (block_text
-  "'<" @punctuation.bracket
+  ["<" "'<"] @punctuation.bracket
   ">"  @punctuation.bracket
-  )
-
-(cmd_text_arg
-  "<" @punctuation.bracket
-  ">" @punctuation.bracket
   )
 
 [

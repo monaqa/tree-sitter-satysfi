@@ -622,8 +622,7 @@ module.exports = grammar({
           $.record,
           $.list,
           $.tuple,
-          seq("(", $.binary_operator, ")"),
-          seq("(", $._expr, ")"),
+          $.parened_expr,
           $.expr_with_mod,
           $.modvar,
           $._literal,
@@ -652,6 +651,15 @@ module.exports = grammar({
         sep2(",", $._expr),
         ")",
       ),
+
+    parened_expr: $ => seq(
+      "(",
+      choice(
+        $.binary_operator,
+        $._expr,
+      ),
+      ")"
+    ),
 
     expr_with_mod: ($) => seq(alias($._module_prefix, $.module_name), ".(", $._expr, ")"),
 
@@ -751,18 +759,21 @@ module.exports = grammar({
 
     cmd_expr_arg: ($) => $._cmd_expr_arg_inner,
     cmd_expr_option: ($) => seq("?:", $._cmd_expr_arg_inner),
-    cmd_text_arg: ($) =>
-      choice(
-        $.inline_text,
-        $.inline_text_list,
-        $.inline_text_bullet_list,
-        seq("<", optional($.vertical), ">"),
-      ),
     _cmd_expr_arg_inner: ($) => choice(
       seq("(", $._expr, ")"),
       $.list,
       $.record,
     ),
+
+    cmd_text_arg: ($) =>
+      choice(
+        $.inline_text,
+        $.inline_text_list,
+        $.inline_text_bullet_list,
+        alias($._cmd_text_arg_block, $.block_text),
+        // seq("<", optional($.vertical), ">"),
+      ),
+    _cmd_text_arg_block: $ => seq("<", optional($.vertical), ">"),
 
     math_cmd: ($) =>
       prec.left(
