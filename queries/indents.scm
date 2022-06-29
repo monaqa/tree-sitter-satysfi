@@ -33,6 +33,8 @@
 
 (block_text ">" @indent_end)
 (inline_text "}" @indent_end)
+(inline_text_list "}" @indent_end)
+(inline_text_bullet_list "}" @indent_end)
 (parened_expr ")" @indent_end)
 (cmd_expr_arg ")" @indent_end)
 
