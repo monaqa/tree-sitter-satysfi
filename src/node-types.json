@@ -1296,136 +1296,397 @@
   {
     "type": "ctrl_if",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "application",
-          "named": true
-        },
-        {
-          "type": "assignment",
-          "named": true
-        },
-        {
-          "type": "binary_expr",
-          "named": true
-        },
-        {
-          "type": "bind_stmt",
-          "named": true
-        },
-        {
-          "type": "block_text",
-          "named": true
-        },
-        {
-          "type": "command_application",
-          "named": true
-        },
-        {
-          "type": "ctrl_if",
-          "named": true
-        },
-        {
-          "type": "ctrl_while",
-          "named": true
-        },
-        {
-          "type": "expr_with_mod",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "inline_text",
-          "named": true
-        },
-        {
-          "type": "inline_text_bullet_list",
-          "named": true
-        },
-        {
-          "type": "inline_text_list",
-          "named": true
-        },
-        {
-          "type": "lambda",
-          "named": true
-        },
-        {
-          "type": "list",
-          "named": true
-        },
-        {
-          "type": "literal_bool",
-          "named": true
-        },
-        {
-          "type": "literal_float",
-          "named": true
-        },
-        {
-          "type": "literal_int",
-          "named": true
-        },
-        {
-          "type": "literal_length",
-          "named": true
-        },
-        {
-          "type": "literal_string",
-          "named": true
-        },
-        {
-          "type": "literal_unit",
-          "named": true
-        },
-        {
-          "type": "match_expr",
-          "named": true
-        },
-        {
-          "type": "math_list",
-          "named": true
-        },
-        {
-          "type": "math_text",
-          "named": true
-        },
-        {
-          "type": "modvar",
-          "named": true
-        },
-        {
-          "type": "parened_expr",
-          "named": true
-        },
-        {
-          "type": "record",
-          "named": true
-        },
-        {
-          "type": "record_member",
-          "named": true
-        },
-        {
-          "type": "tuple",
-          "named": true
-        },
-        {
-          "type": "unary_operator_expr",
-          "named": true
-        },
-        {
-          "type": "variant_constructor",
-          "named": true
-        }
-      ]
+    "fields": {
+      "cond": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "application",
+            "named": true
+          },
+          {
+            "type": "assignment",
+            "named": true
+          },
+          {
+            "type": "binary_expr",
+            "named": true
+          },
+          {
+            "type": "bind_stmt",
+            "named": true
+          },
+          {
+            "type": "block_text",
+            "named": true
+          },
+          {
+            "type": "command_application",
+            "named": true
+          },
+          {
+            "type": "ctrl_if",
+            "named": true
+          },
+          {
+            "type": "ctrl_while",
+            "named": true
+          },
+          {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "inline_text",
+            "named": true
+          },
+          {
+            "type": "inline_text_bullet_list",
+            "named": true
+          },
+          {
+            "type": "inline_text_list",
+            "named": true
+          },
+          {
+            "type": "lambda",
+            "named": true
+          },
+          {
+            "type": "list",
+            "named": true
+          },
+          {
+            "type": "literal_bool",
+            "named": true
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "literal_unit",
+            "named": true
+          },
+          {
+            "type": "match_expr",
+            "named": true
+          },
+          {
+            "type": "math_list",
+            "named": true
+          },
+          {
+            "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
+            "named": true
+          },
+          {
+            "type": "parened_expr",
+            "named": true
+          },
+          {
+            "type": "record",
+            "named": true
+          },
+          {
+            "type": "record_member",
+            "named": true
+          },
+          {
+            "type": "tuple",
+            "named": true
+          },
+          {
+            "type": "unary_operator_expr",
+            "named": true
+          },
+          {
+            "type": "variant_constructor",
+            "named": true
+          }
+        ]
+      },
+      "false_clause": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "application",
+            "named": true
+          },
+          {
+            "type": "assignment",
+            "named": true
+          },
+          {
+            "type": "binary_expr",
+            "named": true
+          },
+          {
+            "type": "bind_stmt",
+            "named": true
+          },
+          {
+            "type": "block_text",
+            "named": true
+          },
+          {
+            "type": "command_application",
+            "named": true
+          },
+          {
+            "type": "ctrl_if",
+            "named": true
+          },
+          {
+            "type": "ctrl_while",
+            "named": true
+          },
+          {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "inline_text",
+            "named": true
+          },
+          {
+            "type": "inline_text_bullet_list",
+            "named": true
+          },
+          {
+            "type": "inline_text_list",
+            "named": true
+          },
+          {
+            "type": "lambda",
+            "named": true
+          },
+          {
+            "type": "list",
+            "named": true
+          },
+          {
+            "type": "literal_bool",
+            "named": true
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "literal_unit",
+            "named": true
+          },
+          {
+            "type": "match_expr",
+            "named": true
+          },
+          {
+            "type": "math_list",
+            "named": true
+          },
+          {
+            "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
+            "named": true
+          },
+          {
+            "type": "parened_expr",
+            "named": true
+          },
+          {
+            "type": "record",
+            "named": true
+          },
+          {
+            "type": "record_member",
+            "named": true
+          },
+          {
+            "type": "tuple",
+            "named": true
+          },
+          {
+            "type": "unary_operator_expr",
+            "named": true
+          },
+          {
+            "type": "variant_constructor",
+            "named": true
+          }
+        ]
+      },
+      "true_clause": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "application",
+            "named": true
+          },
+          {
+            "type": "assignment",
+            "named": true
+          },
+          {
+            "type": "binary_expr",
+            "named": true
+          },
+          {
+            "type": "bind_stmt",
+            "named": true
+          },
+          {
+            "type": "block_text",
+            "named": true
+          },
+          {
+            "type": "command_application",
+            "named": true
+          },
+          {
+            "type": "ctrl_if",
+            "named": true
+          },
+          {
+            "type": "ctrl_while",
+            "named": true
+          },
+          {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "inline_text",
+            "named": true
+          },
+          {
+            "type": "inline_text_bullet_list",
+            "named": true
+          },
+          {
+            "type": "inline_text_list",
+            "named": true
+          },
+          {
+            "type": "lambda",
+            "named": true
+          },
+          {
+            "type": "list",
+            "named": true
+          },
+          {
+            "type": "literal_bool",
+            "named": true
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "literal_unit",
+            "named": true
+          },
+          {
+            "type": "match_expr",
+            "named": true
+          },
+          {
+            "type": "math_list",
+            "named": true
+          },
+          {
+            "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
+            "named": true
+          },
+          {
+            "type": "parened_expr",
+            "named": true
+          },
+          {
+            "type": "record",
+            "named": true
+          },
+          {
+            "type": "record_member",
+            "named": true
+          },
+          {
+            "type": "tuple",
+            "named": true
+          },
+          {
+            "type": "unary_operator_expr",
+            "named": true
+          },
+          {
+            "type": "variant_constructor",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -4398,144 +4659,157 @@
   {
     "type": "match_arm",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "application",
-          "named": true
-        },
-        {
-          "type": "assignment",
-          "named": true
-        },
-        {
-          "type": "binary_expr",
-          "named": true
-        },
-        {
-          "type": "bind_stmt",
-          "named": true
-        },
-        {
-          "type": "block_text",
-          "named": true
-        },
-        {
-          "type": "command_application",
-          "named": true
-        },
-        {
-          "type": "ctrl_if",
-          "named": true
-        },
-        {
-          "type": "ctrl_while",
-          "named": true
-        },
-        {
-          "type": "expr_with_mod",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "inline_text",
-          "named": true
-        },
-        {
-          "type": "inline_text_bullet_list",
-          "named": true
-        },
-        {
-          "type": "inline_text_list",
-          "named": true
-        },
-        {
-          "type": "lambda",
-          "named": true
-        },
-        {
-          "type": "list",
-          "named": true
-        },
-        {
-          "type": "literal_bool",
-          "named": true
-        },
-        {
-          "type": "literal_float",
-          "named": true
-        },
-        {
-          "type": "literal_int",
-          "named": true
-        },
-        {
-          "type": "literal_length",
-          "named": true
-        },
-        {
-          "type": "literal_string",
-          "named": true
-        },
-        {
-          "type": "literal_unit",
-          "named": true
-        },
-        {
-          "type": "match_expr",
-          "named": true
-        },
-        {
-          "type": "match_guard",
-          "named": true
-        },
-        {
-          "type": "math_list",
-          "named": true
-        },
-        {
-          "type": "math_text",
-          "named": true
-        },
-        {
-          "type": "modvar",
-          "named": true
-        },
-        {
-          "type": "parened_expr",
-          "named": true
-        },
-        {
-          "type": "pat_as",
-          "named": true
-        },
-        {
-          "type": "record",
-          "named": true
-        },
-        {
-          "type": "record_member",
-          "named": true
-        },
-        {
-          "type": "tuple",
-          "named": true
-        },
-        {
-          "type": "unary_operator_expr",
-          "named": true
-        },
-        {
-          "type": "variant_constructor",
-          "named": true
-        }
-      ]
+    "fields": {
+      "expr": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "application",
+            "named": true
+          },
+          {
+            "type": "assignment",
+            "named": true
+          },
+          {
+            "type": "binary_expr",
+            "named": true
+          },
+          {
+            "type": "bind_stmt",
+            "named": true
+          },
+          {
+            "type": "block_text",
+            "named": true
+          },
+          {
+            "type": "command_application",
+            "named": true
+          },
+          {
+            "type": "ctrl_if",
+            "named": true
+          },
+          {
+            "type": "ctrl_while",
+            "named": true
+          },
+          {
+            "type": "expr_with_mod",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "inline_text",
+            "named": true
+          },
+          {
+            "type": "inline_text_bullet_list",
+            "named": true
+          },
+          {
+            "type": "inline_text_list",
+            "named": true
+          },
+          {
+            "type": "lambda",
+            "named": true
+          },
+          {
+            "type": "list",
+            "named": true
+          },
+          {
+            "type": "literal_bool",
+            "named": true
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "literal_unit",
+            "named": true
+          },
+          {
+            "type": "match_expr",
+            "named": true
+          },
+          {
+            "type": "math_list",
+            "named": true
+          },
+          {
+            "type": "math_text",
+            "named": true
+          },
+          {
+            "type": "modvar",
+            "named": true
+          },
+          {
+            "type": "parened_expr",
+            "named": true
+          },
+          {
+            "type": "record",
+            "named": true
+          },
+          {
+            "type": "record_member",
+            "named": true
+          },
+          {
+            "type": "tuple",
+            "named": true
+          },
+          {
+            "type": "unary_operator_expr",
+            "named": true
+          },
+          {
+            "type": "variant_constructor",
+            "named": true
+          }
+        ]
+      },
+      "guard": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "match_guard",
+            "named": true
+          }
+        ]
+      },
+      "pattern": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "pat_as",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {

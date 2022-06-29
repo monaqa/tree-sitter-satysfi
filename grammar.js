@@ -516,10 +516,10 @@ module.exports = grammar({
 
     match_arm: ($) =>
       seq(
-        $.pat_as,
-        optional($.match_guard),
+        field("pattern", $.pat_as),
+        optional(field("guard", $.match_guard)),
         "->",
-        $._expr,
+        field("expr", $._expr,)
       ),
 
     match_guard: ($) => seq("when", $._expr),
@@ -539,7 +539,14 @@ module.exports = grammar({
 
     ctrl_while: ($) => seq("while", $._expr, "do", $._expr),
 
-    ctrl_if: ($) => seq("if", $._expr, "then", $._expr, "else", $._expr),
+    ctrl_if: ($) => seq(
+      "if",
+      field("cond", $._expr),
+      "then",
+      field("true_clause", $._expr),
+      "else",
+      field("false_clause", $._expr),
+    ),
 
     lambda: ($) =>
       prec.right(PREC.lambda, seq("fun", repeat1(field('arg', $._pattern)), "->", $._expr)),

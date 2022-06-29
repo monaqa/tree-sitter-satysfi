@@ -1,12 +1,14 @@
 [
+
  (block_text)
  (inline_text)
  (inline_text_list)
  (inline_text_bullet_list)
  (inline_text_bullet_item)
- (parened_expr)
  (cmd_expr_arg)
 
+ (match_expr)
+ (parened_expr)
  (list)
  (record)
  (tuple)
@@ -25,6 +27,16 @@
  (match_arm)
 
  ] @indent
+
+; (match_arm expr: (_) @indent)
+
+(ctrl_if
+  ; cond:(_) @indent
+  "then" @branch
+  "else" @branch
+  ; true_clause:(_) @indent
+  ; false_clause:(_) @indent
+  ) @indent
 
 ; (let_stmt expr:(_) @indent)
 ; (let_inline_stmt expr:(_) @indent)
@@ -51,6 +63,7 @@
 ] @branch
 (block_text ">" @branch)
 
+; (match_arm "|" @branch)
 
 ; (
 ;  (binary_expr
