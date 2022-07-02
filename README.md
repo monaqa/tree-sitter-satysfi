@@ -11,7 +11,7 @@
 local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
 parser_config.satysfi = {
   install_info = {
-    url = "https://github.com/nvim-treesitter/nvim-treesitter", -- local path or git repo
+    url = "https://github.com/monaqa/tree-sitter-satysfi", -- local path or git repo
     files = {"src/parser.c", "src/scanner.c"}
   },
   filetype = "satysfi", -- if filetype does not agrees with parser name
