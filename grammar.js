@@ -95,14 +95,16 @@ module.exports = grammar({
     $.inline_token,
     // {||} や {* } の中に入っているインラインテキスト。
     $._inline_token_compound,
-    // 決してマッチしないダミーパターン。
-    $._dummy,
+    // #foo; のように、prefix として付く '#'。
+    $._numbersign_after_nospace,
     // ModuleX.ModuleY.var_name のように、prefix として付く Module 名。
     $._module_prefix,
-    // ModuleX.ModuleY.var_name のように、prefix として付く Module 名。
-    $._numbersign_after_nospace,
+    // \SATySFi のようなコマンドの prefix として付く '\'。
     $._inline_cmd_prefix,
+    // +section のようなコマンドの prefix として付く '+'。
     $._block_cmd_prefix,
+    // 決してマッチしないダミーパターン。
+    $._dummy,
   ],
 
   rules: {
@@ -436,9 +438,9 @@ module.exports = grammar({
         $.expr_binary_operation,
         $.expr_binary_operator,
         $.expr_unary_operation,
-        $.expr_inline_text,
-        $.expr_block_text,
-        $.expr_math_text,
+        $.inline_text,
+        $.block_text,
+        $.math_text,
         $.expr_record,
         $.expr_list,
         $.expr_tuple,
@@ -485,9 +487,9 @@ module.exports = grammar({
         $.expr_binary_operator,
         $.expr_unary_operation,
         // $._literal,
-        // $.expr_inline_text,
-        // $.expr_block_text,
-        // $.expr_math_text,
+        // $.inline_text,
+        // $.block_text,
+        // $.math_text,
         // $.expr_record,
         // $.expr_list,
         // $.expr_tuple,
@@ -531,10 +533,6 @@ module.exports = grammar({
       choice(seq("[", "]"), seq("[", sep($._expr, ","), optional(","), "]")),
 
     expr_tuple: ($) => seq("(", $._expr, ",", sep($._expr, ","), ")"),
-
-    expr_inline_text: ($) => seq("{", optional($.horizontal), "}"),
-    expr_block_text: ($) => seq("'<", optional($.vertical), ">"),
-    expr_math_text: ($) => seq("${", optional($.math), "}"),
 
     binary_operator: (_) =>
       choice(...OPERATOR_PREC.map(([_prec, operator]) => operator)),
@@ -722,7 +720,10 @@ module.exports = grammar({
         choice($._mod_cmd_name, $.cmd_name),
       ),
     _mod_cmd_name: ($) =>
-      seq(alias($._module_prefix, $.module_name), ".", $.cmd_name),
+      seq(
+        repeat1(seq(alias($._module_prefix, $.module_name), ".")),
+        $.cmd_name,
+      ),
 
     block_cmd: ($) =>
       seq(
@@ -734,16 +735,23 @@ module.exports = grammar({
       ),
 
     block_cmd_name: ($) =>
-      seq(alias($._block_cmd_prefix, "+"), choice($._mod_cmd_name, $.cmd_name)),
+      seq(
+        alias($._block_cmd_prefix, "+"),
+        choice($._mod_cmd_name, $.cmd_name, "a"),
+      ),
 
     cmd_expr_arg: ($) => $._cmd_expr_arg_inner,
     cmd_expr_option: ($) => seq("?:", $._cmd_expr_arg_inner),
+    _cmd_expr_arg_inner: ($) => seq("(", $._expr, ")"),
+
     cmd_text_arg: ($) =>
       choice(
-        seq("{", optional($.horizontal), "}"),
-        seq("<", optional($.vertical), ">"),
+        $.inline_text,
+        $.inline_text_list,
+        $.inline_text_bullet_list,
+        alias($._cmd_text_arg_block, $.block_text),
       ),
-    _cmd_expr_arg_inner: ($) => seq("(", $._expr, ")"),
+    _cmd_text_arg_block: ($) => seq("<", optional($.vertical), ">"),
 
     math_cmd: ($) =>
       prec.left(
@@ -773,8 +781,10 @@ module.exports = grammar({
       choice(
         seq("{", $.math, "}"),
         seq("!", $.inline_text),
-        seq("!", "<", $.vertical, ">"),
-        seq("!", "(", $._expr, ")"),
+        seq("!", $.inline_text_list),
+        seq("!", $.inline_text_bullet_list),
+        seq("!", $._cmd_expr_arg_inner),
+        seq("!", $._cmd_text_arg_block),
         seq("!", $.expr_list),
         seq("!", $.expr_record),
       ),
