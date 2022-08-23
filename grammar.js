@@ -72,8 +72,10 @@ module.exports = grammar({
     $._binding,
     $._signature,
     $._declaration,
+    $._type,
     $._expr,
     $._pattern,
+    $._bind_val_single,
   ],
 
   conflicts: ($) => [],
@@ -201,44 +203,51 @@ module.exports = grammar({
 
     _bind_val: ($) =>
       choice(
-        $.bind_val_single,
-        seq("rec", sep($.bind_val_single, "and")),
+        $._bind_val_single,
+        seq("rec", sep($._bind_val_single, "and")),
       ),
 
-    bind_val_single: ($) =>
-      choice(
-        seq(
-          $.var_name,
+    _bind_val_single: ($) => choice(
+        $.bind_val_variable,
+        $.bind_val_math_cmd,
+        $.bind_val_inline_cmd,
+        $.bind_val_block_cmd,
+      ),
+
+    bind_val_variable: $ => seq(
+          field("name", $.var_name),
           optional($.quant),
-          repeat($.bind_val_parameter),
+          repeat(field("param", $.bind_val_parameter)),
           "=",
-          $._expr,
+          field("expr", $._expr),
         ),
-        seq(
+
+    bind_val_math_cmd: $ => seq(
           "math",
           $.var_name,
           $.math_cmd_name,
-          repeat($.bind_val_parameter),
+          repeat(field("param", $.bind_val_parameter)),
           "=",
-          $._expr,
+          field("expr", $._expr),
         ),
-        seq(
+
+    bind_val_inline_cmd: $ => seq(
           "inline",
           $.var_name,
           $.inline_cmd_name,
-          repeat($.bind_val_parameter),
+          repeat(field("param", $.bind_val_parameter)),
           "=",
-          $._expr,
+          field("expr", $._expr),
         ),
-        seq(
+
+    bind_val_block_cmd: $ => seq(
           "block",
           $.var_name,
           $.block_cmd_name,
-          repeat($.bind_val_parameter),
+          repeat(field("param", $.bind_val_parameter)),
           "=",
-          $._expr,
+          field("expr", $._expr),
         ),
-      ),
 
     bind_val_parameter: ($) =>
       seq(
@@ -250,7 +259,7 @@ module.exports = grammar({
     _bind_type: ($) => sep($.bind_type_single, "and"),
     bind_type_single: ($) =>
       choice(
-        seq($.type_name, repeat($.type_var), "=", $.type),
+        seq($.type_name, repeat($.type_var), "=", $._type),
         seq(
           $.type_name,
           repeat($.type_var),
@@ -260,18 +269,18 @@ module.exports = grammar({
         ),
       ),
 
-    constructor_branch: ($) => seq($.variant_name, "of", $.type),
+    constructor_branch: ($) => seq($.variant_name, "of", $._type),
 
     opt_parameter: ($) =>
       seq(
         $.label_name,
         "=",
         $._pattern,
-        optional(seq(":", $.type)),
+        optional(seq(":", $._type)),
         optional(seq("=", $._expr)),
       ),
     parameter: ($) =>
-      choice($._pattern, seq("(", $._pattern, ":", $.type, ")")),
+      choice($._pattern, seq("(", $._pattern, ":", $._type, ")")),
 
     _signature: ($) =>
       choice(
@@ -305,8 +314,12 @@ module.exports = grammar({
         $.declaration_signature,
         $.declaration_include,
       ),
-    declaration_val: ($) =>
-      seq("val", $.var_name, optional($.quant), ":", $.type),
+    declaration_val: ($) => seq(
+      "val",
+      field("var", $.var_name),
+      optional($.quant), ":",
+      field("type", $._type)
+    ),
     declaration_type_kind: ($) => seq("type", $.type_name, "::", $.type_kind),
     declaration_type: ($) => seq("type", $.bind_type),
     declaration_module: ($) => seq("module", $.module_name, ":", $._signature),
@@ -323,30 +336,59 @@ module.exports = grammar({
     label_name: (_) => VARIABLE_NAME,
 
     //$1 type
-    type: ($) =>
+    _type: ($) =>
       choice(
-        prec.right(
-          PREC.typeApplication,
-          seq(repeat(seq($.module_name, ".")), $.type_name, repeat($.type)),
-        ),
-        prec.right(
-          PREC.typeFunction,
-          seq(optional($.type_opts), $.type, "->", $.type),
-        ),
-        prec.left(PREC.typeProduct, seq($.type, "*", sep($.type, "*"))),
-        seq("(", $.type, ")"),
+        $.type_single,
+        $.type_application,
+        $.type_function,
+        $.type_product,
+        $.type_parened,
+        $.type_record,
         $.type_var,
-        seq(
+        $.type_math_cmd,
+        $.type_inline_cmd,
+        $.type_block_cmd,
+      ),
+
+    type_single: $ => seq(
+      repeat(seq($.module_name, ".")),
+      $.type_name,
+    ),
+
+    type_application: $ => prec.right(
+          PREC.typeApplication,
+          seq(
+            $.type_single,
+            repeat1($._type)
+          ),
+        ),
+
+    type_function: $ => prec.right(
+          PREC.typeFunction,
+          seq(
+            optional($.type_opts),
+            field("arg", $._type),
+            "->",
+            field("ret", $._type)
+          ),
+        ),
+
+    type_product: $ => prec.left(PREC.typeProduct, seq($._type, "*", sep($._type, "*"))),
+
+    type_parened: $ => seq("(", $._type, ")"),
+
+    type_record: $ => seq(
           "(",
           "|",
-          sep(seq($.label_name, ":", $.type), ","),
+          sep(seq($.label_name, ":", $._type), ","),
           "|",
           ")",
         ),
-        seq("math", $.cmd_parameter_types),
-        seq("inline", $.cmd_parameter_types),
-        seq("block", $.cmd_parameter_types),
-      ),
+
+    type_math_cmd: $ => seq("math", $.cmd_parameter_types),
+    type_inline_cmd: $ => seq("inline", $.cmd_parameter_types),
+    type_block_cmd: $ => seq("block", $.cmd_parameter_types),
+
     type_var: (_) => TYPE_VARIABLE,
 
     cmd_parameter_types: ($) =>
@@ -356,14 +398,14 @@ module.exports = grammar({
       ),
 
     cmd_parameter_type: ($) =>
-      seq(optional(seq($.type_opts_closed, ",")), $.type),
+      seq(optional(seq($.type_opts_closed, ",")), $._type),
 
     type_opts: ($) =>
       choice(
         $.type_opts_closed,
         seq(
           "?(",
-          sep(seq($.label_name, ":", $.type), ","),
+          sep(seq($.label_name, ":", $._type), ","),
           ",",
           $.row_var,
           ")",
@@ -371,7 +413,7 @@ module.exports = grammar({
       ),
 
     type_opts_closed: ($) =>
-      seq("?(", sep(seq($.label_name, ":", $.type), ","), ")"),
+      seq("?(", sep(seq($.label_name, ":", $._type), ","), ")"),
 
     quant: ($) =>
       choice(
@@ -423,7 +465,7 @@ module.exports = grammar({
     expr_lambda: ($) => seq("fun", repeat($.bind_val_parameter), "->", $._expr),
     expr_bind: ($) =>
       choice(
-        seq("let", $.bind_val, "in", $._expr),
+        seq("let", $._bind_val, "in", $._expr),
         seq("let", $._non_var_pattern, "=", $._expr, "in", $._expr),
       ),
     expr_open: ($) =>

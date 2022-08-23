@@ -145,11 +145,43 @@
           "named": true
         },
         {
-          "type": "type",
+          "type": "type_application",
+          "named": true
+        },
+        {
+          "type": "type_block_cmd",
+          "named": true
+        },
+        {
+          "type": "type_function",
+          "named": true
+        },
+        {
+          "type": "type_inline_cmd",
+          "named": true
+        },
+        {
+          "type": "type_math_cmd",
           "named": true
         },
         {
           "type": "type_name",
+          "named": true
+        },
+        {
+          "type": "type_parened",
+          "named": true
+        },
+        {
+          "type": "type_product",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_single",
           "named": true
         },
         {
@@ -165,10 +197,370 @@
     "fields": {},
     "children": {
       "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "bind_val_block_cmd",
+          "named": true
+        },
+        {
+          "type": "bind_val_inline_cmd",
+          "named": true
+        },
+        {
+          "type": "bind_val_math_cmd",
+          "named": true
+        },
+        {
+          "type": "bind_val_variable",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "bind_val_block_cmd",
+    "named": true,
+    "fields": {
+      "expr": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "expr_application",
+            "named": true
+          },
+          {
+            "type": "expr_binary_operation",
+            "named": true
+          },
+          {
+            "type": "expr_binary_operator",
+            "named": true
+          },
+          {
+            "type": "expr_bind",
+            "named": true
+          },
+          {
+            "type": "expr_block_text",
+            "named": true
+          },
+          {
+            "type": "expr_constructor",
+            "named": true
+          },
+          {
+            "type": "expr_if",
+            "named": true
+          },
+          {
+            "type": "expr_inline_text",
+            "named": true
+          },
+          {
+            "type": "expr_lambda",
+            "named": true
+          },
+          {
+            "type": "expr_list",
+            "named": true
+          },
+          {
+            "type": "expr_literal",
+            "named": true
+          },
+          {
+            "type": "expr_match",
+            "named": true
+          },
+          {
+            "type": "expr_math_text",
+            "named": true
+          },
+          {
+            "type": "expr_modvar",
+            "named": true
+          },
+          {
+            "type": "expr_open",
+            "named": true
+          },
+          {
+            "type": "expr_record",
+            "named": true
+          },
+          {
+            "type": "expr_tuple",
+            "named": true
+          },
+          {
+            "type": "expr_unary_operation",
+            "named": true
+          }
+        ]
+      },
+      "param": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "bind_val_parameter",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "bind_val_single",
+          "type": "block_cmd_name",
+          "named": true
+        },
+        {
+          "type": "var_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "bind_val_inline_cmd",
+    "named": true,
+    "fields": {
+      "expr": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "expr_application",
+            "named": true
+          },
+          {
+            "type": "expr_binary_operation",
+            "named": true
+          },
+          {
+            "type": "expr_binary_operator",
+            "named": true
+          },
+          {
+            "type": "expr_bind",
+            "named": true
+          },
+          {
+            "type": "expr_block_text",
+            "named": true
+          },
+          {
+            "type": "expr_constructor",
+            "named": true
+          },
+          {
+            "type": "expr_if",
+            "named": true
+          },
+          {
+            "type": "expr_inline_text",
+            "named": true
+          },
+          {
+            "type": "expr_lambda",
+            "named": true
+          },
+          {
+            "type": "expr_list",
+            "named": true
+          },
+          {
+            "type": "expr_literal",
+            "named": true
+          },
+          {
+            "type": "expr_match",
+            "named": true
+          },
+          {
+            "type": "expr_math_text",
+            "named": true
+          },
+          {
+            "type": "expr_modvar",
+            "named": true
+          },
+          {
+            "type": "expr_open",
+            "named": true
+          },
+          {
+            "type": "expr_record",
+            "named": true
+          },
+          {
+            "type": "expr_tuple",
+            "named": true
+          },
+          {
+            "type": "expr_unary_operation",
+            "named": true
+          }
+        ]
+      },
+      "param": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "bind_val_parameter",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "inline_cmd_name",
+          "named": true
+        },
+        {
+          "type": "var_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "bind_val_math_cmd",
+    "named": true,
+    "fields": {
+      "expr": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "expr_application",
+            "named": true
+          },
+          {
+            "type": "expr_binary_operation",
+            "named": true
+          },
+          {
+            "type": "expr_binary_operator",
+            "named": true
+          },
+          {
+            "type": "expr_bind",
+            "named": true
+          },
+          {
+            "type": "expr_block_text",
+            "named": true
+          },
+          {
+            "type": "expr_constructor",
+            "named": true
+          },
+          {
+            "type": "expr_if",
+            "named": true
+          },
+          {
+            "type": "expr_inline_text",
+            "named": true
+          },
+          {
+            "type": "expr_lambda",
+            "named": true
+          },
+          {
+            "type": "expr_list",
+            "named": true
+          },
+          {
+            "type": "expr_literal",
+            "named": true
+          },
+          {
+            "type": "expr_match",
+            "named": true
+          },
+          {
+            "type": "expr_math_text",
+            "named": true
+          },
+          {
+            "type": "expr_modvar",
+            "named": true
+          },
+          {
+            "type": "expr_open",
+            "named": true
+          },
+          {
+            "type": "expr_record",
+            "named": true
+          },
+          {
+            "type": "expr_tuple",
+            "named": true
+          },
+          {
+            "type": "expr_unary_operation",
+            "named": true
+          }
+        ]
+      },
+      "param": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "bind_val_parameter",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "math_cmd_name",
+          "named": true
+        },
+        {
+          "type": "var_name",
           "named": true
         }
       ]
@@ -194,107 +586,122 @@
     }
   },
   {
-    "type": "bind_val_single",
+    "type": "bind_val_variable",
     "named": true,
-    "fields": {},
+    "fields": {
+      "expr": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "expr_application",
+            "named": true
+          },
+          {
+            "type": "expr_binary_operation",
+            "named": true
+          },
+          {
+            "type": "expr_binary_operator",
+            "named": true
+          },
+          {
+            "type": "expr_bind",
+            "named": true
+          },
+          {
+            "type": "expr_block_text",
+            "named": true
+          },
+          {
+            "type": "expr_constructor",
+            "named": true
+          },
+          {
+            "type": "expr_if",
+            "named": true
+          },
+          {
+            "type": "expr_inline_text",
+            "named": true
+          },
+          {
+            "type": "expr_lambda",
+            "named": true
+          },
+          {
+            "type": "expr_list",
+            "named": true
+          },
+          {
+            "type": "expr_literal",
+            "named": true
+          },
+          {
+            "type": "expr_match",
+            "named": true
+          },
+          {
+            "type": "expr_math_text",
+            "named": true
+          },
+          {
+            "type": "expr_modvar",
+            "named": true
+          },
+          {
+            "type": "expr_open",
+            "named": true
+          },
+          {
+            "type": "expr_record",
+            "named": true
+          },
+          {
+            "type": "expr_tuple",
+            "named": true
+          },
+          {
+            "type": "expr_unary_operation",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "var_name",
+            "named": true
+          }
+        ]
+      },
+      "param": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "bind_val_parameter",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
-      "required": true,
+      "multiple": false,
+      "required": false,
       "types": [
         {
-          "type": "bind_val_parameter",
-          "named": true
-        },
-        {
-          "type": "block_cmd_name",
-          "named": true
-        },
-        {
-          "type": "expr_application",
-          "named": true
-        },
-        {
-          "type": "expr_binary_operation",
-          "named": true
-        },
-        {
-          "type": "expr_binary_operator",
-          "named": true
-        },
-        {
-          "type": "expr_bind",
-          "named": true
-        },
-        {
-          "type": "expr_block_text",
-          "named": true
-        },
-        {
-          "type": "expr_constructor",
-          "named": true
-        },
-        {
-          "type": "expr_if",
-          "named": true
-        },
-        {
-          "type": "expr_inline_text",
-          "named": true
-        },
-        {
-          "type": "expr_lambda",
-          "named": true
-        },
-        {
-          "type": "expr_list",
-          "named": true
-        },
-        {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
-          "type": "expr_match",
-          "named": true
-        },
-        {
-          "type": "expr_math_text",
-          "named": true
-        },
-        {
-          "type": "expr_modvar",
-          "named": true
-        },
-        {
-          "type": "expr_open",
-          "named": true
-        },
-        {
-          "type": "expr_record",
-          "named": true
-        },
-        {
-          "type": "expr_tuple",
-          "named": true
-        },
-        {
-          "type": "expr_unary_operation",
-          "named": true
-        },
-        {
-          "type": "inline_cmd_name",
-          "named": true
-        },
-        {
-          "type": "math_cmd_name",
-          "named": true
-        },
-        {
           "type": "quant",
-          "named": true
-        },
-        {
-          "type": "var_name",
           "named": true
         }
       ]
@@ -530,11 +937,47 @@
       "required": true,
       "types": [
         {
-          "type": "type",
+          "type": "type_application",
+          "named": true
+        },
+        {
+          "type": "type_block_cmd",
+          "named": true
+        },
+        {
+          "type": "type_function",
+          "named": true
+        },
+        {
+          "type": "type_inline_cmd",
+          "named": true
+        },
+        {
+          "type": "type_math_cmd",
           "named": true
         },
         {
           "type": "type_opts_closed",
+          "named": true
+        },
+        {
+          "type": "type_parened",
+          "named": true
+        },
+        {
+          "type": "type_product",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_single",
+          "named": true
+        },
+        {
+          "type": "type_var",
           "named": true
         }
       ]
@@ -583,7 +1026,43 @@
       "required": true,
       "types": [
         {
-          "type": "type",
+          "type": "type_application",
+          "named": true
+        },
+        {
+          "type": "type_block_cmd",
+          "named": true
+        },
+        {
+          "type": "type_function",
+          "named": true
+        },
+        {
+          "type": "type_inline_cmd",
+          "named": true
+        },
+        {
+          "type": "type_math_cmd",
+          "named": true
+        },
+        {
+          "type": "type_parened",
+          "named": true
+        },
+        {
+          "type": "type_product",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_single",
+          "named": true
+        },
+        {
+          "type": "type_var",
           "named": true
         },
         {
@@ -719,21 +1198,70 @@
   {
     "type": "declaration_val",
     "named": true,
-    "fields": {},
+    "fields": {
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "type_application",
+            "named": true
+          },
+          {
+            "type": "type_block_cmd",
+            "named": true
+          },
+          {
+            "type": "type_function",
+            "named": true
+          },
+          {
+            "type": "type_inline_cmd",
+            "named": true
+          },
+          {
+            "type": "type_math_cmd",
+            "named": true
+          },
+          {
+            "type": "type_parened",
+            "named": true
+          },
+          {
+            "type": "type_product",
+            "named": true
+          },
+          {
+            "type": "type_record",
+            "named": true
+          },
+          {
+            "type": "type_single",
+            "named": true
+          },
+          {
+            "type": "type_var",
+            "named": true
+          }
+        ]
+      },
+      "var": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "var_name",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
-      "required": true,
+      "multiple": false,
+      "required": false,
       "types": [
         {
           "type": "quant",
-          "named": true
-        },
-        {
-          "type": "type",
-          "named": true
-        },
-        {
-          "type": "var_name",
           "named": true
         }
       ]
@@ -1139,7 +1667,19 @@
       "required": true,
       "types": [
         {
-          "type": "bind_val",
+          "type": "bind_val_block_cmd",
+          "named": true
+        },
+        {
+          "type": "bind_val_inline_cmd",
+          "named": true
+        },
+        {
+          "type": "bind_val_math_cmd",
+          "named": true
+        },
+        {
+          "type": "bind_val_variable",
           "named": true
         },
         {
@@ -3142,7 +3682,43 @@
           "named": true
         },
         {
-          "type": "type",
+          "type": "type_application",
+          "named": true
+        },
+        {
+          "type": "type_block_cmd",
+          "named": true
+        },
+        {
+          "type": "type_function",
+          "named": true
+        },
+        {
+          "type": "type_inline_cmd",
+          "named": true
+        },
+        {
+          "type": "type_math_cmd",
+          "named": true
+        },
+        {
+          "type": "type_parened",
+          "named": true
+        },
+        {
+          "type": "type_product",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_single",
+          "named": true
+        },
+        {
+          "type": "type_var",
           "named": true
         },
         {
@@ -3177,7 +3753,43 @@
           "named": true
         },
         {
-          "type": "type",
+          "type": "type_application",
+          "named": true
+        },
+        {
+          "type": "type_block_cmd",
+          "named": true
+        },
+        {
+          "type": "type_function",
+          "named": true
+        },
+        {
+          "type": "type_inline_cmd",
+          "named": true
+        },
+        {
+          "type": "type_math_cmd",
+          "named": true
+        },
+        {
+          "type": "type_parened",
+          "named": true
+        },
+        {
+          "type": "type_product",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_single",
+          "named": true
+        },
+        {
+          "type": "type_var",
           "named": true
         },
         {
@@ -3677,7 +4289,7 @@
     }
   },
   {
-    "type": "type",
+    "type": "type_application",
     "named": true,
     "fields": {},
     "children": {
@@ -3685,31 +4297,181 @@
       "required": true,
       "types": [
         {
-          "type": "cmd_parameter_types",
+          "type": "type_application",
           "named": true
         },
         {
-          "type": "label_name",
+          "type": "type_block_cmd",
           "named": true
         },
         {
-          "type": "module_name",
+          "type": "type_function",
           "named": true
         },
         {
-          "type": "type",
+          "type": "type_inline_cmd",
           "named": true
         },
         {
-          "type": "type_name",
+          "type": "type_math_cmd",
           "named": true
         },
         {
-          "type": "type_opts",
+          "type": "type_parened",
+          "named": true
+        },
+        {
+          "type": "type_product",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_single",
           "named": true
         },
         {
           "type": "type_var",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_block_cmd",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "cmd_parameter_types",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_function",
+    "named": true,
+    "fields": {
+      "arg": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "type_application",
+            "named": true
+          },
+          {
+            "type": "type_block_cmd",
+            "named": true
+          },
+          {
+            "type": "type_function",
+            "named": true
+          },
+          {
+            "type": "type_inline_cmd",
+            "named": true
+          },
+          {
+            "type": "type_math_cmd",
+            "named": true
+          },
+          {
+            "type": "type_parened",
+            "named": true
+          },
+          {
+            "type": "type_product",
+            "named": true
+          },
+          {
+            "type": "type_record",
+            "named": true
+          },
+          {
+            "type": "type_single",
+            "named": true
+          },
+          {
+            "type": "type_var",
+            "named": true
+          }
+        ]
+      },
+      "ret": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "type_application",
+            "named": true
+          },
+          {
+            "type": "type_block_cmd",
+            "named": true
+          },
+          {
+            "type": "type_function",
+            "named": true
+          },
+          {
+            "type": "type_inline_cmd",
+            "named": true
+          },
+          {
+            "type": "type_math_cmd",
+            "named": true
+          },
+          {
+            "type": "type_parened",
+            "named": true
+          },
+          {
+            "type": "type_product",
+            "named": true
+          },
+          {
+            "type": "type_record",
+            "named": true
+          },
+          {
+            "type": "type_single",
+            "named": true
+          },
+          {
+            "type": "type_var",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "type_opts",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_inline_cmd",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "cmd_parameter_types",
           "named": true
         }
       ]
@@ -3725,6 +4487,21 @@
       "types": [
         {
           "type": "base_kind",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_math_cmd",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "cmd_parameter_types",
           "named": true
         }
       ]
@@ -3752,11 +4529,47 @@
           "named": true
         },
         {
-          "type": "type",
+          "type": "type_application",
+          "named": true
+        },
+        {
+          "type": "type_block_cmd",
+          "named": true
+        },
+        {
+          "type": "type_function",
+          "named": true
+        },
+        {
+          "type": "type_inline_cmd",
+          "named": true
+        },
+        {
+          "type": "type_math_cmd",
           "named": true
         },
         {
           "type": "type_opts_closed",
+          "named": true
+        },
+        {
+          "type": "type_parened",
+          "named": true
+        },
+        {
+          "type": "type_product",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_single",
+          "named": true
+        },
+        {
+          "type": "type_var",
           "named": true
         }
       ]
@@ -3775,7 +4588,219 @@
           "named": true
         },
         {
-          "type": "type",
+          "type": "type_application",
+          "named": true
+        },
+        {
+          "type": "type_block_cmd",
+          "named": true
+        },
+        {
+          "type": "type_function",
+          "named": true
+        },
+        {
+          "type": "type_inline_cmd",
+          "named": true
+        },
+        {
+          "type": "type_math_cmd",
+          "named": true
+        },
+        {
+          "type": "type_parened",
+          "named": true
+        },
+        {
+          "type": "type_product",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_single",
+          "named": true
+        },
+        {
+          "type": "type_var",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_parened",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "type_application",
+          "named": true
+        },
+        {
+          "type": "type_block_cmd",
+          "named": true
+        },
+        {
+          "type": "type_function",
+          "named": true
+        },
+        {
+          "type": "type_inline_cmd",
+          "named": true
+        },
+        {
+          "type": "type_math_cmd",
+          "named": true
+        },
+        {
+          "type": "type_parened",
+          "named": true
+        },
+        {
+          "type": "type_product",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_single",
+          "named": true
+        },
+        {
+          "type": "type_var",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_product",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "type_application",
+          "named": true
+        },
+        {
+          "type": "type_block_cmd",
+          "named": true
+        },
+        {
+          "type": "type_function",
+          "named": true
+        },
+        {
+          "type": "type_inline_cmd",
+          "named": true
+        },
+        {
+          "type": "type_math_cmd",
+          "named": true
+        },
+        {
+          "type": "type_parened",
+          "named": true
+        },
+        {
+          "type": "type_product",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_single",
+          "named": true
+        },
+        {
+          "type": "type_var",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_record",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "label_name",
+          "named": true
+        },
+        {
+          "type": "type_application",
+          "named": true
+        },
+        {
+          "type": "type_block_cmd",
+          "named": true
+        },
+        {
+          "type": "type_function",
+          "named": true
+        },
+        {
+          "type": "type_inline_cmd",
+          "named": true
+        },
+        {
+          "type": "type_math_cmd",
+          "named": true
+        },
+        {
+          "type": "type_parened",
+          "named": true
+        },
+        {
+          "type": "type_product",
+          "named": true
+        },
+        {
+          "type": "type_record",
+          "named": true
+        },
+        {
+          "type": "type_single",
+          "named": true
+        },
+        {
+          "type": "type_var",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_single",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "module_name",
+          "named": true
+        },
+        {
+          "type": "type_name",
           "named": true
         }
       ]
