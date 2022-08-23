@@ -1,8 +1,8 @@
 // vim:sw=2
 const PREC = {
-  application: 11,
-  constructor: 10,
-  unary: 10,
+  constructor: 11,
+  application: 10,
+  // unary: 10,
   divisive: 9,
   multiplicative: 9,
   additive: 8,
@@ -41,20 +41,39 @@ const OPERATOR_PREC = [
   [PREC.divisive, "mod"],
 ];
 
-const INLINE_CMD_NAME = /\\([A-Z][-A-Za-z0-9]*\.)*[A-Za-z][-A-Za-z0-9]*/;
-const BLOCK_CMD_NAME = /\+([A-Z][-A-Za-z0-9]*\.)*[A-Za-z][-A-Za-z0-9]*/;
-const VARIABLE_NAME = /[a-z][-A-Za-z0-9]*/;
-const MODULE_NAME = /[A-Z][-A-Za-z0-9]*/;
-const TYPE_VARIABLE = /'[a-z][-A-Za-z0-9]*/;
-const ROW_VARIABLE = /'?[a-z][-A-Za-z0-9]*/;
 
-const tokens = {
-  whitespace: /\s+/,
-  cmd_name: /[A-Za-z][-A-Za-z0-9]*/,
+function tokens() {
+
+  const INLINE_CMD_NAME = /\\([A-Z][-A-Za-z0-9]*\.)*[A-Za-z][-A-Za-z0-9]*/;
+  const BLOCK_CMD_NAME = /\+([A-Z][-A-Za-z0-9]*\.)*[A-Za-z][-A-Za-z0-9]*/;
+  const VARIABLE_NAME = /[a-z][-A-Za-z0-9]*/;
+  const MODULE_NAME = /[A-Z][-A-Za-z0-9]*/;
+  const TYPE_VARIABLE = /'[a-z][-A-Za-z0-9]*/;
+  const ROW_VARIABLE = /'?[a-z][-A-Za-z0-9]*/;
+
+  return {
+    whitespace: /\s+/,
+    cmd_name: /[A-Za-z][-A-Za-z0-9]*/,
+
+    type_var: TYPE_VARIABLE,
+
+    var_name: VARIABLE_NAME,
+    type_name: VARIABLE_NAME,
+    variant_name: MODULE_NAME,
+    module_name: MODULE_NAME,
+    label_name: VARIABLE_NAME,
+
+    inline_cmd_name: INLINE_CMD_NAME,
+    math_cmd_name: INLINE_CMD_NAME,
+    block_cmd_name: BLOCK_CMD_NAME,
+
+    // row_variable のパターンは var_name を内包するため、var_name の後ろに置く
+    row_var: ROW_VARIABLE,
+  }
 }
 
 const tokenGrammar = Object.fromEntries(
-  Object.entries(tokens).map(
+  Object.entries(tokens()).map(
     ([k, v]) => [k, (_) => v]
   )
 )
@@ -78,7 +97,9 @@ module.exports = grammar({
     $._bind_val_single,
   ],
 
-  conflicts: ($) => [],
+  conflicts: ($) => [
+    [$._expr, $._expr_application_function],
+  ],
 
   externals: ($) => [
     $.literal_string,
@@ -177,7 +198,6 @@ module.exports = grammar({
     module_coerction: ($) =>
       seq(sep($.module_name, "."), ":>", $._signature),
 
-    module_name: (_) => MODULE_NAME,
 
     _binding: ($) =>
       choice(
@@ -333,7 +353,6 @@ module.exports = grammar({
     row_kind: ($) =>
       seq("(", "|", sep($.label_name, ","), "|", ")"),
 
-    label_name: (_) => VARIABLE_NAME,
 
     //$1 type
     _type: ($) =>
@@ -389,7 +408,6 @@ module.exports = grammar({
     type_inline_cmd: $ => seq("inline", $.cmd_parameter_types),
     type_block_cmd: $ => seq("block", $.cmd_parameter_types),
 
-    type_var: (_) => TYPE_VARIABLE,
 
     cmd_parameter_types: ($) =>
       choice(
@@ -421,15 +439,14 @@ module.exports = grammar({
         repeat1(seq($.row_var, "::", $.row_kind)),
       ),
 
-    row_var: (_) => ROW_VARIABLE,
 
     //$1 expr
     _expr: ($) =>
       choice(
-        seq("(", $._expr, ")"),
-        $.expr_application,
+        $.expr_parened,
         $.expr_constructor,
-        $.expr_modvar,
+        $.expr_application,
+        $.expr_variable,
         $.expr_lambda,
         $.expr_bind,
         $.expr_open,
@@ -447,21 +464,57 @@ module.exports = grammar({
         $.expr_tuple,
       ),
 
+    expr_parened: $ => seq("(", $._expr, ")"),
+
+    expr_constructor: ($) =>
+      prec.left(
+        PREC.constructor,
+        seq(
+          choice(
+            field("variant", $.mod_variant),
+            field("variant", $.variant_name),
+          ),
+          field("arg", optional($._expr))
+        ),
+      ),
+    mod_variant: $ => seq(
+      repeat1(seq($.module_name, ".")),
+      $.variant_name,
+    ),
+
     expr_application: ($) =>
       prec.left(
         PREC.application,
         seq(
-          field("function", $._expr),
+          field("function", $._expr_application_function),
           field("opt_arg", optional($.expr_opts)),
           field("arg", $._expr),
         ),
       ),
-    expr_constructor: ($) =>
-      prec.left(
-        PREC.constructor,
-        seq(repeat(seq($.module_name, ".")), $.variant_name, optional($._expr)),
-      ),
-    expr_modvar: ($) => seq(repeat(seq($.module_name, ".")), $.var_name),
+
+    _expr_application_function: $ => choice(
+        $.expr_parened,
+        // $.expr_constructor,
+        $.expr_application,
+        $.expr_variable,
+        $.expr_lambda,
+        $.expr_bind,
+        $.expr_open,
+        $.expr_match,
+        $.expr_if,
+        $.expr_binary_operation,
+        $.expr_binary_operator,
+        $.expr_unary_operation,
+        // $.expr_literal,
+        // $.expr_inline_text,
+        // $.expr_block_text,
+        // $.expr_math_text,
+        // $.expr_record,
+        // $.expr_list,
+        // $.expr_tuple,
+    ),
+
+    expr_variable: ($) => seq(repeat(seq($.module_name, ".")), $.var_name),
     expr_lambda: ($) => seq("fun", repeat($.bind_val_parameter), "->", $._expr),
     expr_bind: ($) =>
       choice(
@@ -491,8 +544,8 @@ module.exports = grammar({
     expr_unary_operation: ($) => seq($._un_op, $._expr),
     expr_literal: ($) =>
       choice(
-        seq($.matchable_const),
-        seq($.non_matchable_const),
+        seq($._matchable_const),
+        seq($._non_matchable_const),
       ),
 
     expr_record: ($) =>
@@ -546,7 +599,7 @@ module.exports = grammar({
     expr_opts: ($) =>
       seq("?(", sep(seq($.label_name, "=", $._expr), ","), ")"),
 
-    matchable_const: ($) =>
+    _matchable_const: ($) =>
       choice(
         seq("(", ")"),
         "true",
@@ -555,7 +608,7 @@ module.exports = grammar({
         $.literal_string,
       ),
 
-    non_matchable_const: ($) =>
+    _non_matchable_const: ($) =>
       choice(
         $.literal_float,
         $.literal_length,
@@ -579,7 +632,7 @@ module.exports = grammar({
     pattern_ignore: ($) => "_",
     pattern_variant: ($) => $.variant,
     pattern_tuple: ($) => seq("(", $._pattern, ",", sep($._pattern, ","), ")"),
-    pattern_const: ($) => $.matchable_const,
+    pattern_const: ($) => $._matchable_const,
 
     variant: ($) =>
       prec.right(
@@ -805,13 +858,6 @@ module.exports = grammar({
       );
     },
 
-    var_name: (_) => VARIABLE_NAME,
-    type_name: (_) => VARIABLE_NAME,
-    variant_name: (_) => MODULE_NAME,
-
-    inline_cmd_name: (_) => INLINE_CMD_NAME,
-    math_cmd_name: (_) => INLINE_CMD_NAME,
-    block_cmd_name: (_) => BLOCK_CMD_NAME,
   },
 });
 
