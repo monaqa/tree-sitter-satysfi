@@ -202,15 +202,15 @@
           "named": true
         },
         {
+          "type": "type_path",
+          "named": true
+        },
+        {
           "type": "type_product",
           "named": true
         },
         {
           "type": "type_record",
-          "named": true
-        },
-        {
-          "type": "type_single",
           "named": true
         },
         {
@@ -332,7 +332,7 @@
             "named": true
           },
           {
-            "type": "expr_variable",
+            "type": "expr_var_path",
             "named": true
           },
           {
@@ -472,7 +472,7 @@
             "named": true
           },
           {
-            "type": "expr_variable",
+            "type": "expr_var_path",
             "named": true
           },
           {
@@ -612,7 +612,7 @@
             "named": true
           },
           {
-            "type": "expr_variable",
+            "type": "expr_var_path",
             "named": true
           },
           {
@@ -771,7 +771,7 @@
             "named": true
           },
           {
-            "type": "expr_variable",
+            "type": "expr_var_path",
             "named": true
           },
           {
@@ -873,6 +873,25 @@
     }
   },
   {
+    "type": "block_cmd_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "cmd_name",
+          "named": true
+        },
+        {
+          "type": "module_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "block_text_embedding",
     "named": true,
     "fields": {},
@@ -964,7 +983,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -1063,7 +1082,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -1122,15 +1141,15 @@
           "named": true
         },
         {
+          "type": "type_path",
+          "named": true
+        },
+        {
           "type": "type_product",
           "named": true
         },
         {
           "type": "type_record",
-          "named": true
-        },
-        {
-          "type": "type_single",
           "named": true
         },
         {
@@ -1207,15 +1226,15 @@
           "named": true
         },
         {
+          "type": "type_path",
+          "named": true
+        },
+        {
           "type": "type_product",
           "named": true
         },
         {
           "type": "type_record",
-          "named": true
-        },
-        {
-          "type": "type_single",
           "named": true
         },
         {
@@ -1397,15 +1416,15 @@
             "named": true
           },
           {
+            "type": "type_path",
+            "named": true
+          },
+          {
             "type": "type_product",
             "named": true
           },
           {
             "type": "type_record",
-            "named": true
-          },
-          {
-            "type": "type_single",
             "named": true
           },
           {
@@ -1521,7 +1540,7 @@
             "named": true
           },
           {
-            "type": "expr_variable",
+            "type": "expr_var_path",
             "named": true
           },
           {
@@ -1595,7 +1614,7 @@
             "named": true
           },
           {
-            "type": "expr_variable",
+            "type": "expr_var_path",
             "named": true
           }
         ]
@@ -1697,7 +1716,7 @@
             "named": true
           },
           {
-            "type": "expr_variable",
+            "type": "expr_var_path",
             "named": true
           },
           {
@@ -1817,7 +1836,7 @@
             "named": true
           },
           {
-            "type": "expr_variable",
+            "type": "expr_var_path",
             "named": true
           },
           {
@@ -1956,7 +1975,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -2094,7 +2113,7 @@
             "named": true
           },
           {
-            "type": "expr_variable",
+            "type": "expr_var_path",
             "named": true
           },
           {
@@ -2128,11 +2147,11 @@
         "required": true,
         "types": [
           {
-            "type": "mod_variant",
+            "type": "variant_name",
             "named": true
           },
           {
-            "type": "variant_name",
+            "type": "variant_path",
             "named": true
           }
         ]
@@ -2216,7 +2235,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -2334,7 +2353,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -2433,7 +2452,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -2540,7 +2559,7 @@
             "named": true
           },
           {
-            "type": "expr_variable",
+            "type": "expr_var_path",
             "named": true
           },
           {
@@ -2643,7 +2662,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -2777,7 +2796,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -2880,7 +2899,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -2983,7 +3002,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -3082,7 +3101,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -3185,7 +3204,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -3284,7 +3303,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -3307,7 +3326,7 @@
     }
   },
   {
-    "type": "expr_variable",
+    "type": "expr_var_path",
     "named": true,
     "fields": {},
     "children": {
@@ -3475,7 +3494,21 @@
   {
     "type": "inline_cmd_name",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "cmd_name",
+          "named": true
+        },
+        {
+          "type": "module_name",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "inline_literal_escaped",
@@ -3668,7 +3701,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -3779,7 +3812,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -3816,7 +3849,21 @@
   {
     "type": "math_cmd_name",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "cmd_name",
+          "named": true
+        },
+        {
+          "type": "module_name",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "math_embedding",
@@ -3930,25 +3977,6 @@
         },
         {
           "type": "math_embedding",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "mod_variant",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "module_name",
-          "named": true
-        },
-        {
-          "type": "variant_name",
           "named": true
         }
       ]
@@ -4237,7 +4265,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -4301,15 +4329,15 @@
           "named": true
         },
         {
+          "type": "type_path",
+          "named": true
+        },
+        {
           "type": "type_product",
           "named": true
         },
         {
           "type": "type_record",
-          "named": true
-        },
-        {
-          "type": "type_single",
           "named": true
         },
         {
@@ -4372,15 +4400,15 @@
           "named": true
         },
         {
+          "type": "type_path",
+          "named": true
+        },
+        {
           "type": "type_product",
           "named": true
         },
         {
           "type": "type_record",
-          "named": true
-        },
-        {
-          "type": "type_single",
           "named": true
         },
         {
@@ -4549,7 +4577,7 @@
             "named": true
           },
           {
-            "type": "expr_variable",
+            "type": "expr_var_path",
             "named": true
           },
           {
@@ -4763,7 +4791,7 @@
           "named": true
         },
         {
-          "type": "expr_variable",
+          "type": "expr_var_path",
           "named": true
         },
         {
@@ -5007,15 +5035,15 @@
           "named": true
         },
         {
+          "type": "type_path",
+          "named": true
+        },
+        {
           "type": "type_product",
           "named": true
         },
         {
           "type": "type_record",
-          "named": true
-        },
-        {
-          "type": "type_single",
           "named": true
         },
         {
@@ -5073,15 +5101,15 @@
             "named": true
           },
           {
+            "type": "type_path",
+            "named": true
+          },
+          {
             "type": "type_product",
             "named": true
           },
           {
             "type": "type_record",
-            "named": true
-          },
-          {
-            "type": "type_single",
             "named": true
           },
           {
@@ -5119,15 +5147,15 @@
             "named": true
           },
           {
+            "type": "type_path",
+            "named": true
+          },
+          {
             "type": "type_product",
             "named": true
           },
           {
             "type": "type_record",
-            "named": true
-          },
-          {
-            "type": "type_single",
             "named": true
           },
           {
@@ -5243,15 +5271,15 @@
           "named": true
         },
         {
+          "type": "type_path",
+          "named": true
+        },
+        {
           "type": "type_product",
           "named": true
         },
         {
           "type": "type_record",
-          "named": true
-        },
-        {
-          "type": "type_single",
           "named": true
         },
         {
@@ -5298,15 +5326,15 @@
           "named": true
         },
         {
+          "type": "type_path",
+          "named": true
+        },
+        {
           "type": "type_product",
           "named": true
         },
         {
           "type": "type_record",
-          "named": true
-        },
-        {
-          "type": "type_single",
           "named": true
         },
         {
@@ -5349,6 +5377,10 @@
           "named": true
         },
         {
+          "type": "type_path",
+          "named": true
+        },
+        {
           "type": "type_product",
           "named": true
         },
@@ -5357,11 +5389,26 @@
           "named": true
         },
         {
-          "type": "type_single",
+          "type": "type_var",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "type_path",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "module_name",
           "named": true
         },
         {
-          "type": "type_var",
+          "type": "type_name",
           "named": true
         }
       ]
@@ -5400,15 +5447,15 @@
           "named": true
         },
         {
+          "type": "type_path",
+          "named": true
+        },
+        {
           "type": "type_product",
           "named": true
         },
         {
           "type": "type_record",
-          "named": true
-        },
-        {
-          "type": "type_single",
           "named": true
         },
         {
@@ -5455,6 +5502,10 @@
           "named": true
         },
         {
+          "type": "type_path",
+          "named": true
+        },
+        {
           "type": "type_product",
           "named": true
         },
@@ -5463,30 +5514,7 @@
           "named": true
         },
         {
-          "type": "type_single",
-          "named": true
-        },
-        {
           "type": "type_var",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "type_single",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "module_name",
-          "named": true
-        },
-        {
-          "type": "type_name",
           "named": true
         }
       ]
@@ -5505,10 +5533,6 @@
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "module_name",
-          "named": true
-        },
         {
           "type": "pattern_const",
           "named": true
@@ -5530,7 +5554,7 @@
           "named": true
         },
         {
-          "type": "variant_name",
+          "type": "variant_path",
           "named": true
         }
       ]
@@ -5540,6 +5564,25 @@
     "type": "variant_name",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "variant_path",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "module_name",
+          "named": true
+        },
+        {
+          "type": "variant_name",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "vertical",
@@ -5590,6 +5633,10 @@
   },
   {
     "type": "*",
+    "named": false
+  },
+  {
+    "type": "+",
     "named": false
   },
   {
@@ -5669,7 +5716,15 @@
     "named": false
   },
   {
+    "type": "\\",
+    "named": false
+  },
+  {
     "type": "\\ ",
+    "named": false
+  },
+  {
+    "type": "\\\"",
     "named": false
   },
   {
@@ -5745,7 +5800,7 @@
     "named": false
   },
   {
-    "type": "block_cmd_name",
+    "type": "cmd_name",
     "named": true
   },
   {

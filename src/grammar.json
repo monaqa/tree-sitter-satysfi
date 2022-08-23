@@ -145,18 +145,6 @@
       "type": "PATTERN",
       "value": "[a-z][-A-Za-z0-9]*"
     },
-    "inline_cmd_name": {
-      "type": "PATTERN",
-      "value": "\\\\([A-Z][-A-Za-z0-9]*\\.)*[A-Za-z][-A-Za-z0-9]*"
-    },
-    "math_cmd_name": {
-      "type": "PATTERN",
-      "value": "\\\\([A-Z][-A-Za-z0-9]*\\.)*[A-Za-z][-A-Za-z0-9]*"
-    },
-    "block_cmd_name": {
-      "type": "PATTERN",
-      "value": "\\+([A-Z][-A-Za-z0-9]*\\.)*[A-Za-z][-A-Za-z0-9]*"
-    },
     "row_var": {
       "type": "PATTERN",
       "value": "'?[a-z][-A-Za-z0-9]*"
@@ -351,24 +339,29 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "module_name"
-        },
-        {
           "type": "REPEAT",
           "content": {
             "type": "SEQ",
             "members": [
               {
-                "type": "STRING",
-                "value": "."
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_module_prefix"
+                },
+                "named": true,
+                "value": "module_name"
               },
               {
-                "type": "SYMBOL",
-                "name": "module_name"
+                "type": "STRING",
+                "value": "."
               }
             ]
           }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "module_name"
         }
       ]
     },
@@ -1520,7 +1513,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "type_single"
+          "name": "type_path"
         },
         {
           "type": "SYMBOL",
@@ -1560,7 +1553,7 @@
         }
       ]
     },
-    "type_single": {
+    "type_path": {
       "type": "SEQ",
       "members": [
         {
@@ -1593,7 +1586,7 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "type_single"
+            "name": "type_path"
           },
           {
             "type": "REPEAT1",
@@ -2121,7 +2114,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "expr_variable"
+          "name": "expr_var_path"
         },
         {
           "type": "SYMBOL",
@@ -2216,7 +2209,7 @@
                 "name": "variant",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "mod_variant"
+                  "name": "variant_path"
                 }
               },
               {
@@ -2248,7 +2241,7 @@
         ]
       }
     },
-    "mod_variant": {
+    "variant_path": {
       "type": "SEQ",
       "members": [
         {
@@ -2327,7 +2320,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "expr_variable"
+          "name": "expr_var_path"
         },
         {
           "type": "SYMBOL",
@@ -2363,7 +2356,7 @@
         }
       ]
     },
-    "expr_variable": {
+    "expr_var_path": {
       "type": "SEQ",
       "members": [
         {
@@ -3807,24 +3800,8 @@
         "type": "SEQ",
         "members": [
           {
-            "type": "REPEAT",
-            "content": {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "module_name"
-                },
-                {
-                  "type": "STRING",
-                  "value": "."
-                }
-              ]
-            }
-          },
-          {
             "type": "SYMBOL",
-            "name": "variant_name"
+            "name": "variant_path"
           },
           {
             "type": "CHOICE",
@@ -3927,8 +3904,12 @@
               }
             },
             {
-              "type": "PATTERN",
-              "value": "\\|\\s*\\}"
+              "type": "STRING",
+              "value": "|"
+            },
+            {
+              "type": "STRING",
+              "value": "}"
             }
           ]
         }
@@ -3994,6 +3975,18 @@
           {
             "type": "SYMBOL",
             "name": "inline_literal_escaped"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "inline_text_embedding"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "math_text"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "literal_string"
           },
           {
             "type": "SYMBOL",
@@ -4091,6 +4084,10 @@
         {
           "type": "STRING",
           "value": "\\ "
+        },
+        {
+          "type": "STRING",
+          "value": "\\\""
         }
       ]
     },
@@ -4521,6 +4518,55 @@
         }
       ]
     },
+    "inline_cmd_name": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_inline_cmd_prefix"
+          },
+          "named": false,
+          "value": "\\"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_mod_cmd_name"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "cmd_name"
+            }
+          ]
+        }
+      ]
+    },
+    "_mod_cmd_name": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_module_prefix"
+          },
+          "named": true,
+          "value": "module_name"
+        },
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "SYMBOL",
+          "name": "cmd_name"
+        }
+      ]
+    },
     "block_cmd": {
       "type": "SEQ",
       "members": [
@@ -4573,6 +4619,33 @@
             {
               "type": "STRING",
               "value": ";"
+            }
+          ]
+        }
+      ]
+    },
+    "block_cmd_name": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_block_cmd_prefix"
+          },
+          "named": false,
+          "value": "+"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_mod_cmd_name"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "cmd_name"
             }
           ]
         }
@@ -4708,6 +4781,33 @@
         ]
       }
     },
+    "math_cmd_name": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_inline_cmd_prefix"
+          },
+          "named": false,
+          "value": "\\"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_mod_cmd_name"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "cmd_name"
+            }
+          ]
+        }
+      ]
+    },
     "math_cmd_expr_arg": {
       "type": "SEQ",
       "members": [
@@ -4802,6 +4902,32 @@
             {
               "type": "STRING",
               "value": ")"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "!"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "expr_list"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "!"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "expr_record"
             }
           ]
         }
@@ -5069,7 +5195,19 @@
     },
     {
       "type": "SYMBOL",
+      "name": "_module_prefix"
+    },
+    {
+      "type": "SYMBOL",
       "name": "_numbersign_after_nospace"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_inline_cmd_prefix"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_block_cmd_prefix"
     }
   ],
   "inline": [],
