@@ -2,6 +2,19 @@
   "name": "satysfi",
   "rules": {
     "source_file": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "program_saty"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "program_satyh"
+        }
+      ]
+    },
+    "program_satyh": {
       "type": "SEQ",
       "members": [
         {
@@ -55,6 +68,59 @@
         }
       ]
     },
+    "program_saty": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "stage",
+              "content": {
+                "type": "SYMBOL",
+                "name": "header_stage"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "headers",
+              "content": {
+                "type": "SYMBOL",
+                "name": "headers"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "FIELD",
+          "name": "expr",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expr"
+          }
+        }
+      ]
+    },
+    "whitespace": {
+      "type": "PATTERN",
+      "value": "\\s+"
+    },
+    "cmd_name": {
+      "type": "PATTERN",
+      "value": "[A-Za-z][-A-Za-z0-9]*"
+    },
     "comment": {
       "type": "TOKEN",
       "content": {
@@ -94,11 +160,16 @@
               "value": "@require:"
             },
             {
-              "type": "REPEAT",
-              "content": {
-                "type": "PATTERN",
-                "value": "\\s"
-              }
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "whitespace"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
               "type": "FIELD",
@@ -1460,7 +1531,7 @@
           }
         },
         {
-          "type": "PREC",
+          "type": "PREC_LEFT",
           "value": 2,
           "content": {
             "type": "SEQ",
@@ -1470,20 +1541,33 @@
                 "name": "type"
               },
               {
-                "type": "REPEAT1",
-                "content": {
-                  "type": "SEQ",
-                  "members": [
-                    {
-                      "type": "STRING",
-                      "value": "*"
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "type"
+                "type": "STRING",
+                "value": "*"
+              },
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "type"
+                  },
+                  {
+                    "type": "REPEAT",
+                    "content": {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": "*"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "type"
+                        }
+                      ]
                     }
-                  ]
-                }
+                  }
+                ]
               }
             ]
           }
@@ -2608,6 +2692,14 @@
           "value": "("
         },
         {
+          "type": "SYMBOL",
+          "name": "_expr"
+        },
+        {
+          "type": "STRING",
+          "value": ","
+        },
+        {
           "type": "SEQ",
           "members": [
             {
@@ -2615,7 +2707,7 @@
               "name": "_expr"
             },
             {
-              "type": "REPEAT1",
+              "type": "REPEAT",
               "content": {
                 "type": "SEQ",
                 "members": [
@@ -3502,6 +3594,14 @@
           "value": "("
         },
         {
+          "type": "SYMBOL",
+          "name": "_pattern"
+        },
+        {
+          "type": "STRING",
+          "value": ","
+        },
+        {
           "type": "SEQ",
           "members": [
             {
@@ -3509,7 +3609,7 @@
               "name": "_pattern"
             },
             {
-              "type": "REPEAT1",
+              "type": "REPEAT",
               "content": {
                 "type": "SEQ",
                 "members": [

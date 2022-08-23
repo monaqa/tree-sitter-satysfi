@@ -2278,6 +2278,42 @@
     }
   },
   {
+    "type": "header_stage",
+    "named": true,
+    "fields": {
+      "0": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "0",
+            "named": false
+          }
+        ]
+      },
+      "1": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "1",
+            "named": false
+          }
+        ]
+      },
+      "persistent": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "persistent",
+            "named": false
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "headers",
     "named": true,
     "fields": {
@@ -2301,6 +2337,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "whitespace",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -3208,6 +3254,173 @@
     }
   },
   {
+    "type": "program_saty",
+    "named": true,
+    "fields": {
+      "expr": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": "expr_application",
+            "named": true
+          },
+          {
+            "type": "expr_binary_operation",
+            "named": true
+          },
+          {
+            "type": "expr_binary_operator",
+            "named": true
+          },
+          {
+            "type": "expr_bind",
+            "named": true
+          },
+          {
+            "type": "expr_block_text",
+            "named": true
+          },
+          {
+            "type": "expr_constructor",
+            "named": true
+          },
+          {
+            "type": "expr_if",
+            "named": true
+          },
+          {
+            "type": "expr_inline_text",
+            "named": true
+          },
+          {
+            "type": "expr_lambda",
+            "named": true
+          },
+          {
+            "type": "expr_list",
+            "named": true
+          },
+          {
+            "type": "expr_literal",
+            "named": true
+          },
+          {
+            "type": "expr_match",
+            "named": true
+          },
+          {
+            "type": "expr_math_text",
+            "named": true
+          },
+          {
+            "type": "expr_modvar",
+            "named": true
+          },
+          {
+            "type": "expr_open",
+            "named": true
+          },
+          {
+            "type": "expr_record",
+            "named": true
+          },
+          {
+            "type": "expr_tuple",
+            "named": true
+          },
+          {
+            "type": "expr_unary_operation",
+            "named": true
+          }
+        ]
+      },
+      "headers": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "headers",
+            "named": true
+          }
+        ]
+      },
+      "stage": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "header_stage",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "program_satyh",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "headers",
+          "named": true
+        },
+        {
+          "type": "module_coerction",
+          "named": true
+        },
+        {
+          "type": "module_functor_abstraction",
+          "named": true
+        },
+        {
+          "type": "module_functor_application",
+          "named": true
+        },
+        {
+          "type": "module_name",
+          "named": true
+        },
+        {
+          "type": "module_path",
+          "named": true
+        },
+        {
+          "type": "module_structure",
+          "named": true
+        },
+        {
+          "type": "signature_functor",
+          "named": true
+        },
+        {
+          "type": "signature_path",
+          "named": true
+        },
+        {
+          "type": "signature_structure",
+          "named": true
+        },
+        {
+          "type": "signature_with_bind_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "quant",
     "named": true,
     "fields": {},
@@ -3449,51 +3662,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
-          "type": "headers",
+          "type": "program_saty",
           "named": true
         },
         {
-          "type": "module_coerction",
-          "named": true
-        },
-        {
-          "type": "module_functor_abstraction",
-          "named": true
-        },
-        {
-          "type": "module_functor_application",
-          "named": true
-        },
-        {
-          "type": "module_name",
-          "named": true
-        },
-        {
-          "type": "module_path",
-          "named": true
-        },
-        {
-          "type": "module_structure",
-          "named": true
-        },
-        {
-          "type": "signature_functor",
-          "named": true
-        },
-        {
-          "type": "signature_path",
-          "named": true
-        },
-        {
-          "type": "signature_structure",
-          "named": true
-        },
-        {
-          "type": "signature_with_bind_type",
+          "type": "program_satyh",
           "named": true
         }
       ]
@@ -3999,6 +4176,10 @@
   {
     "type": "val",
     "named": false
+  },
+  {
+    "type": "whitespace",
+    "named": true
   },
   {
     "type": "with",
