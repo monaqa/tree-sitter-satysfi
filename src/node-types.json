@@ -25,6 +25,10 @@
           "named": true
         },
         {
+          "type": "module_parened",
+          "named": true
+        },
+        {
           "type": "module_path",
           "named": true
         },
@@ -38,52 +42,73 @@
   {
     "type": "bind_module",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "module_coerction",
-          "named": true
-        },
-        {
-          "type": "module_functor_abstraction",
-          "named": true
-        },
-        {
-          "type": "module_functor_application",
-          "named": true
-        },
-        {
-          "type": "module_name",
-          "named": true
-        },
-        {
-          "type": "module_path",
-          "named": true
-        },
-        {
-          "type": "module_structure",
-          "named": true
-        },
-        {
-          "type": "signature_functor",
-          "named": true
-        },
-        {
-          "type": "signature_path",
-          "named": true
-        },
-        {
-          "type": "signature_structure",
-          "named": true
-        },
-        {
-          "type": "signature_with_bind_type",
-          "named": true
-        }
-      ]
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "module_coerction",
+            "named": true
+          },
+          {
+            "type": "module_functor_abstraction",
+            "named": true
+          },
+          {
+            "type": "module_functor_application",
+            "named": true
+          },
+          {
+            "type": "module_parened",
+            "named": true
+          },
+          {
+            "type": "module_path",
+            "named": true
+          },
+          {
+            "type": "module_structure",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "module_name",
+            "named": true
+          }
+        ]
+      },
+      "signature": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "signature_functor",
+            "named": true
+          },
+          {
+            "type": "signature_parened",
+            "named": true
+          },
+          {
+            "type": "signature_path",
+            "named": true
+          },
+          {
+            "type": "signature_structure",
+            "named": true
+          },
+          {
+            "type": "signature_with_bind_type",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -100,6 +125,10 @@
         },
         {
           "type": "signature_functor",
+          "named": true
+        },
+        {
+          "type": "signature_parened",
           "named": true
         },
         {
@@ -223,9 +252,17 @@
     "named": true,
     "fields": {
       "expr": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
           {
             "type": "expr_application",
             "named": true
@@ -267,10 +304,6 @@
             "named": true
           },
           {
-            "type": "expr_literal",
-            "named": true
-          },
-          {
             "type": "expr_match",
             "named": true
           },
@@ -301,6 +334,30 @@
           {
             "type": "expr_variable",
             "named": true
+          },
+          {
+            "type": "false",
+            "named": false
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "true",
+            "named": false
           }
         ]
       },
@@ -335,9 +392,17 @@
     "named": true,
     "fields": {
       "expr": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
           {
             "type": "expr_application",
             "named": true
@@ -379,10 +444,6 @@
             "named": true
           },
           {
-            "type": "expr_literal",
-            "named": true
-          },
-          {
             "type": "expr_match",
             "named": true
           },
@@ -413,6 +474,30 @@
           {
             "type": "expr_variable",
             "named": true
+          },
+          {
+            "type": "false",
+            "named": false
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "true",
+            "named": false
           }
         ]
       },
@@ -447,9 +532,17 @@
     "named": true,
     "fields": {
       "expr": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
           {
             "type": "expr_application",
             "named": true
@@ -491,10 +584,6 @@
             "named": true
           },
           {
-            "type": "expr_literal",
-            "named": true
-          },
-          {
             "type": "expr_match",
             "named": true
           },
@@ -525,6 +614,30 @@
           {
             "type": "expr_variable",
             "named": true
+          },
+          {
+            "type": "false",
+            "named": false
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "true",
+            "named": false
           }
         ]
       },
@@ -578,9 +691,17 @@
     "named": true,
     "fields": {
       "expr": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
           {
             "type": "expr_application",
             "named": true
@@ -622,10 +743,6 @@
             "named": true
           },
           {
-            "type": "expr_literal",
-            "named": true
-          },
-          {
             "type": "expr_match",
             "named": true
           },
@@ -656,6 +773,30 @@
           {
             "type": "expr_variable",
             "named": true
+          },
+          {
+            "type": "false",
+            "named": false
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "true",
+            "named": false
           }
         ]
       },
@@ -752,7 +893,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "expr_application",
@@ -795,10 +936,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -828,6 +965,22 @@
         },
         {
           "type": "expr_variable",
+          "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
           "named": true
         }
       ]
@@ -839,7 +992,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "expr_application",
@@ -882,10 +1035,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -915,6 +1064,22 @@
         },
         {
           "type": "expr_variable",
+          "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
           "named": true
         }
       ]
@@ -1077,6 +1242,10 @@
           "named": true
         },
         {
+          "type": "signature_parened",
+          "named": true
+        },
+        {
           "type": "signature_path",
           "named": true
         },
@@ -1108,6 +1277,10 @@
           "named": true
         },
         {
+          "type": "signature_parened",
+          "named": true
+        },
+        {
           "type": "signature_path",
           "named": true
         },
@@ -1136,6 +1309,10 @@
         },
         {
           "type": "signature_functor",
+          "named": true
+        },
+        {
+          "type": "signature_parened",
           "named": true
         },
         {
@@ -1264,9 +1441,17 @@
     "named": true,
     "fields": {
       "arg": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
           {
             "type": "expr_application",
             "named": true
@@ -1308,10 +1493,6 @@
             "named": true
           },
           {
-            "type": "expr_literal",
-            "named": true
-          },
-          {
             "type": "expr_match",
             "named": true
           },
@@ -1342,6 +1523,30 @@
           {
             "type": "expr_variable",
             "named": true
+          },
+          {
+            "type": "false",
+            "named": false
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "true",
+            "named": false
           }
         ]
       },
@@ -1412,9 +1617,17 @@
     "named": true,
     "fields": {
       "left": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
           {
             "type": "expr_application",
             "named": true
@@ -1456,10 +1669,6 @@
             "named": true
           },
           {
-            "type": "expr_literal",
-            "named": true
-          },
-          {
             "type": "expr_match",
             "named": true
           },
@@ -1490,6 +1699,30 @@
           {
             "type": "expr_variable",
             "named": true
+          },
+          {
+            "type": "false",
+            "named": false
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "true",
+            "named": false
           }
         ]
       },
@@ -1504,9 +1737,17 @@
         ]
       },
       "right": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
           {
             "type": "expr_application",
             "named": true
@@ -1548,10 +1789,6 @@
             "named": true
           },
           {
-            "type": "expr_literal",
-            "named": true
-          },
-          {
             "type": "expr_match",
             "named": true
           },
@@ -1582,6 +1819,30 @@
           {
             "type": "expr_variable",
             "named": true
+          },
+          {
+            "type": "false",
+            "named": false
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "true",
+            "named": false
           }
         ]
       }
@@ -1667,10 +1928,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -1700,6 +1957,22 @@
         },
         {
           "type": "expr_variable",
+          "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
           "named": true
         },
         {
@@ -1741,9 +2014,17 @@
     "named": true,
     "fields": {
       "arg": {
-        "multiple": false,
+        "multiple": true,
         "required": false,
         "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
           {
             "type": "expr_application",
             "named": true
@@ -1785,10 +2066,6 @@
             "named": true
           },
           {
-            "type": "expr_literal",
-            "named": true
-          },
-          {
             "type": "expr_match",
             "named": true
           },
@@ -1819,6 +2096,30 @@
           {
             "type": "expr_variable",
             "named": true
+          },
+          {
+            "type": "false",
+            "named": false
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "true",
+            "named": false
           }
         ]
       },
@@ -1844,7 +2145,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "expr_application",
@@ -1887,10 +2188,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -1921,6 +2218,22 @@
         {
           "type": "expr_variable",
           "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
+          "named": true
         }
       ]
     }
@@ -1946,7 +2259,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "bind_val_parameter",
@@ -1993,10 +2306,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -2026,6 +2335,22 @@
         },
         {
           "type": "expr_variable",
+          "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
           "named": true
         }
       ]
@@ -2080,10 +2405,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -2114,18 +2435,7 @@
         {
           "type": "expr_variable",
           "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "expr_literal",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
+        },
         {
           "type": "literal_float",
           "named": true
@@ -2150,9 +2460,17 @@
     "named": true,
     "fields": {
       "expr": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
           {
             "type": "expr_application",
             "named": true
@@ -2194,10 +2512,6 @@
             "named": true
           },
           {
-            "type": "expr_literal",
-            "named": true
-          },
-          {
             "type": "expr_match",
             "named": true
           },
@@ -2228,6 +2542,30 @@
           {
             "type": "expr_variable",
             "named": true
+          },
+          {
+            "type": "false",
+            "named": false
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "true",
+            "named": false
           }
         ]
       }
@@ -2277,10 +2615,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -2310,6 +2644,22 @@
         },
         {
           "type": "expr_variable",
+          "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
           "named": true
         },
         {
@@ -2399,10 +2749,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -2435,7 +2781,23 @@
           "named": true
         },
         {
-          "type": "module_name",
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
+          "named": true
+        },
+        {
+          "type": "module_path",
           "named": true
         }
       ]
@@ -2490,10 +2852,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -2528,6 +2886,22 @@
         {
           "type": "label_name",
           "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
+          "named": true
         }
       ]
     }
@@ -2538,7 +2912,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "expr_application",
@@ -2581,10 +2955,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -2614,6 +2984,22 @@
         },
         {
           "type": "expr_variable",
+          "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
           "named": true
         }
       ]
@@ -2668,10 +3054,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -2701,6 +3083,22 @@
         },
         {
           "type": "expr_variable",
+          "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
           "named": true
         },
         {
@@ -2716,7 +3114,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "expr_application",
@@ -2759,10 +3157,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -2792,6 +3186,22 @@
         },
         {
           "type": "expr_variable",
+          "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
           "named": true
         }
       ]
@@ -2803,7 +3213,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "expr_application",
@@ -2846,10 +3256,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -2879,6 +3285,22 @@
         },
         {
           "type": "expr_variable",
+          "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
           "named": true
         }
       ]
@@ -3175,7 +3597,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "expr_application",
@@ -3218,10 +3640,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -3255,6 +3673,22 @@
         },
         {
           "type": "inline_text",
+          "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
           "named": true
         },
         {
@@ -3274,7 +3708,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "expr_application",
@@ -3317,10 +3751,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -3354,6 +3784,22 @@
         },
         {
           "type": "inline_text",
+          "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
           "named": true
         },
         {
@@ -3517,11 +3963,15 @@
       "required": true,
       "types": [
         {
-          "type": "module_name",
+          "type": "module_path",
           "named": true
         },
         {
           "type": "signature_functor",
+          "named": true
+        },
+        {
+          "type": "signature_parened",
           "named": true
         },
         {
@@ -3564,6 +4014,10 @@
           "named": true
         },
         {
+          "type": "module_parened",
+          "named": true
+        },
+        {
           "type": "module_path",
           "named": true
         },
@@ -3573,6 +4027,10 @@
         },
         {
           "type": "signature_functor",
+          "named": true
+        },
+        {
+          "type": "signature_parened",
           "named": true
         },
         {
@@ -3593,22 +4051,68 @@
   {
     "type": "module_functor_application",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "module_name",
-          "named": true
-        }
-      ]
+    "fields": {
+      "arg": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "module_path",
+            "named": true
+          }
+        ]
+      },
+      "functor": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "module_path",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
     "type": "module_name",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "module_parened",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "module_coerction",
+          "named": true
+        },
+        {
+          "type": "module_functor_abstraction",
+          "named": true
+        },
+        {
+          "type": "module_functor_application",
+          "named": true
+        },
+        {
+          "type": "module_parened",
+          "named": true
+        },
+        {
+          "type": "module_path",
+          "named": true
+        },
+        {
+          "type": "module_structure",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "module_path",
@@ -3705,10 +4209,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -3742,6 +4242,22 @@
         },
         {
           "type": "label_name",
+          "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
           "named": true
         },
         {
@@ -3953,9 +4469,17 @@
     "named": true,
     "fields": {
       "expr": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
           {
             "type": "expr_application",
             "named": true
@@ -3997,10 +4521,6 @@
             "named": true
           },
           {
-            "type": "expr_literal",
-            "named": true
-          },
-          {
             "type": "expr_match",
             "named": true
           },
@@ -4031,6 +4551,30 @@
           {
             "type": "expr_variable",
             "named": true
+          },
+          {
+            "type": "false",
+            "named": false
+          },
+          {
+            "type": "literal_float",
+            "named": true
+          },
+          {
+            "type": "literal_int",
+            "named": true
+          },
+          {
+            "type": "literal_length",
+            "named": true
+          },
+          {
+            "type": "literal_string",
+            "named": true
+          },
+          {
+            "type": "true",
+            "named": false
           }
         ]
       },
@@ -4085,6 +4629,10 @@
           "named": true
         },
         {
+          "type": "module_parened",
+          "named": true
+        },
+        {
           "type": "module_path",
           "named": true
         },
@@ -4094,6 +4642,10 @@
         },
         {
           "type": "signature_functor",
+          "named": true
+        },
+        {
+          "type": "signature_parened",
           "named": true
         },
         {
@@ -4183,10 +4735,6 @@
           "named": true
         },
         {
-          "type": "expr_literal",
-          "named": true
-        },
-        {
           "type": "expr_match",
           "named": true
         },
@@ -4221,6 +4769,22 @@
         {
           "type": "label_name",
           "named": true
+        },
+        {
+          "type": "literal_float",
+          "named": true
+        },
+        {
+          "type": "literal_int",
+          "named": true
+        },
+        {
+          "type": "literal_length",
+          "named": true
+        },
+        {
+          "type": "literal_string",
+          "named": true
         }
       ]
     }
@@ -4254,6 +4818,41 @@
         },
         {
           "type": "signature_functor",
+          "named": true
+        },
+        {
+          "type": "signature_parened",
+          "named": true
+        },
+        {
+          "type": "signature_path",
+          "named": true
+        },
+        {
+          "type": "signature_structure",
+          "named": true
+        },
+        {
+          "type": "signature_with_bind_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "signature_parened",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "signature_functor",
+          "named": true
+        },
+        {
+          "type": "signature_parened",
           "named": true
         },
         {
@@ -4335,6 +4934,10 @@
         },
         {
           "type": "signature_functor",
+          "named": true
+        },
+        {
+          "type": "signature_parened",
           "named": true
         },
         {
