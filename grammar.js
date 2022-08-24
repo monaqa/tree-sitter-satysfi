@@ -1,8 +1,8 @@
 // vim:sw=2
 const PREC = {
   constructor: 11,
+  unary: 11,
   application: 10,
-  // unary: 10,
   divisive: 9,
   multiplicative: 9,
   additive: 8,
@@ -435,6 +435,7 @@ module.exports = grammar({
         $.expr_open,
         $.expr_match,
         $.expr_if,
+        $.expr_assignment,
         $.expr_binary_operation,
         $.expr_binary_operator,
         $.expr_unary_operation,
@@ -478,14 +479,14 @@ module.exports = grammar({
         // $.expr_constructor,
         $.expr_application,
         $.expr_var_path,
-        $.expr_lambda,
-        $.expr_bind,
-        $.expr_open,
-        $.expr_match,
-        $.expr_if,
-        $.expr_binary_operation,
-        $.expr_binary_operator,
-        $.expr_unary_operation,
+        // $.expr_lambda,
+        // $.expr_bind,
+        // $.expr_open,
+        // $.expr_match,
+        // $.expr_if,
+        // $.expr_binary_operation,
+        // $.expr_binary_operator,
+        // $.expr_unary_operation,
         // $._literal,
         // $.inline_text,
         // $.block_text,
@@ -496,26 +497,51 @@ module.exports = grammar({
       ),
 
     expr_var_path: ($) => seq(repeat(seq($.module_name, ".")), $.var_name),
+
     expr_lambda: ($) => seq("fun", repeat($.bind_val_parameter), "->", $._expr),
+
     expr_bind: ($) =>
       choice(
         seq("let", $._bind_val, "in", $._expr),
         seq("let", $._non_var_pattern, "=", $._expr, "in", $._expr),
       ),
+
     expr_open: ($) => seq("let", "open", $.module_path, "in", $._expr),
+
     expr_match: ($) =>
       seq(
         "match",
         field("expr", $._expr),
         "with",
         optional("|"),
-        sep(seq($._pattern, "->", $._expr), "|"),
+        sep($.match_arm, "|"),
         "end",
       ),
+
+    match_arm: ($) =>
+      seq(
+        field("pattern", $.pattern_as),
+        optional(field("guard", $.match_guard)),
+        "->",
+        field("expr", $._expr),
+      ),
+    match_guard: ($) => seq("when", $._expr),
+
     expr_if: ($) => seq("if", $._expr, "then", $._expr, "else", $._expr),
+
     expr_binary_operation: ($) => $._binary_expr,
+
     expr_binary_operator: ($) => seq("(", $.binary_operator, ")"),
-    expr_unary_operation: ($) => seq($._un_op, $._expr),
+
+    expr_unary_operation: ($) =>
+      prec(
+        PREC.unary,
+        seq(field("operator", $.unary_operator), field("expr", $._expr)),
+      ),
+
+    expr_assignment: ($) =>
+      prec.right(PREC.assign, seq($.var_name, "<-", $._expr)),
+
     _literal: ($) =>
       choice(seq($._matchable_const), seq($._non_matchable_const)),
 
@@ -544,41 +570,59 @@ module.exports = grammar({
             precedence,
             seq(
               field("left", $._expr),
-              field("operator", alias(operator, "bin_op")),
+              field("operator", alias(operator, $.binary_operator)),
               field("right", $._expr),
             ),
           ),
         ),
       ),
 
-    _un_op: (_) => choice("-", "not"),
+    unary_operator: (_) => choice("-", "not", "!"),
 
     expr_opts: ($) => $._expr_opts,
     _expr_opts: ($) =>
       seq("?(", sep(seq($.label_name, "=", $._expr), ","), ")"),
 
+    variant: ($) => prec.right(seq($.variant_path, optional($._pattern))),
+
     _matchable_const: ($) =>
-      choice(seq("(", ")"), "true", "false", $.literal_int, $.literal_string),
+      choice($.literal_unit, $.literal_bool, $.literal_int, $.literal_string),
 
     _non_matchable_const: ($) => choice($.literal_float, $.literal_length),
+
+    //$1 pattern
+
+    pattern_as: ($) =>
+      prec.left(0, seq($._pattern_cons, optional(seq("as", $.var_name)))),
+
+    _pattern_cons: ($) =>
+      choice(seq($._pattern, "::", $.pattern_as), $._pattern),
 
     _pattern: ($) => choice($.var_name, $._non_var_pattern),
 
     _non_var_pattern: ($) =>
       choice(
-        seq("(", $._non_var_pattern, ")"),
+        $.pattern_operator,
+        $.pattern_parened,
         $.pattern_ignore,
         $.pattern_variant,
         $.pattern_tuple,
         $.pattern_const,
       ),
 
-    pattern_ignore: (_) => "_",
-    pattern_variant: ($) => $.variant,
-    pattern_tuple: ($) => seq("(", $._pattern, ",", sep($._pattern, ","), ")"),
-    pattern_const: ($) => $._matchable_const,
+    pattern_parened: ($) => seq("(", $.pattern_as, ")"),
 
-    variant: ($) => prec.right(seq($.variant_path, optional($._pattern))),
+    pattern_operator: ($) =>
+      seq("(", choice($.binary_operator, $.unary_operator), ")"),
+
+    pattern_ignore: (_) => "_",
+
+    pattern_variant: ($) =>
+      prec.right(seq($.variant_name, optional($._pattern))),
+
+    pattern_tuple: ($) => seq("(", $._pattern, ",", sep($._pattern, ","), ")"),
+
+    pattern_const: ($) => $._matchable_const,
 
     //$1 mode
 
@@ -653,7 +697,7 @@ module.exports = grammar({
       ),
 
     inline_text_embedding: ($) =>
-      seq($._numbersign_after_nospace, $.var_name, ";"),
+      seq(alias($._numbersign_after_nospace, "#"), $.var_name, ";"),
 
     block_text: ($) => seq("'<", optional($.vertical), ">"),
 
@@ -794,6 +838,8 @@ module.exports = grammar({
       ),
 
     //$1 const_rule
+    literal_unit: (_) => seq("(", ")"),
+    literal_bool: (_) => choice("true", "false"),
 
     literal_length: (_) => {
       const digits = /[0-9]+/;
