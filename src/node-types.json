@@ -1025,8 +1025,8 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
-      "required": false,
+      "multiple": true,
+      "required": true,
       "types": [
         {
           "type": "block_text",
@@ -1094,6 +1094,10 @@
         },
         {
           "type": "inline_text",
+          "named": true
+        },
+        {
+          "type": "label_name",
           "named": true
         },
         {
@@ -5764,11 +5768,23 @@
     "named": false
   },
   {
+    "type": "\\<",
+    "named": false
+  },
+  {
+    "type": "\\>",
+    "named": false
+  },
+  {
     "type": "\\@",
     "named": false
   },
   {
     "type": "\\\\",
+    "named": false
+  },
+  {
+    "type": "\\_",
     "named": false
   },
   {

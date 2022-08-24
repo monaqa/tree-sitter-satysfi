@@ -3499,6 +3499,10 @@
       ]
     },
     "expr_opts": {
+      "type": "SYMBOL",
+      "name": "_expr_opts"
+    },
+    "_expr_opts": {
       "type": "SEQ",
       "members": [
         {
@@ -4013,6 +4017,18 @@
         {
           "type": "STRING",
           "value": "\\\""
+        },
+        {
+          "type": "STRING",
+          "value": "\\<"
+        },
+        {
+          "type": "STRING",
+          "value": "\\>"
+        },
+        {
+          "type": "STRING",
+          "value": "\\_"
         }
       ]
     },
@@ -4593,17 +4609,8 @@
       "name": "_cmd_expr_arg_inner"
     },
     "cmd_expr_option": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "?:"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_cmd_expr_arg_inner"
-        }
-      ]
+      "type": "SYMBOL",
+      "name": "_expr_opts"
     },
     "_cmd_expr_arg_inner": {
       "type": "CHOICE",

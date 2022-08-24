@@ -553,7 +553,9 @@ module.exports = grammar({
 
     _un_op: (_) => choice("-", "not"),
 
-    expr_opts: ($) => seq("?(", sep(seq($.label_name, "=", $._expr), ","), ")"),
+    expr_opts: ($) => $._expr_opts,
+    _expr_opts: ($) =>
+      seq("?(", sep(seq($.label_name, "=", $._expr), ","), ")"),
 
     _matchable_const: ($) =>
       choice(seq("(", ")"), "true", "false", $.literal_int, $.literal_string),
@@ -645,6 +647,9 @@ module.exports = grammar({
         "\\;",
         "\\ ",
         '\\"',
+        "\\<",
+        "\\>",
+        "\\_",
       ),
 
     inline_text_embedding: ($) =>
@@ -741,7 +746,7 @@ module.exports = grammar({
       ),
 
     cmd_expr_arg: ($) => $._cmd_expr_arg_inner,
-    cmd_expr_option: ($) => seq("?:", $._cmd_expr_arg_inner),
+    cmd_expr_option: ($) => $._expr_opts,
     _cmd_expr_arg_inner: ($) =>
       choice(seq("(", $._expr, ")"), $.expr_list, $.expr_record),
 
