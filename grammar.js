@@ -742,7 +742,8 @@ module.exports = grammar({
 
     cmd_expr_arg: ($) => $._cmd_expr_arg_inner,
     cmd_expr_option: ($) => seq("?:", $._cmd_expr_arg_inner),
-    _cmd_expr_arg_inner: ($) => seq("(", $._expr, ")"),
+    _cmd_expr_arg_inner: ($) =>
+      choice(seq("(", $._expr, ")"), $.expr_list, $.expr_record),
 
     cmd_text_arg: ($) =>
       choice(
@@ -785,8 +786,6 @@ module.exports = grammar({
         seq("!", $.inline_text_bullet_list),
         seq("!", $._cmd_expr_arg_inner),
         seq("!", $._cmd_text_arg_block),
-        seq("!", $.expr_list),
-        seq("!", $.expr_record),
       ),
 
     //$1 const_rule
