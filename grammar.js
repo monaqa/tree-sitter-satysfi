@@ -239,7 +239,7 @@ module.exports = grammar({
     bind_val_math_cmd: ($) =>
       seq(
         "math",
-        $.var_name,
+        optional(field("context", $.var_name)),
         $.math_cmd_name,
         repeat(field("param", $.bind_val_parameter)),
         "=",
@@ -249,7 +249,7 @@ module.exports = grammar({
     bind_val_inline_cmd: ($) =>
       seq(
         "inline",
-        $.var_name,
+        optional(field("context", $.var_name)),
         $.inline_cmd_name,
         repeat(field("param", $.bind_val_parameter)),
         "=",
@@ -259,7 +259,7 @@ module.exports = grammar({
     bind_val_block_cmd: ($) =>
       seq(
         "block",
-        $.var_name,
+        optional(field("context", $.var_name)),
         $.block_cmd_name,
         repeat(field("param", $.bind_val_parameter)),
         "=",
