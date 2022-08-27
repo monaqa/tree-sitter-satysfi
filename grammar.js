@@ -225,6 +225,7 @@ module.exports = grammar({
         $.bind_val_math_cmd,
         $.bind_val_inline_cmd,
         $.bind_val_block_cmd,
+        $.bind_val_mutable,
       ),
 
     bind_val_variable: ($) =>
@@ -263,6 +264,16 @@ module.exports = grammar({
         $.block_cmd_name,
         repeat(field("param", $.bind_val_parameter)),
         "=",
+        field("expr", $._expr),
+      ),
+
+    bind_val_mutable: ($) =>
+      seq(
+        "mutable",
+        field("name", $.var_name),
+        // optional($.quant),
+        // repeat(field("param", $.bind_val_parameter)),
+        "<-",
         field("expr", $._expr),
       ),
 
@@ -336,10 +347,15 @@ module.exports = grammar({
     declaration_val: ($) =>
       seq(
         "val",
-        field("var", $.var_name),
+        $._declaration_val_name,
         optional($.quant),
         ":",
         field("type", $._type),
+      ),
+    _declaration_val_name: ($) =>
+      choice(
+        field("var", $.var_name),
+        field("cmd", choice($.inline_cmd_name, $.block_cmd_name)),
       ),
     declaration_type_kind: ($) => seq("type", $.type_name, "::", $.type_kind),
     declaration_type: ($) => seq("type", $.bind_type),
@@ -390,7 +406,7 @@ module.exports = grammar({
     type_parened: ($) => seq("(", $._type, ")"),
 
     type_record: ($) =>
-      seq("(", "|", sep(seq($.label_name, ":", $._type), ","), "|", ")"),
+      seq("(|", sep(seq($.label_name, ":", $._type), ","), "|)"),
 
     type_math_cmd: ($) => seq("math", $.cmd_parameter_types),
     type_inline_cmd: ($) => seq("inline", $.cmd_parameter_types),
@@ -445,6 +461,8 @@ module.exports = grammar({
         $.expr_record,
         $.expr_list,
         $.expr_tuple,
+        $.expr_record_member,
+        $.expr_command,
         $._literal,
       ),
 
@@ -494,6 +512,7 @@ module.exports = grammar({
         // $.expr_record,
         // $.expr_list,
         // $.expr_tuple,
+        $.expr_record_member,
       ),
 
     expr_var_path: ($) => seq(repeat(seq($.module_name, ".")), $.var_name),
@@ -501,10 +520,10 @@ module.exports = grammar({
     expr_lambda: ($) => seq("fun", repeat($.bind_val_parameter), "->", $._expr),
 
     expr_bind: ($) =>
-      choice(
-        seq("let", $._bind_val, "in", $._expr),
-        seq("let", $._non_var_pattern, "=", $._expr, "in", $._expr),
-      ),
+      seq("let", choice($._bind_val, $.bind_val_pattern), "in", $._expr),
+
+    bind_val_pattern: ($) =>
+      seq(field("pattern", $._non_var_pattern), "=", field("expr", $._expr)),
 
     expr_open: ($) => seq("let", "open", $.module_path, "in", $._expr),
 
@@ -584,6 +603,16 @@ module.exports = grammar({
       seq("?(", sep(seq($.label_name, "=", $._expr), ","), ")"),
 
     variant: ($) => prec.right(seq($.variant_path, optional($._pattern))),
+
+    expr_record_member: ($) =>
+      seq(
+        choice($.expr_parened, $.expr_var_path, $.expr_record),
+        "#",
+        $.var_name,
+      ),
+
+    expr_command: ($) =>
+      prec.left(PREC.application, seq("command", $.inline_cmd_name)),
 
     _matchable_const: ($) =>
       choice($.literal_unit, $.literal_bool, $.literal_int, $.literal_string),

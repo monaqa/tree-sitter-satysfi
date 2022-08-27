@@ -660,6 +660,10 @@
         {
           "type": "SYMBOL",
           "name": "bind_val_block_cmd"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "bind_val_mutable"
         }
       ]
     },
@@ -856,6 +860,35 @@
         {
           "type": "STRING",
           "value": "="
+        },
+        {
+          "type": "FIELD",
+          "name": "expr",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expr"
+          }
+        }
+      ]
+    },
+    "bind_val_mutable": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "mutable"
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "var_name"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "<-"
         },
         {
           "type": "FIELD",
@@ -1347,12 +1380,8 @@
           "value": "val"
         },
         {
-          "type": "FIELD",
-          "name": "var",
-          "content": {
-            "type": "SYMBOL",
-            "name": "var_name"
-          }
+          "type": "SYMBOL",
+          "name": "_declaration_val_name"
         },
         {
           "type": "CHOICE",
@@ -1376,6 +1405,36 @@
           "content": {
             "type": "SYMBOL",
             "name": "_type"
+          }
+        }
+      ]
+    },
+    "_declaration_val_name": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "var",
+          "content": {
+            "type": "SYMBOL",
+            "name": "var_name"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "cmd",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "inline_cmd_name"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "block_cmd_name"
+              }
+            ]
           }
         }
       ]
@@ -1739,11 +1798,7 @@
       "members": [
         {
           "type": "STRING",
-          "value": "("
-        },
-        {
-          "type": "STRING",
-          "value": "|"
+          "value": "(|"
         },
         {
           "type": "SEQ",
@@ -1798,11 +1853,7 @@
         },
         {
           "type": "STRING",
-          "value": "|"
-        },
-        {
-          "type": "STRING",
-          "value": ")"
+          "value": "|)"
         }
       ]
     },
@@ -2214,6 +2265,14 @@
         },
         {
           "type": "SYMBOL",
+          "name": "expr_record_member"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expr_command"
+        },
+        {
+          "type": "SYMBOL",
           "name": "_literal"
         }
       ]
@@ -2361,6 +2420,10 @@
         {
           "type": "SYMBOL",
           "name": "expr_var_path"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expr_record_member"
         }
       ]
     },
@@ -2414,57 +2477,57 @@
       ]
     },
     "expr_bind": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
+          "type": "STRING",
+          "value": "let"
+        },
+        {
+          "type": "CHOICE",
           "members": [
-            {
-              "type": "STRING",
-              "value": "let"
-            },
             {
               "type": "SYMBOL",
               "name": "_bind_val"
             },
             {
-              "type": "STRING",
-              "value": "in"
-            },
-            {
               "type": "SYMBOL",
-              "name": "_expr"
+              "name": "bind_val_pattern"
             }
           ]
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "let"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_non_var_pattern"
-            },
-            {
-              "type": "STRING",
-              "value": "="
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_expr"
-            },
-            {
-              "type": "STRING",
-              "value": "in"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_expr"
-            }
-          ]
+          "type": "STRING",
+          "value": "in"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_expr"
+        }
+      ]
+    },
+    "bind_val_pattern": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "pattern",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_non_var_pattern"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "="
+        },
+        {
+          "type": "FIELD",
+          "name": "expr",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expr"
+          }
         }
       ]
     },
@@ -3660,6 +3723,53 @@
                 "type": "BLANK"
               }
             ]
+          }
+        ]
+      }
+    },
+    "expr_record_member": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "expr_parened"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "expr_var_path"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "expr_record"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "#"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "var_name"
+        }
+      ]
+    },
+    "expr_command": {
+      "type": "PREC_LEFT",
+      "value": 10,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "command"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "inline_cmd_name"
           }
         ]
       }
